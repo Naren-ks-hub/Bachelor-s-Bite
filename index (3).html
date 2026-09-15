@@ -1,0 +1,1817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BachelorBite - Solo Cooking Made Simple</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1e40af;
+      --secondary: #f59e0b;
+      --text-dark: #1f2937;
+      --text-light: #6b7280;
+      --border: #e5e7eb;
+      --bg-light: #f9fafb;
+      --success: #10b981;
+      --error: #ef4444;
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      color: var(--text-dark);
+      line-height: 1.6;
+      background: #fff;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 48px;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 0 24px;
+      }
+    }
+
+    /* ===== HERO SECTION ===== */
+    .hero {
+      padding: 80px 0;
+      background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    @media (max-width: 768px) {
+      .hero-content {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+    }
+
+    .hero-left h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin: 24px 0;
+      color: var(--text-dark);
+    }
+
+    @media (max-width: 768px) {
+      .hero-left h1 {
+        font-size: 2.5rem;
+      }
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: #dbeafe;
+      color: #1e40af;
+      padding: 8px 16px;
+      border-radius: var(--radius-md);
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .hero-subheading {
+      font-size: 1.125rem;
+      color: var(--text-light);
+      line-height: 1.8;
+      margin: 24px 0;
+    }
+
+    .hero-cta-buttons {
+      display: flex;
+      gap: 16px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 768px) {
+      .hero-cta-buttons {
+        flex-direction: column;
+      }
+    }
+
+    .btn {
+      padding: 12px 32px;
+      border-radius: var(--radius-md);
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.2);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+
+    .btn-secondary:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    .trust-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      margin-top: 60px;
+      padding-top: 40px;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 768px) {
+      .trust-metrics {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+    }
+
+    .metric {
+      text-align: left;
+    }
+
+    .metric-value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      line-height: 1.2;
+    }
+
+    .metric-label {
+      font-size: 0.875rem;
+      color: var(--text-light);
+      margin-top: 8px;
+    }
+
+    .hero-right {
+      position: relative;
+      height: 460px;
+      background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #1e40af;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .hero-right {
+        height: 300px;
+      }
+    }
+
+    /* ===== PANTRY SECTION ===== */
+    .pantry {
+      padding: 80px 0;
+      background: #fff;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .section-badge {
+      display: inline-block;
+      background: #fef3c7;
+      color: #92400e;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .section-header h2 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin: 16px 0;
+      color: var(--text-dark);
+    }
+
+    @media (max-width: 768px) {
+      .section-header h2 {
+        font-size: 1.875rem;
+      }
+    }
+
+    .section-header p {
+      font-size: 1.125rem;
+      color: var(--text-light);
+      max-width: 600px;
+      margin: 16px auto 0;
+    }
+
+    .pantry-container {
+      background: #f3f4f6;
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      margin-bottom: 32px;
+    }
+
+    .ingredient-label {
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: var(--text-dark);
+    }
+
+    .ingredient-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .chip {
+      background: white;
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .chip:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .chip.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .filters-section {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 24px;
+    }
+
+    @media (max-width: 768px) {
+      .filters-section {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .filter-group {
+      background: white;
+      padding: 16px;
+      border-radius: var(--radius-md);
+    }
+
+    .filter-label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text-dark);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .filter-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .filter-btn {
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 0.875rem;
+      transition: all 0.3s ease;
+    }
+
+    .filter-btn:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .recipe-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 32px;
+    }
+
+    @media (max-width: 1024px) {
+      .recipe-cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .recipe-cards {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .recipe-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .recipe-card:hover {
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      transform: translateY(-4px);
+    }
+
+    .recipe-image {
+      width: 100%;
+      height: 176px;
+      background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #1e40af;
+      font-weight: 600;
+      position: relative;
+    }
+
+    .recipe-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .recipe-time {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    .recipe-content {
+      padding: 24px;
+    }
+
+    .recipe-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 0.875rem;
+      color: var(--text-light);
+    }
+
+    .recipe-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 12px 0;
+      color: var(--text-dark);
+    }
+
+    .recipe-desc {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      margin: 12px 0;
+      line-height: 1.5;
+    }
+
+    .match-bar {
+      margin-top: 16px;
+    }
+
+    .match-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--text-light);
+      margin-bottom: 8px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: var(--bg-light);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--primary);
+      border-radius: 4px;
+      width: 75%;
+    }
+
+    .recipe-btn {
+      width: 100%;
+      margin-top: 16px;
+      padding: 12px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .recipe-btn:hover {
+      background: var(--primary-dark);
+    }
+
+    /* ===== COMPARISON SECTION ===== */
+    .comparison {
+      padding: 80px 0;
+      background: #f9fafb;
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-top: 48px;
+    }
+
+    @media (max-width: 768px) {
+      .comparison-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .comparison-card {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      border: 1px solid var(--border);
+    }
+
+    .comparison-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .comparison-items {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .comparison-item {
+      display: flex;
+      gap: 16px;
+    }
+
+    .comparison-icon {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      margin-top: 2px;
+    }
+
+    .comparison-icon.good {
+      background: #d1fae5;
+      color: #059669;
+    }
+
+    .comparison-icon.bad {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+
+    .comparison-item-text h4 {
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+    }
+
+    .comparison-item-text p {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      line-height: 1.5;
+    }
+
+    /* ===== HOW IT WORKS ===== */
+    .how-it-works {
+      padding: 80px 0;
+      background: white;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin-top: 48px;
+    }
+
+    @media (max-width: 768px) {
+      .steps-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+    }
+
+    .step {
+      background: #f9fafb;
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      text-align: center;
+    }
+
+    .step-number {
+      width: 56px;
+      height: 56px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+      font-weight: 800;
+      margin: 0 auto 24px;
+    }
+
+    .step h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 16px 0;
+      color: var(--text-dark);
+    }
+
+    .step p {
+      color: var(--text-light);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* ===== CALCULATOR SECTION ===== */
+    .calculator {
+      padding: 80px 0;
+      background: #f9fafb;
+    }
+
+    .calculator-container {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 48px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    }
+
+    @media (max-width: 768px) {
+      .calculator-container {
+        padding: 32px;
+      }
+    }
+
+    .calculator-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+    }
+
+    @media (max-width: 768px) {
+      .calculator-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+    }
+
+    .calculator-left h2 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      margin: 16px 0 24px;
+    }
+
+    .calculator-left p {
+      color: var(--text-light);
+      line-height: 1.8;
+      margin: 16px 0;
+    }
+
+    .slider-container {
+      margin-top: 32px;
+    }
+
+    .slider-label {
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-size: 0.95rem;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: var(--bg-light);
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--primary);
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--primary);
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+    }
+
+    .slider-values {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--text-light);
+      margin-top: 12px;
+    }
+
+    .savings-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 24px;
+    }
+
+    .savings-card {
+      background: #f3f4f6;
+      padding: 20px;
+      border-radius: var(--radius-md);
+      text-align: center;
+    }
+
+    .savings-card-label {
+      font-size: 0.875rem;
+      color: var(--text-light);
+      margin-bottom: 8px;
+    }
+
+    .savings-card-value {
+      font-size: 1.875rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .calculator-right {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .savings-highlight {
+      background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      margin-bottom: 24px;
+    }
+
+    .savings-highlight h3 {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+
+    .savings-list {
+      list-style: none;
+      margin-top: 16px;
+    }
+
+    .savings-list li {
+      display: flex;
+      gap: 12px;
+      margin: 12px 0;
+      font-size: 0.95rem;
+      color: var(--text-dark);
+    }
+
+    .savings-list li::before {
+      content: "✓";
+      color: var(--success);
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    /* ===== COLLECTIONS SECTION ===== */
+    .collections {
+      padding: 80px 0;
+      background: white;
+    }
+
+    .collections-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    @media (max-width: 1024px) {
+      .collections-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .collections-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .collection-card {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: white;
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .collection-card:hover {
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      transform: translateY(-4px);
+    }
+
+    .collection-image {
+      width: 100%;
+      height: 192px;
+      background: linear-gradient(135deg, #fecaca 0%, #fca5a5 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #991b1b;
+      font-weight: 600;
+      position: relative;
+    }
+
+    .collection-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .collection-content {
+      padding: 24px;
+    }
+
+    .collection-title {
+      font-size: 1.125rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--text-dark);
+    }
+
+    .collection-desc {
+      font-size: 0.875rem;
+      color: var(--text-light);
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .collection-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .collection-count {
+      font-size: 0.875rem;
+      color: var(--text-light);
+    }
+
+    .collection-arrow {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    /* ===== TESTIMONIALS SECTION ===== */
+    .testimonials {
+      padding: 80px 0;
+      background: #f9fafb;
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+      margin-top: 48px;
+    }
+
+    @media (max-width: 768px) {
+      .testimonials-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .testimonial-card {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      border: 1px solid var(--border);
+    }
+
+    .testimonial-stars {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .star {
+      color: #fbbf24;
+      font-size: 1.1rem;
+    }
+
+    .testimonial-text {
+      font-size: 1rem;
+      color: var(--text-dark);
+      font-style: italic;
+      line-height: 1.8;
+      margin-bottom: 24px;
+    }
+
+    .testimonial-author {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .author-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    .author-info h4 {
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .author-info p {
+      font-size: 0.875rem;
+      color: var(--text-light);
+    }
+
+    /* ===== FINAL CTA SECTION ===== */
+    .final-cta {
+      padding: 80px 0;
+      background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .final-cta::before {
+      content: "";
+      position: absolute;
+      top: -100px;
+      right: -100px;
+      width: 300px;
+      height: 300px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+    }
+
+    .final-cta::after {
+      content: "";
+      position: absolute;
+      bottom: -150px;
+      left: -150px;
+      width: 400px;
+      height: 400px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 50%;
+    }
+
+    .final-cta-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      color: white;
+    }
+
+    .final-cta h2 {
+      font-size: 2.75rem;
+      font-weight: 800;
+      margin: 24px 0;
+      line-height: 1.2;
+    }
+
+    @media (max-width: 768px) {
+      .final-cta h2 {
+        font-size: 2rem;
+      }
+    }
+
+    .final-cta p {
+      font-size: 1.125rem;
+      opacity: 0.95;
+      margin: 16px 0 32px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .final-cta-btn {
+      background: white;
+      color: var(--primary);
+      padding: 14px 48px;
+      border-radius: var(--radius-md);
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .final-cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .final-cta-benefits {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 768px) {
+      .final-cta-benefits {
+        gap: 20px;
+      }
+    }
+
+    .benefit {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ===== FORM MODAL ===== */
+    .form-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .form-modal.active {
+      display: flex;
+    }
+
+    .form-content {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      position: relative;
+    }
+
+    .form-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--text-light);
+      cursor: pointer;
+      padding: 0;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .form-close:hover {
+      color: var(--text-dark);
+    }
+
+    .form-content h3 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: var(--text-dark);
+    }
+
+    .form-content > p {
+      color: var(--text-light);
+      margin-bottom: 24px;
+      font-size: 0.95rem;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text-dark);
+      font-size: 0.95rem;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .form-submit {
+      width: 100%;
+      padding: 12px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 8px;
+    }
+
+    .form-submit:hover:not(:disabled) {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+
+    .form-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .form-message {
+      margin-top: 16px;
+      padding: 12px;
+      border-radius: var(--radius-md);
+      text-align: center;
+      font-size: 0.95rem;
+      font-weight: 500;
+      display: none;
+    }
+
+    .form-message.success {
+      background: #d1fae5;
+      color: #065f46;
+      display: block;
+    }
+
+    .form-message.error {
+      background: #fee2e2;
+      color: #991b1b;
+      display: block;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--text-dark);
+      color: white;
+      text-align: center;
+      padding: 32px 0;
+      font-size: 0.9rem;
+    }
+
+    footer p {
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== HERO SECTION ===== -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-left">
+        <div class="hero-badge">👨‍🍳 For Solo Cooks</div>
+        <h1>12-Minute Meals That Actually Taste Good</h1>
+        <p class="hero-subheading">Stop wasting ₹18,000/month on delivery apps. One pan. Fresh ingredients. Zero cooking skills needed. Perfect for bachelors, students, and busy professionals who refuse to live on instant noodles.</p>
+        <div class="hero-cta-buttons">
+          <button class="btn btn-primary" onclick="openForm()">Get Started Free</button>
+          <button class="btn btn-secondary" onclick="document.querySelector('.pantry').scrollIntoView({behavior: 'smooth'})">See How It Works →</button>
+        </div>
+        <div class="trust-metrics">
+          <div class="metric">
+            <div class="metric-value">₹2,500</div>
+            <div class="metric-label">Saved monthly</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">12–18m</div>
+            <div class="metric-label">One-pan dinners</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">Zero</div>
+            <div class="metric-label">Kitchen skills needed</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-right">
+        [Cooking lifestyle image - young person in modern kitchen]
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PANTRY SECTION ===== -->
+<section class="pantry">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-badge">🥘 INTERACTIVE PANTRY</div>
+      <h2>What's In Your Fridge Right Now?</h2>
+      <p>Pick your current ingredients and we'll instantly match you with doable recipes using what you have.</p>
+    </div>
+
+    <div class="pantry-container">
+      <div class="ingredient-label">Select your current ingredients:</div>
+      <div class="ingredient-chips">
+        <div class="chip" onclick="toggleChip(this)">Eggs</div>
+        <div class="chip" onclick="toggleChip(this)">Pasta</div>
+        <div class="chip" onclick="toggleChip(this)">Chicken</div>
+        <div class="chip" onclick="toggleChip(this)">Rice</div>
+        <div class="chip" onclick="toggleChip(this)">Vegetables</div>
+        <div class="chip" onclick="toggleChip(this)">Cheese</div>
+        <div class="chip" onclick="toggleChip(this)">Butter</div>
+        <div class="chip" onclick="toggleChip(this)">Garlic</div>
+        <div class="chip" onclick="toggleChip(this)">Onions</div>
+      </div>
+
+      <div class="filters-section">
+        <div class="filter-group">
+          <div class="filter-label">💰 Budget</div>
+          <div class="filter-buttons">
+            <button class="filter-btn">₹40-60</button>
+            <button class="filter-btn">₹60-90</button>
+            <button class="filter-btn">₹90-120</button>
+          </div>
+        </div>
+        <div class="filter-group">
+          <div class="filter-label">⏱️ Max Time</div>
+          <div class="filter-buttons">
+            <button class="filter-btn">Under 10m</button>
+            <button class="filter-btn">10-15m</button>
+            <button class="filter-btn">15-20m</button>
+          </div>
+        </div>
+        <div class="filter-group">
+          <div class="filter-label">🍳 Cookware</div>
+          <div class="filter-buttons">
+            <button class="filter-btn">Single Pan</button>
+            <button class="filter-btn">Two Pans</button>
+            <button class="filter-btn">No Cook</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="recipe-cards">
+      <div class="recipe-card">
+        <div class="recipe-image">
+          [Recipe Image 1]
+          <span class="recipe-badge">🍝 Pasta</span>
+          <span class="recipe-time">12 min</span>
+        </div>
+        <div class="recipe-content">
+          <div class="recipe-meta">
+            <span>Easy</span>
+            <span>⭐ 4.8</span>
+          </div>
+          <h3 class="recipe-title">Garlic Butter Chili Noodles</h3>
+          <p class="recipe-desc">Uses pasta, garlic, butter, and that leftover chili flake packet in your drawer.</p>
+          <div class="match-bar">
+            <div class="match-labels">
+              <span>Ingredient Match</span>
+              <span>92%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 92%;"></div>
+            </div>
+          </div>
+          <button class="recipe-btn">View Recipe →</button>
+        </div>
+      </div>
+
+      <div class="recipe-card">
+        <div class="recipe-image">
+          [Recipe Image 2]
+          <span class="recipe-badge">🥚 Breakfast</span>
+          <span class="recipe-time">8 min</span>
+        </div>
+        <div class="recipe-content">
+          <div class="recipe-meta">
+            <span>Easy</span>
+            <span>⭐ 4.9</span>
+          </div>
+          <h3 class="recipe-title">Crispy Egg & Cheese Toast Fold</h3>
+          <p class="recipe-desc">One skillet, 2 slices of stale bread, 2 beaten eggs, and gooey melted cheese.</p>
+          <div class="match-bar">
+            <div class="match-labels">
+              <span>Ingredient Match</span>
+              <span>88%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 88%;"></div>
+            </div>
+          </div>
+          <button class="recipe-btn">View Recipe →</button>
+        </div>
+      </div>
+
+      <div class="recipe-card">
+        <div class="recipe-image">
+          [Recipe Image 3]
+          <span class="recipe-badge">🍚 Rice</span>
+          <span class="recipe-time">15 min</span>
+        </div>
+        <div class="recipe-content">
+          <div class="recipe-meta">
+            <span>Medium</span>
+            <span>⭐ 4.7</span>
+          </div>
+          <h3 class="recipe-title">One-Pan Smokey Black Bean Rice</h3>
+          <p class="recipe-desc">Breathes fresh life into yesterday's cold takeout rice with cumin and black beans.</p>
+          <div class="match-bar">
+            <div class="match-labels">
+              <span>Ingredient Match</span>
+              <span>75%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 75%;"></div>
+            </div>
+          </div>
+          <button class="recipe-btn">View Recipe →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== COMPARISON SECTION ===== -->
+<section class="comparison">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-badge">🤔 WHAT'S THE DIFFERENCE?</div>
+      <h2>Why BachelorBite Is Different</h2>
+      <p>Stop scrolling through food blogs filled with life stories and ads. Here's what you actually get.</p>
+    </div>
+
+    <div class="comparison-grid">
+      <div class="comparison-card">
+        <h3 class="comparison-title">❌ Standard Recipe Blogs</h3>
+        <div class="comparison-items">
+          <div class="comparison-item">
+            <div class="comparison-icon bad">✕</div>
+            <div class="comparison-item-text">
+              <h4>800-word backstory before the recipe</h4>
+              <p>About your great-grandmother's kitchen in Tuscany</p>
+            </div>
+          </div>
+          <div class="comparison-item">
+            <div class="comparison-icon bad">✕</div>
+            <div class="comparison-item-text">
+              <h4>Ingredients from specialty stores</h4>
+              <p>Obscure spices that cost ₹500/gram</p>
+            </div>
+          </div>
+          <div class="comparison-item">
+            <div class="comparison-icon bad">✕</div>
+            <div class="comparison-item-text">
+              <h4>Complicated 45-minute recipes</h4>
+              <p>With 12 steps and 3 dishes to wash</p>
+            </div>
+          </div>
+          <div class="comparison-item">
+            <div class="comparison-icon bad">✕</div>
+            <div class="comparison-item-text">
+              <h4>Assumes you have kitchen skills</h4>
+              <p>Terms like "julienne" and "deglaze" everywhere</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comparison-card">
+        <h3 class="comparison-title">✅ BachelorBite</h3>
+        <div class="comparison-items">
+          <div class="comparison-item">
+            <div class="comparison-icon good">✓</div>
+            <div class="comparison-item-text">
+              <h4>Recipe in 30 seconds flat</h4>
+              <p>Straight to ingredients and steps</p>
+            </div>
+          </div>
+          <div class="comparison-item">
+            <div class="comparison-icon good">✓</div>
+            <div class="comparison-item-text">
+              <h4>Uses what you already have</h4>
+              <p>Or can grab from any shop for under ₹100</p>
+            </div>
+          </div>
+          <div class="comparison-item">
+            <div class="comparison-icon good">✓</div>
+            <div class="comparison-item-text">
+              <h4>12 minutes. One pan. Done.</h4>
+              <p>Literally one thing to wash in the sink</p>
+            </div>
+          </div>
+          <div class="comparison-item">
+            <div class="comparison-icon good">✓</div>
+            <div class="comparison-item-text">
+              <h4>No assumptions. Zero jargon.</h4>
+              <p>Instructions for cooking beginners</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HOW IT WORKS ===== -->
+<section class="how-it-works">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-badge">⚡ THREE SIMPLE STEPS</div>
+      <h2>How It Works</h2>
+    </div>
+
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-number">1</div>
+        <h3>Check Your Fridge</h3>
+        <p>Tap what you see in 15 seconds. Even if it's just half an onion, two eggs, and stale ramen noodles.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <h3>Pick by Cost & Time</h3>
+        <p>Filter dishes by what you want to spend (₹40 to ₹120) and how much time you have before your evening stream or meeting.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <h3>Cook with Zero Stress</h3>
+        <p>Follow minimal instructions with tap-to-start timers. Eat a hearty hot meal, wipe one pan, and continue your night.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CALCULATOR SECTION ===== -->
+<section class="calculator">
+  <div class="container">
+    <div class="calculator-container">
+      <div class="calculator-grid">
+        <div class="calculator-left">
+          <div class="section-badge">💰 CALCULATE YOUR SAVINGS</div>
+          <h2>See Your Delivery App Bleed</h2>
+          <p>Food delivery doesn't just cost food — it adds service fees, tip, delivery markup, and cold french fries.</p>
+
+          <div class="slider-container">
+            <div class="slider-label">
+              <span>How much do you spend on delivery per week?</span>
+              <span id="sliderValue">₹1,500</span>
+            </div>
+            <input type="range" min="500" max="5000" value="1500" step="100" id="expenseSlider" oninput="updateSlider(this.value)">
+            <div class="slider-values">
+              <span>₹500</span>
+              <span>₹2,500</span>
+              <span>₹5,000</span>
+            </div>
+          </div>
+
+          <div class="savings-cards">
+            <div class="savings-card">
+              <div class="savings-card-label">Delivery (weekly)</div>
+              <div class="savings-card-value" id="deliveryValue">₹2,000</div>
+            </div>
+            <div class="savings-card">
+              <div class="savings-card-label">BachelorBite (weekly)</div>
+              <div class="savings-card-value" id="cookedValue">₹450</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="calculator-right">
+          <div class="savings-highlight">
+            <h3>💡 By cooking 12-minute meals instead:</h3>
+            <p style="font-size: 2rem; font-weight: 800; color: var(--primary); margin: 16px 0;">
+              <span id="savings">₹1,550</span> / week
+            </p>
+            <p style="font-size: 0.95rem; opacity: 0.9; margin-top: 12px;">
+              That's <strong>₹6,200 / month</strong>
+            </p>
+          </div>
+
+          <div>
+            <p style="color: var(--text-dark); font-weight: 600; margin-bottom: 12px;">That's literally enough for:</p>
+            <ul class="savings-list">
+              <li>New gaming mouse + gaming pad</li>
+              <li>Monthly gym membership tier upgrade</li>
+              <li>Premium streaming subscriptions</li>
+            </ul>
+          </div>
+
+          <button class="btn btn-primary" onclick="openForm()" style="width: 100%; margin-top: 24px;">Start Saving Today</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== COLLECTIONS SECTION ===== -->
+<section class="collections">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-badge">📚 CURATED COLLECTIONS</div>
+      <h2>Situational Recipe Collections</h2>
+      <p>Choose your mood. We handle the rest.</p>
+    </div>
+
+    <div class="collections-grid">
+      <div class="collection-card">
+        <div class="collection-image">
+          [Collection 1 Image]
+          <span class="collection-badge">💰 Budget</span>
+        </div>
+        <div class="collection-content">
+          <h3 class="collection-title">End-of-Month Broke Edition</h3>
+          <p class="collection-desc">Meals when your bank account is low but you refuse to eat plain tap water ramen.</p>
+          <div class="collection-footer">
+            <span class="collection-count">24 recipes</span>
+            <span class="collection-arrow">→</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="collection-card">
+        <div class="collection-image">
+          [Collection 2 Image]
+          <span class="collection-badge">⚡ Quick</span>
+        </div>
+        <div class="collection-content">
+          <h3 class="collection-title">10-Minute Hangry Meals</h3>
+          <p class="collection-desc">Faster than putting your shoes on to walk to the deli or waiting 50 mins on delivery.</p>
+          <div class="collection-footer">
+            <span class="collection-count">18 recipes</span>
+            <span class="collection-arrow">→</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="collection-card">
+        <div class="collection-image">
+          [Collection 3 Image]
+          <span class="collection-badge">💪 Protein</span>
+        </div>
+        <div class="collection-content">
+          <h3 class="collection-title">Single Skillet Gains</h3>
+          <p class="collection-desc">High protein macros for gym rats who despise Sunday batch-prepping 14 tubs.</p>
+          <div class="collection-footer">
+            <span class="collection-count">22 recipes</span>
+            <span class="collection-arrow">→</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="collection-card">
+        <div class="collection-image">
+          [Collection 4 Image]
+          <span class="collection-badge">🌙 Study</span>
+        </div>
+        <div class="collection-content">
+          <h3 class="collection-title">Late Night Study Cravings</h3>
+          <p class="collection-desc">Silent, low-smell midnight snacks you can whip up without waking your roommate.</p>
+          <div class="collection-footer">
+            <span class="collection-count">16 recipes</span>
+            <span class="collection-arrow">→</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIALS SECTION ===== -->
+<section class="testimonials">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-badge">⭐ REAL BACHELORS & STUDENTS</div>
+      <h2>What People Are Saying</h2>
+    </div>
+
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="testimonial-stars">
+          <span class="star">★</span>
+          <span class="star">★</span>
+          <span class="star">★</span>
+          <span class="star">★</span>
+          <span class="star">★</span>
+        </div>
+        <p class="testimonial-text">"I used to spend upwards of ₹18,000 a month on delivery because after 9 hours of software engineering, staring into a disorganized fridge made my brain hurt. BachelorBite cut my food bill in half and I don't throw away rotten bagged spinach anymore."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">RK</div>
+          <div class="author-info">
+            <h4>Raj Kumar</h4>
+            <p>Software Engineer, Bangalore</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-stars">
+          <span class="star">★</span>
+          <span class="star">★</span>
+          <span class="star">★</span>
+          <span class="star">★</span>
+          <span class="star">★</span>
+        </div>
+        <p class="testimonial-text">"Finally, recipes that don't ask me for white truffle oil or fresh tarragon that costs ₹200 a plastic packet. Just normal food I can make in 10 minutes in my tiny studio kitchenette with 1 pan to wash in the sink."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">SS</div>
+          <div class="author-info">
+            <h4>Shreya Singh</h4>
+            <p>Student, Delhi</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FINAL CTA SECTION ===== -->
+<section class="final-cta">
+  <div class="container">
+    <div class="final-cta-content">
+      <div class="section-badge" style="background: rgba(255, 255, 255, 0.2); color: white;">🚀 READY TO EAT BETTER?</div>
+      <h2>Stop Overpaying for Cold Food That Arrives Late</h2>
+      <p>Join 10,000+ bachelors and students eating better, spending less, and actually enjoying their meals.</p>
+      <button class="final-cta-btn" onclick="openForm()">Get Started — It's Free →</button>
+      <div class="final-cta-benefits">
+        <div class="benefit">
+          <span>✓</span> Access to 200+ recipes
+        </div>
+        <div class="benefit">
+          <span>✓</span> Save ₹6,000/month
+        </div>
+        <div class="benefit">
+          <span>✓</span> No credit card needed
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FORM MODAL ===== -->
+<div class="form-modal" id="formModal">
+  <div class="form-content">
+    <button class="form-close" onclick="closeForm()">×</button>
+    <h3>Join BachelorBite</h3>
+    <p>Get instant access to easy recipes & save ₹6,000/month</p>
+    <form id="contactForm" onsubmit="handleFormSubmit(event)">
+      <div class="form-group">
+        <label for="name">Full Name *</label>
+        <input type="text" id="name" name="name" required placeholder="Your name">
+      </div>
+      <div class="form-group">
+        <label for="email">Email Address *</label>
+        <input type="email" id="email" name="email" required placeholder="you@example.com">
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone Number *</label>
+        <input type="tel" id="phone" name="phone" required placeholder="+91 12345 67890">
+      </div>
+      <button type="submit" class="form-submit" id="submitBtn">Send Me The Access</button>
+      <div class="form-message" id="formMessage"></div>
+    </form>
+  </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="container">
+    <p>&copy; 2024 BachelorBite. Made for people who refuse to live on instant noodles. | <a href="#" style="color: inherit; text-decoration: underline;">Privacy</a> | <a href="#" style="color: inherit; text-decoration: underline;">Terms</a></p>
+  </div>
+</footer>
+
+<script>
+  const APPSCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz5UmQfKxDVZbyLODUAb9xDuEOkzVAAtuTJd5DSf_UiYwDk2bHtzCAiO_EPEmAJXRNbGQ/exec';
+
+  function openForm() {
+    document.getElementById('formModal').classList.add('active');
+  }
+
+  function closeForm() {
+    document.getElementById('formModal').classList.remove('active');
+    document.getElementById('contactForm').reset();
+    document.getElementById('formMessage').className = 'form-message';
+    document.getElementById('submitBtn').disabled = false;
+  }
+
+  function handleFormSubmit(event) {
+    event.preventDefault();
+
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const submitBtn = document.getElementById('submitBtn');
+    const formMessage = document.getElementById('formMessage');
+
+    if (!name || !email || !phone) {
+      showError('Please fill in all fields');
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+
+    // Build URL with URLSearchParams
+    const url = APPSCRIPT_URL + '?' + new URLSearchParams({
+      name: name,
+      email: email,
+      phone: phone
+    }).toString();
+
+    // Use Image Beacon - works with file:// protocol and no CORS issues
+    const img = new Image();
+    
+    img.onload = function() {
+      showSuccess('Success! Check your email for access. 🎉');
+      document.getElementById('contactForm').reset();
+      setTimeout(() => closeForm(), 2000);
+    };
+    
+    img.onerror = function() {
+      // Even if image load fails, the GET request was sent to AppScript
+      // This is normal behavior - we just can't see the response from file://
+      showSuccess('Success! Check your email for access. 🎉');
+      document.getElementById('contactForm').reset();
+      setTimeout(() => closeForm(), 2000);
+    };
+    
+    img.src = url;
+    
+    // Cleanup
+    setTimeout(() => {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send Me The Access';
+    }, 1500);
+  }
+
+  function showSuccess(message) {
+    const formMessage = document.getElementById('formMessage');
+    formMessage.textContent = message;
+    formMessage.className = 'form-message success';
+  }
+
+  function showError(message) {
+    const formMessage = document.getElementById('formMessage');
+    formMessage.textContent = message;
+    formMessage.className = 'form-message error';
+  }
+
+  function toggleChip(element) {
+    element.classList.toggle('active');
+  }
+
+  function updateSlider(value) {
+    const numValue = parseInt(value);
+    document.getElementById('sliderValue').textContent = '₹' + numValue.toLocaleString();
+    
+    const deliveryWeekly = numValue;
+    const cookedWeekly = Math.round(numValue * 0.3);
+    const savings = deliveryWeekly - cookedWeekly;
+
+    document.getElementById('deliveryValue').textContent = '₹' + deliveryWeekly.toLocaleString();
+    document.getElementById('cookedValue').textContent = '₹' + cookedWeekly.toLocaleString();
+    document.getElementById('savings').textContent = '₹' + savings.toLocaleString();
+  }
+
+  document.getElementById('formModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+      closeForm();
+    }
+  });
+
+  updateSlider(1500);
+</script>
+
+</body>
+</html>
