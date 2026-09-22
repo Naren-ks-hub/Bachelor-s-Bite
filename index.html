@@ -1940,6 +1940,22 @@
   </div>
 </footer>
 
+<!-- ===== FIREBASE WEB SDK INITIALIZATION ===== -->
+<script type="module">
+  import { initializeApp, getApps, getApp } from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js';
+
+  const firebaseConfig = {
+    projectId: "bachelor-bite-2619",
+    authDomain: "bachelor-bite-2619.firebaseapp.com",
+    storageBucket: "bachelor-bite-2619.appspot.com"
+  };
+
+  // Initialize Firebase (guard against duplicate initialization)
+  const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+  window.firebaseApp = app;
+  console.log('🔥 Firebase initialized for project:', app.options.projectId);
+</script>
+
 <script>
   const APPSCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz5UmQfKxDVZbyLODUAb9xDuEOkzVAAtuTJd5DSf_UiYwDk2bHtzCAiO_EPEmAJXRNbGQ/exec';
   const API_BASE = '/api';
