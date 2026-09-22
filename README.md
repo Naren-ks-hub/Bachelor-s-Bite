@@ -52,9 +52,24 @@ Bachelor-s-Bite/
 
 ---
 
-## 🛠️ Getting Started Locally
+## 🔌 Backend REST API Reference
 
-### Method 1: Using the Built-in Node.js Server (Recommended)
+The backend runs on **Node.js**, **Express**, and native **SQLite** (`node:sqlite`).
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/api/health` | Service status check |
+| `GET` | `/api/recipes` | List recipes (filters: `budget_max`, `time_max`, `cookware`, `category`, `search`) |
+| `GET` | `/api/recipes/:idOrSlug` | Detailed recipe with ingredients, cooking steps, and timer metadata |
+| `POST` | `/api/recipes/match` | Intelligent pantry matcher: matches ingredient array and computes % match scores |
+| `GET` | `/api/collections` | List curated situational collections |
+| `GET` | `/api/collections/:slug/recipes` | Recipes for a specific collection |
+| `POST` | `/api/leads` | Register waitlist lead with email & phone validation |
+| `GET` | `/api/leads` | Retrieve registered leads |
+
+---
+
+## 🛠️ Getting Started Locally
 
 1. Clone this repository:
    ```bash
@@ -62,27 +77,34 @@ Bachelor-s-Bite/
    cd Bachelor-s-Bite
    ```
 
-2. Start the local server:
+2. Install dependencies:
    ```bash
-   node server.js
+   npm install
    ```
 
-3. Open your browser at:
+3. Start the backend & frontend server:
+   ```bash
+   npm start
+   ```
+
+4. Run automated test suite:
+   ```bash
+   npm test
+   ```
+
+5. Open your browser at:
    ```
    http://localhost:3000
    ```
-
-### Method 2: Direct Browser Open
-
-Simply double-click `index.html` or open it in any web browser.
 
 ---
 
 ## 🛠️ Built With
 
-- **HTML5 & Vanilla CSS3**: Semantic markup, custom CSS variables, responsive grid & flexbox layouts.
-- **Vanilla JavaScript**: Interactive pantry chip selection, real-time savings calculator, and modal triggers.
-- **Node.js `http` module**: Zero-dependency local development server.
+- **Frontend**: HTML5, Vanilla CSS3, Vanilla JavaScript (Dynamic pantry matcher, recipe detail modal with interactive kitchen timer)
+- **Backend API**: Node.js v24, Express.js, CORS
+- **Database**: SQLite via Node native `node:sqlite` (`bachelor_bite.db`)
+- **Automated Tests**: Custom zero-dependency Node HTTP integration test runner (`tests/api.test.js`)
 
 ---
 

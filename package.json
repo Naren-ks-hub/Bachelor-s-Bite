@@ -1,0 +1,25 @@
+{
+  "name": "bachelors-bite",
+  "version": "1.0.0",
+  "description": "Solo Cooking Made Simple - Backend API and Interactive Web App",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node tests/api.test.js"
+  },
+  "keywords": [
+    "recipes",
+    "bachelor",
+    "cooking",
+    "quick-meals",
+    "node",
+    "sqlite"
+  ],
+  "author": "Naren KS",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  }
+}
