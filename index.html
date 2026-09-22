@@ -2380,20 +2380,32 @@
     updateAuthNav(null);
   }
 
-  // Map Firebase Error Codes to Clear Messages
+  // Map Firebase Error Codes to Clear User-Friendly Messages
   function mapAuthError(err) {
     const code = err.code || '';
-    if (code === 'auth/email-already-in-use') {
-      return 'This email address is already registered. Please click "Log In" above.';
-    }
-    if (code === 'auth/invalid-credential' || code === 'auth/wrong-password' || code === 'auth/user-not-found') {
-      return 'Incorrect email or password. Please verify your credentials.';
+    if (code === 'auth/invalid-email') {
+      return 'Please enter a valid email address (e.g. you@example.com).';
     }
     if (code === 'auth/weak-password') {
       return 'Password is too weak. Please use at least 6 characters.';
     }
-    if (code === 'auth/invalid-email') {
-      return 'Please enter a valid email address.';
+    if (code === 'auth/email-already-in-use' || code === 'auth/email-already-exists') {
+      return 'This email address is already registered. Please log in instead.';
+    }
+    if (code === 'auth/wrong-password') {
+      return 'Incorrect password. Please double check and try again.';
+    }
+    if (code === 'auth/user-not-found') {
+      return 'No user account found with this email. Please sign up first.';
+    }
+    if (code === 'auth/invalid-credential') {
+      return 'Invalid email or password. Please verify your credentials.';
+    }
+    if (code === 'auth/operation-not-allowed') {
+      return 'Email/Password sign-in is not enabled in Firebase Console. Please enable it under Authentication > Sign-in method.';
+    }
+    if (code === 'auth/user-disabled') {
+      return 'This account has been disabled. Please contact support.';
     }
     if (code === 'auth/too-many-requests') {
       return 'Too many failed attempts. Please wait a moment and try again.';
@@ -2498,7 +2510,9 @@
       return;
     }
 
-    container.innerHTML = recipes.slice(0, 6).map(recipe => `
+    container.innerHTML = recipes.slice(0, 6).map(recipe => {
+      const isSaved = isRecipeSaved(recipe.slug);
+      return `
       <div class="recipe-card">
         <div class="recipe-image">
           <img src="${recipe.image}" alt="${recipe.title}">
@@ -2521,10 +2535,46 @@
               <div class="progress-fill" style="width: ${recipe.match_score || 85}%;"></div>
             </div>
           </div>
-          <button class="recipe-btn" onclick="openRecipeModal('${recipe.slug}')">View Recipe & Steps →</button>
+          <div style="display: flex; gap: 8px; margin-top: 16px;">
+            <button class="recipe-btn" style="margin-top: 0; flex: 1;" onclick="openRecipeModal('${recipe.slug}')">View Steps →</button>
+            <button class="btn btn-secondary" style="padding: 10px 14px; font-size: 0.85rem;" onclick="toggleSaveRecipe('${recipe.slug}')" title="Save to favorites">
+              ${isSaved ? '❤️ Saved' : '🤍 Save'}
+            </button>
+          </div>
         </div>
       </div>
-    `).join('');
+    `;
+    }).join('');
+  }
+
+  // Protected Feature: Save/Bookmark Recipe (Requires Auth)
+  function isRecipeSaved(slug) {
+    const user = window.currentUser || JSON.parse(localStorage.getItem('bachelorBite_user') || 'null');
+    if (!user) return false;
+    const userKey = 'savedRecipes_' + (user.email || user.uid || 'guest');
+    const saved = JSON.parse(localStorage.getItem(userKey) || '[]');
+    return saved.includes(slug);
+  }
+
+  function toggleSaveRecipe(slug) {
+    const user = window.currentUser || JSON.parse(localStorage.getItem('bachelorBite_user') || 'null');
+    if (!user) {
+      openForm('login');
+      showError('Please log in to save recipes to your favorites!');
+      return;
+    }
+
+    const userKey = 'savedRecipes_' + (user.email || user.uid || 'guest');
+    let saved = JSON.parse(localStorage.getItem(userKey) || '[]');
+
+    if (saved.includes(slug)) {
+      saved = saved.filter(s => s !== slug);
+    } else {
+      saved.push(slug);
+    }
+
+    localStorage.setItem(userKey, JSON.stringify(saved));
+    renderRecipeCards(cachedRecipes);
   }
 
   // Open Recipe Modal
