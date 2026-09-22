@@ -389,6 +389,19 @@
       color: #1e40af;
       font-weight: 600;
       position: relative;
+      overflow: hidden;
+    }
+
+    .recipe-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .recipe-card:hover .recipe-image img {
+      transform: scale(1.05);
     }
 
     .recipe-badge {
@@ -828,6 +841,19 @@
       color: #991b1b;
       font-weight: 600;
       position: relative;
+      overflow: hidden;
+    }
+
+    .collection-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .collection-card:hover .collection-image img {
+      transform: scale(1.05);
     }
 
     .collection-badge {
@@ -1292,7 +1318,7 @@
     <div class="recipe-cards">
       <div class="recipe-card">
         <div class="recipe-image">
-          [Recipe Image 1]
+          <img src="images/recipe_noodles.jpg" alt="Garlic Butter Chili Noodles">
           <span class="recipe-badge">🍝 Pasta</span>
           <span class="recipe-time">12 min</span>
         </div>
@@ -1312,13 +1338,13 @@
               <div class="progress-fill" style="width: 92%;"></div>
             </div>
           </div>
-          <button class="recipe-btn">View Recipe →</button>
+          <button class="recipe-btn" onclick="openForm()">View Recipe →</button>
         </div>
       </div>
 
       <div class="recipe-card">
         <div class="recipe-image">
-          [Recipe Image 2]
+          <img src="images/recipe_egg_toast.jpg" alt="Crispy Egg & Cheese Toast Fold">
           <span class="recipe-badge">🥚 Breakfast</span>
           <span class="recipe-time">8 min</span>
         </div>
@@ -1338,13 +1364,13 @@
               <div class="progress-fill" style="width: 88%;"></div>
             </div>
           </div>
-          <button class="recipe-btn">View Recipe →</button>
+          <button class="recipe-btn" onclick="openForm()">View Recipe →</button>
         </div>
       </div>
 
       <div class="recipe-card">
         <div class="recipe-image">
-          [Recipe Image 3]
+          <img src="images/recipe_smokey_rice.jpg" alt="One-Pan Smokey Black Bean Rice">
           <span class="recipe-badge">🍚 Rice</span>
           <span class="recipe-time">15 min</span>
         </div>
@@ -1364,7 +1390,7 @@
               <div class="progress-fill" style="width: 75%;"></div>
             </div>
           </div>
-          <button class="recipe-btn">View Recipe →</button>
+          <button class="recipe-btn" onclick="openForm()">View Recipe →</button>
         </div>
       </div>
     </div>
@@ -1552,9 +1578,9 @@
     </div>
 
     <div class="collections-grid">
-      <div class="collection-card">
+      <div class="collection-card" onclick="openForm()">
         <div class="collection-image">
-          [Collection 1 Image]
+          <img src="images/collection_budget.jpg" alt="End-of-Month Broke Edition">
           <span class="collection-badge">💰 Budget</span>
         </div>
         <div class="collection-content">
@@ -1567,9 +1593,9 @@
         </div>
       </div>
 
-      <div class="collection-card">
+      <div class="collection-card" onclick="openForm()">
         <div class="collection-image">
-          [Collection 2 Image]
+          <img src="images/collection_quick.jpg" alt="10-Minute Hangry Meals">
           <span class="collection-badge">⚡ Quick</span>
         </div>
         <div class="collection-content">
@@ -1582,9 +1608,9 @@
         </div>
       </div>
 
-      <div class="collection-card">
+      <div class="collection-card" onclick="openForm()">
         <div class="collection-image">
-          [Collection 3 Image]
+          <img src="images/collection_protein.jpg" alt="Single Skillet Gains">
           <span class="collection-badge">💪 Protein</span>
         </div>
         <div class="collection-content">
@@ -1597,9 +1623,9 @@
         </div>
       </div>
 
-      <div class="collection-card">
+      <div class="collection-card" onclick="openForm()">
         <div class="collection-image">
-          [Collection 4 Image]
+          <img src="images/collection_midnight.jpg" alt="Late Night Study Cravings">
           <span class="collection-badge">🌙 Study</span>
         </div>
         <div class="collection-content">
