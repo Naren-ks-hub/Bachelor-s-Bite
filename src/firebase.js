@@ -1,22 +1,20 @@
-// src/firebase.js
-// Firebase Web SDK initialization for Bachelor's Bite (Node / CommonJS compatible)
-const { initializeApp, getApps, getApp } = require('firebase/app');
-const { getAuth } = require('firebase/auth');
+import { initializeApp, getApps, getApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY || "AIzaSyBachelorBite2619KeyPlaceholder",
-  projectId: "bachelor-bite-2619",
-  authDomain: "bachelor-bite-2619.firebaseapp.com",
-  storageBucket: "bachelor-bite-2619.appspot.com",
-  appId: "1:bachelor-bite-2619:web:auth"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
-// Initialize Firebase (guard against duplicate initialization)
+// Initialize Firebase (prevents duplicate app initialization error)
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-const auth = getAuth(app);
 
-module.exports = {
-  app,
-  auth,
-  firebaseConfig
-};
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+
+export default app;
