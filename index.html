@@ -10,6 +10,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
+  <!-- Progressive Web App (PWA) Manifest & Mobile Meta Tags -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#064e3b">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="BachelorBite">
+  <link rel="apple-touch-icon" href="/images/logo.png">
+  <link rel="icon" type="image/png" href="/images/logo.png">
+
   <style>
     * {
       margin: 0;
@@ -1435,41 +1444,577 @@
       border-color: var(--primary);
     }
 
-    /* ===== TOP NAVIGATION & AUTH ===== */
+    /* ===== VAANGLY-STYLE DASHBOARD TOP NAVIGATION & AUTH ===== */
     .top-nav {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(8px);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
       position: sticky;
       top: 0;
-      z-index: 100;
-      padding: 14px 0;
+      z-index: 200;
+      padding: 10px 0;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    html.dark-mode .top-nav {
+      background: rgba(15, 23, 42, 0.94);
+      border-bottom-color: #334155;
     }
 
     .nav-container {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 16px;
     }
 
-    .nav-brand {
-      font-size: 1.3rem;
-      font-weight: 800;
-      color: var(--text-dark);
-      text-decoration: none;
+    .nav-left-group {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 14px;
     }
 
-    .nav-brand span {
-      color: var(--primary);
-    }
-
-    .nav-auth-box {
+    /* Brand Logo & Pill */
+    .nav-brand-box {
       display: flex;
       align-items: center;
       gap: 12px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .brand-logo-pill {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 2px solid #064e3b;
+      box-shadow: 0 4px 14px rgba(6, 78, 59, 0.25);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      background: #fdf8ee;
+    }
+
+    html.dark-mode .brand-logo-pill {
+      border-color: #34d399;
+      box-shadow: 0 4px 16px rgba(52, 211, 153, 0.3);
+      background: #1e293b;
+    }
+
+    .brand-logo-pill:hover {
+      transform: scale(1.1) rotate(3deg);
+      box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+    }
+
+    .brand-logo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .brand-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 850;
+      letter-spacing: -0.01em;
+      color: #064e3b;
+      margin: 0;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    html.dark-mode .brand-title {
+      color: #34d399;
+    }
+
+    /* Location Selector Pill */
+    .location-selector-wrap {
+      position: relative;
+    }
+
+    .location-pill-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #f4f6f4;
+      border: 1px solid #e1e8e2;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #1e293b;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    html.dark-mode .location-pill-btn {
+      background: #1e293b;
+      border-color: #334155;
+      color: #f1f5f9;
+    }
+
+    .location-pill-btn:hover {
+      background: #eaf1eb;
+      border-color: #a7f3d0;
+      transform: translateY(-1px);
+    }
+
+    html.dark-mode .location-pill-btn:hover {
+      background: #334155;
+      border-color: #059669;
+    }
+
+    .loc-pin-icon {
+      color: #059669;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+
+    .loc-caret {
+      font-size: 0.72rem;
+      color: #64748b;
+      transition: transform 0.2s ease;
+    }
+
+    .location-selector-wrap.active .loc-caret {
+      transform: rotate(180deg);
+    }
+
+    /* Location Dropdown Modal */
+    .location-dropdown {
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 0;
+      width: 280px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12);
+      padding: 14px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-8px);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 300;
+    }
+
+    html.dark-mode .location-dropdown {
+      background: #1e293b;
+      border-color: #334155;
+    }
+
+    .location-selector-wrap.active .location-dropdown {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .loc-dropdown-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+
+    .loc-item-btn {
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+    }
+
+    .loc-item-btn:hover {
+      background: #f1f5f9;
+      color: #064e3b;
+    }
+
+    html.dark-mode .loc-item-btn:hover {
+      background: #334155;
+      color: #34d399;
+    }
+
+    .loc-item-btn.selected {
+      background: #ecfdf5;
+      color: #065f46;
+      font-weight: 700;
+    }
+
+    html.dark-mode .loc-item-btn.selected {
+      background: rgba(6, 78, 59, 0.4);
+      color: #6ee7b7;
+    }
+
+    /* Main Center Nav Links */
+    .nav-center-menu {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-link-item {
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #475569;
+      padding: 6px 2px;
+      position: relative;
+      transition: color 0.2s ease;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    html.dark-mode .nav-link-item {
+      color: #cbd5e1;
+    }
+
+    .nav-link-item:hover {
+      color: #064e3b;
+    }
+
+    html.dark-mode .nav-link-item:hover {
+      color: #6ee7b7;
+    }
+
+    /* Active Link with Dark Green Underline Bar */
+    .nav-link-item.active {
+      color: #064e3b;
+      font-weight: 750;
+    }
+
+    html.dark-mode .nav-link-item.active {
+      color: #34d399;
+    }
+
+    .nav-link-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      width: 100%;
+      height: 3.5px;
+      background: #064e3b;
+      border-radius: 3px;
+    }
+
+    html.dark-mode .nav-link-item.active::after {
+      background: #34d399;
+    }
+
+    /* "Open Your Shop" Highlighted Pill Button */
+    .nav-shop-pill {
+      background: #e8f5e9;
+      color: #065f46;
+      border: 1.5px solid #a7f3d0;
+      padding: 7px 18px;
+      border-radius: 9999px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    html.dark-mode .nav-shop-pill {
+      background: rgba(6, 78, 59, 0.35);
+      border-color: #059669;
+      color: #6ee7b7;
+    }
+
+    .nav-shop-pill:hover {
+      background: #d1fae5;
+      border-color: #059669;
+      color: #042f2e;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);
+    }
+
+    html.dark-mode .nav-shop-pill:hover {
+      background: rgba(6, 78, 59, 0.6);
+      color: #a7f3d0;
+      box-shadow: 0 4px 14px rgba(5, 150, 105, 0.3);
+    }
+
+    /* ===== PWA TOP INSTALL STRIP & NAVBAR INSTALL BUTTON ===== */
+    .pwa-install-strip {
+      background: #f8fafc;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 7px 0;
+      font-size: 0.88rem;
+      color: #1e293b;
+      position: relative;
+      z-index: 210;
+      animation: pwaSlideDown 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    html.dark-mode .pwa-install-strip {
+      background: #0b1329;
+      border-bottom-color: #334155;
+      color: #e2e8f0;
+    }
+
+    @keyframes pwaSlideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-100%);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .pwa-strip-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pwa-strip-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 500;
+    }
+
+    .pwa-strip-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      color: #059669;
+    }
+
+    .pwa-strip-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-pwa-strip-install {
+      background: #064e3b;
+      color: white;
+      border: none;
+      padding: 5px 18px;
+      border-radius: 9999px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-pwa-strip-install:hover {
+      background: #042f2e;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(6, 78, 59, 0.25);
+    }
+
+    html.dark-mode .btn-pwa-strip-install {
+      background: #059669;
+      color: white;
+    }
+
+    html.dark-mode .btn-pwa-strip-install:hover {
+      background: #10b981;
+    }
+
+    .btn-pwa-strip-dismiss {
+      background: transparent;
+      border: none;
+      color: var(--text-light);
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-pwa-strip-dismiss:hover {
+      color: var(--text-dark);
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    /* Navbar Install Button */
+    .btn-nav-install-pwa {
+      background: linear-gradient(135deg, #064e3b 0%, #042f2e 100%);
+      color: #ffffff;
+      border: 1px solid rgba(52, 211, 153, 0.4);
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 2px 8px rgba(6, 78, 59, 0.2);
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    html.dark-mode .btn-nav-install-pwa {
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+      border-color: #34d399;
+    }
+
+    .btn-nav-install-pwa:hover {
+      transform: translateY(-1.5px);
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+      border-color: #34d399;
+      background: linear-gradient(135deg, #042f2e 0%, #064e3b 100%);
+    }
+
+    .pwa-btn-icon {
+      font-size: 0.95rem;
+      line-height: 1;
+    }
+
+    /* PWA Installed Subtle Pill Badge */
+    .pwa-installed-pill {
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    html.dark-mode .pwa-installed-pill {
+      background: rgba(6, 78, 59, 0.35);
+      border-color: #059669;
+      color: #6ee7b7;
+    }
+
+    /* Mobile Drawer Install Item */
+    .mobile-nav-install-btn {
+      width: 100%;
+      background: #064e3b;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: var(--radius-md);
+      font-size: 0.95rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    /* Mobile Menu Toggle */
+    .nav-mobile-toggle {
+      display: none;
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      color: var(--text-dark);
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-sm);
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+
+    html.dark-mode .nav-mobile-toggle {
+      background: #1e293b;
+      border-color: #334155;
+      color: #f1f5f9;
+    }
+
+    /* Responsive Mobile Nav Layout */
+    @media (max-width: 1024px) {
+      .nav-center-menu {
+        display: none;
+      }
+      .nav-mobile-toggle {
+        display: inline-flex;
+      }
+    }
+
+    /* Mobile Drawer */
+    .mobile-nav-drawer {
+      position: fixed;
+      top: 64px;
+      left: 0;
+      right: 0;
+      background: white;
+      border-bottom: 2px solid var(--border);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+      z-index: 190;
+      transform: translateY(-120%);
+      transition: transform 0.3s ease;
+    }
+
+    html.dark-mode .mobile-nav-drawer {
+      background: #0f172a;
+      border-bottom-color: #334155;
+    }
+
+    .mobile-nav-drawer.open {
+      transform: translateY(0);
+    }
+
+    .mobile-nav-drawer .nav-link-item {
+      font-size: 1.05rem;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+    }
+
+    .mobile-nav-drawer .nav-link-item:hover {
+      background: var(--bg-light);
+    }
+
+    /* Navigation Auth & Right Box */
+    .nav-auth-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .user-pill {
@@ -2427,9 +2972,404 @@
       border-color: #334155;
     }
 
-    body.dark-mode .sort-badge {
+    /* ===== DASHBOARD MODALS & SPECIAL SECTIONS ===== */
+    .dash-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .dash-modal.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .dash-modal-content {
+      background: white;
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 640px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 36px;
+      position: relative;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      transform: scale(0.94) translateY(10px);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid var(--border);
+    }
+
+    html.dark-mode .dash-modal-content {
       background: #0f172a;
-      color: #94a3b8;
+      border-color: #334155;
+      color: #f8fafc;
+    }
+
+    .dash-modal.active .dash-modal-content {
+      transform: scale(1) translateY(0);
+    }
+
+    .dash-modal-close {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      color: var(--text-dark);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      z-index: 10;
+    }
+
+    html.dark-mode .dash-modal-close {
+      background: #1e293b;
+      border-color: #334155;
+      color: #f1f5f9;
+    }
+
+    .dash-modal-close:hover {
+      background: #fee2e2;
+      color: #ef4444;
+      transform: rotate(90deg);
+    }
+
+    .dash-modal-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    html.dark-mode .dash-modal-badge {
+      background: rgba(6, 78, 59, 0.3);
+      color: #6ee7b7;
+      border-color: #059669;
+    }
+
+    .dash-modal-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    .dash-modal-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-light);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    /* Partner Earnings Estimator */
+    .partner-earnings-box {
+      background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+      border: 1.5px solid #a7f3d0;
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    html.dark-mode .partner-earnings-box {
+      background: linear-gradient(135deg, rgba(6,78,59,0.4) 0%, rgba(4,47,46,0.5) 100%);
+      border-color: #059669;
+    }
+
+    .partner-earnings-val {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #065f46;
+      font-family: 'Outfit', sans-serif;
+      margin: 6px 0;
+    }
+
+    html.dark-mode .partner-earnings-val {
+      color: #34d399;
+    }
+
+    /* Services Grid */
+    .services-catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+
+    .service-card-item {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    html.dark-mode .service-card-item {
+      background: #1e293b;
+      border-color: #334155;
+    }
+
+    .service-card-item:hover {
+      border-color: #059669;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      background: #ffffff;
+    }
+
+    html.dark-mode .service-card-item:hover {
+      background: #0f172a;
+      border-color: #34d399;
+    }
+
+    .service-card-icon {
+      font-size: 2rem;
+      margin-bottom: 4px;
+    }
+
+    .service-card-title {
+      font-size: 1.1rem;
+      font-weight: 750;
+      color: var(--text-dark);
+    }
+
+    .service-card-desc {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      line-height: 1.4;
+    }
+
+    /* Order Section Meal Kits Grid */
+    .order-section {
+      padding: 80px 0;
+      background: #f8fafc;
+      border-top: 1px solid var(--border);
+    }
+
+    html.dark-mode .order-section {
+      background: #0b1120;
+      border-top-color: #334155;
+    }
+
+    .order-kits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+      margin-top: 36px;
+    }
+
+    .order-kit-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    html.dark-mode .order-kit-card {
+      background: #1e293b;
+      border-color: #334155;
+    }
+
+    .order-kit-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: #10b981;
+    }
+
+    .order-kit-img-wrap {
+      position: relative;
+      height: 180px;
+      overflow: hidden;
+    }
+
+    .order-kit-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .order-kit-card:hover .order-kit-img-wrap img {
+      transform: scale(1.05);
+    }
+
+    .order-kit-tag {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(6, 78, 59, 0.85);
+      backdrop-filter: blur(4px);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 9999px;
+    }
+
+    .order-kit-delivery {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(4px);
+      color: #0f172a;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+    }
+
+    .order-kit-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      justify-content: space-between;
+    }
+
+    .order-kit-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 8px;
+    }
+
+    .order-kit-title {
+      font-size: 1.15rem;
+      font-weight: 750;
+      color: var(--text-dark);
+    }
+
+    .order-kit-price {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #059669;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .order-kit-desc {
+      font-size: 0.88rem;
+      color: var(--text-light);
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+
+    .order-kit-btn {
+      width: 100%;
+      background: #064e3b;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: var(--radius-md);
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .order-kit-btn:hover {
+      background: #042f2e;
+      transform: translateY(-1px);
+    }
+
+    /* About Section */
+    .about-section {
+      padding: 80px 0;
+      background: white;
+      border-top: 1px solid var(--border);
+    }
+
+    html.dark-mode .about-section {
+      background: #0f172a;
+      border-top-color: #334155;
+    }
+
+    .about-story-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+      margin-top: 40px;
+    }
+
+    @media (max-width: 768px) {
+      .about-story-grid {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+    }
+
+    .about-story-card {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+    }
+
+    html.dark-mode .about-story-card {
+      background: #1e293b;
+      border-color: #334155;
+    }
+
+    .about-feature-item {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .about-feature-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: #ecfdf5;
+      color: #059669;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    html.dark-mode .about-feature-icon {
+      background: rgba(6, 78, 59, 0.4);
+      color: #6ee7b7;
     }
 
     /* ===== FOOTER ===== */
@@ -2458,11 +3398,54 @@
 </head>
 <body>
 
-<!-- ===== TOP NAVIGATION BAR ===== -->
-<nav class="top-nav">
+<!-- ===== TOP PWA INSTALL STRIP (VAANGLY STYLE) ===== -->
+<div class="pwa-install-strip" id="pwaInstallStrip" style="display: none;">
+  <div class="container pwa-strip-container">
+    <div class="pwa-strip-left">
+      <span class="pwa-strip-icon">📥</span>
+      <span class="pwa-strip-text">Install BachelorBite as an app for faster access.</span>
+    </div>
+    <div class="pwa-strip-right">
+      <button class="btn-pwa-strip-install" id="btnPwaStripInstall" onclick="triggerPwaInstall()">Install</button>
+      <button class="btn-pwa-strip-dismiss" onclick="dismissPwaStrip()" aria-label="Dismiss banner" title="Dismiss">✕</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== DASHBOARD TOP NAVIGATION ===== -->
+<nav class="top-nav" id="topNav">
   <div class="container nav-container">
-    <a href="#" class="nav-brand">🍳 Bachelor<span>Bite</span></a>
-    <div class="nav-controls">
+    
+    <!-- Left: Brand Logo -->
+    <div class="nav-left-group">
+      <a href="#" class="nav-brand-box" onclick="navigateToSection('heroSection'); return false;">
+        <div class="brand-logo-pill">
+          <img src="images/logo.png" alt="BachelorBite Logo" class="brand-logo-img">
+        </div>
+        <span class="brand-title">BACHELOR BITE</span>
+      </a>
+    </div>
+
+    <!-- Center Navigation Links -->
+    <ul class="nav-center-menu">
+      <li><a class="nav-link-item active" id="navLinkHome" onclick="navigateToSection('heroSection'); return false;">Home</a></li>
+      <li><a class="nav-link-item" id="navLinkRecipes" onclick="navigateToSection('pantrySection'); return false;">Recipes</a></li>
+      <li><a class="nav-link-item" id="navLinkHow" onclick="navigateToSection('howItWorksSection'); return false;">How It Works</a></li>
+      <li><a class="nav-link-item" id="navLinkCalc" onclick="navigateToSection('calculatorSection'); return false;">Savings</a></li>
+      <li><a class="nav-link-item" id="navLinkAbout" onclick="navigateToSection('aboutSection'); return false;">About</a></li>
+    </ul>
+
+    <!-- Right Controls: PWA Install, Theme, User Profile & Auth -->
+    <div class="nav-auth-box">
+      <!-- PWA Install Button & Installed Status Pill -->
+      <button class="btn-nav-install-pwa" id="navInstallPwaBtn" onclick="triggerPwaInstall()" style="display: none;" title="Install BachelorBite app to your device">
+        <span class="pwa-btn-icon">📥</span>
+        <span>Install App</span>
+      </button>
+      <div class="pwa-installed-pill" id="navPwaInstalledPill" style="display: none;">
+        <span>✓ Installed</span>
+      </div>
+
       <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleDarkMode()" aria-label="Toggle dark/light mode" title="Toggle theme">
         <span id="themeToggleIcon">🌙</span>
       </button>
@@ -2515,16 +3498,33 @@
         </div>
       </div>
 
-      <div class="nav-auth-box" id="navAuthBox">
+      <div class="nav-auth-buttons" id="navAuthBox">
         <button class="btn btn-primary btn-nav-auth" onclick="openForm('login')">Log In</button>
         <button class="btn btn-secondary btn-nav-auth" onclick="openForm('signup')">Sign Up</button>
       </div>
+
+      <!-- Mobile Hamburger Toggle -->
+      <button class="nav-mobile-toggle" id="navMobileToggle" onclick="toggleMobileNav()" aria-label="Toggle navigation menu">
+        ☰
+      </button>
     </div>
+  </div>
+
+  <!-- Mobile Drawer -->
+  <div class="mobile-nav-drawer" id="mobileNavDrawer">
+    <a class="nav-link-item active" onclick="navigateToSection('heroSection'); toggleMobileNav();">🏠 Home</a>
+    <a class="nav-link-item" onclick="navigateToSection('pantrySection'); toggleMobileNav();">🍳 12-Min Recipes & Pantry</a>
+    <a class="nav-link-item" onclick="navigateToSection('howItWorksSection'); toggleMobileNav();">⚡ How It Works</a>
+    <a class="nav-link-item" onclick="navigateToSection('calculatorSection'); toggleMobileNav();">💰 Savings Calculator</a>
+    <a class="nav-link-item" onclick="navigateToSection('aboutSection'); toggleMobileNav();">📖 About BachelorBite</a>
+    <button class="mobile-nav-install-btn" id="mobileDrawerInstallBtn" onclick="triggerPwaInstall(); toggleMobileNav();" style="display: none; margin-top: 8px;">
+      📥 Install BachelorBite App
+    </button>
   </div>
 </nav>
 
 <!-- ===== HERO SECTION ===== -->
-<section class="hero">
+<section class="hero" id="heroSection">
   <div class="container">
     <div class="hero-content">
       <div class="hero-left">
@@ -2807,8 +3807,105 @@
   </div>
 </section>
 
+<!-- ===== ORDER MEAL KITS & ESSENTIALS SECTION ===== -->
+<section class="order-section" id="orderSection">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-badge">🛒 QUICK DELIVERY IN <span id="orderCityBadge">KANGEYAM</span></div>
+      <h2>12-Minute Pre-Portioned Meal Kits</h2>
+      <p>Pre-chopped ingredients, exact spice packets, zero leftover waste. Delivered in 15 mins to your hostel or room.</p>
+    </div>
+
+    <div class="order-kits-grid">
+      <!-- Kit 1 -->
+      <div class="order-kit-card">
+        <div class="order-kit-img-wrap">
+          <img src="images/recipe_noodles.jpg" alt="Garlic Butter Noodles Kit">
+          <span class="order-kit-tag">🍝 Bestseller</span>
+          <span class="order-kit-delivery">⚡ 12-min prep</span>
+        </div>
+        <div class="order-kit-body">
+          <div>
+            <div class="order-kit-header">
+              <h3 class="order-kit-title">Garlic Butter Chili Noodles Kit</h3>
+              <span class="order-kit-price">₹49</span>
+            </div>
+            <p class="order-kit-desc">Portioned pasta, chopped garlic cloves, Amul butter cup, crushed chili flakes & dark soy sauce sachet.</p>
+          </div>
+          <button class="order-kit-btn" onclick="handleQuickOrder('Garlic Butter Chili Noodles Kit', 49)">
+            <span>🛒</span> Order Kit • ₹49
+          </button>
+        </div>
+      </div>
+
+      <!-- Kit 2 -->
+      <div class="order-kit-card">
+        <div class="order-kit-img-wrap">
+          <img src="images/recipe_egg_toast.jpg" alt="Egg & Cheese Toast Kit">
+          <span class="order-kit-tag">🥚 Breakfast Hit</span>
+          <span class="order-kit-delivery">⚡ 8-min prep</span>
+        </div>
+        <div class="order-kit-body">
+          <div>
+            <div class="order-kit-header">
+              <h3 class="order-kit-title">Crispy Egg & Cheese Toast Kit</h3>
+              <span class="order-kit-price">₹39</span>
+            </div>
+            <p class="order-kit-desc">2 farm fresh eggs, 2 artisan bread slices, cheese slice, butter pat, and gourmet seasoning mix.</p>
+          </div>
+          <button class="order-kit-btn" onclick="handleQuickOrder('Crispy Egg & Cheese Toast Kit', 39)">
+            <span>🛒</span> Order Kit • ₹39
+          </button>
+        </div>
+      </div>
+
+      <!-- Kit 3 -->
+      <div class="order-kit-card">
+        <div class="order-kit-img-wrap">
+          <img src="images/recipe_smokey_rice.jpg" alt="Smokey Bean Rice Kit">
+          <span class="order-kit-tag">🍚 Hearty Bowl</span>
+          <span class="order-kit-delivery">⚡ 15-min prep</span>
+        </div>
+        <div class="order-kit-body">
+          <div>
+            <div class="order-kit-header">
+              <h3 class="order-kit-title">One-Pan Smokey Bean Rice Kit</h3>
+              <span class="order-kit-price">₹59</span>
+            </div>
+            <p class="order-kit-desc">Pre-steamed jasmine rice, cooked spiced beans, sauté veggies blend, cumin chili seasoning.</p>
+          </div>
+          <button class="order-kit-btn" onclick="handleQuickOrder('One-Pan Smokey Bean Rice Kit', 59)">
+            <span>🛒</span> Order Kit • ₹59
+          </button>
+        </div>
+      </div>
+
+      <!-- Kit 4 -->
+      <div class="order-kit-card">
+        <div class="order-kit-img-wrap">
+          <img src="images/collection_protein.jpg" alt="High Protein Toss Kit">
+          <span class="order-kit-tag">💪 32g Protein</span>
+          <span class="order-kit-delivery">⚡ 10-min prep</span>
+        </div>
+        <div class="order-kit-body">
+          <div>
+            <div class="order-kit-header">
+              <h3 class="order-kit-title">Single Skillet Protein Toss Kit</h3>
+              <span class="order-kit-price">₹79</span>
+            </div>
+            <p class="order-kit-desc">Cubed fresh paneer/tofu or tender chicken, bell peppers, garlic herb glaze & protein crunch mix.</p>
+          </div>
+          <button class="order-kit-btn" onclick="handleQuickOrder('Single Skillet Protein Toss Kit', 79)">
+            <span>🛒</span> Order Kit • ₹79
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ===== HOW IT WORKS ===== -->
-<section class="how-it-works">
+<section class="how-it-works" id="howItWorksSection">
   <div class="container">
     <div class="section-header">
       <div class="section-badge">⚡ THREE SIMPLE STEPS</div>
@@ -2836,7 +3933,7 @@
 </section>
 
 <!-- ===== CALCULATOR SECTION ===== -->
-<section class="calculator">
+<section class="calculator" id="calculatorSection">
   <div class="container">
     <div class="calculator-container">
       <div class="calculator-grid">
@@ -3018,6 +4115,55 @@
   </div>
 </section>
 
+<!-- ===== ABOUT SECTION ===== -->
+<section class="about-section" id="aboutSection">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-badge">📖 OUR MISSION</div>
+      <h2>Built for Solo Living & Bachelor Hustle</h2>
+      <p>We built BachelorBite so you never have to choose between saving money and eating healthy, delicious food.</p>
+    </div>
+
+    <div class="about-story-grid">
+      <div class="about-story-card">
+        <h3 style="font-size: 1.4rem; font-weight: 800; color: var(--text-dark); margin-bottom: 12px;">The Bachelor Reality</h3>
+        <p style="color: var(--text-light); line-height: 1.6; margin-bottom: 16px;">
+          When moving out for college, jobs, or tech internships in cities like Kangeyam, Bangalore, or Chennai, cooking is often intimidating. Food delivery apps drain bank accounts, and traditional cooking videos demand exotic herbs and 2 hours of prep.
+        </p>
+        <p style="color: var(--text-light); line-height: 1.6;">
+          BachelorBite solves this with one-skillet 12-minute recipes, smart fridge ingredients matching, instant meal kits, and local tiffin partner networks.
+        </p>
+      </div>
+
+      <div>
+        <div class="about-feature-item">
+          <div class="about-feature-icon">🍳</div>
+          <div>
+            <h4 style="font-weight: 750; color: var(--text-dark); font-size: 1.05rem;">One Pan, Minimum Dishes</h4>
+            <p style="font-size: 0.88rem; color: var(--text-light);">Every recipe uses just a single skillet or pot so cleanup takes less than 90 seconds.</p>
+          </div>
+        </div>
+
+        <div class="about-feature-item">
+          <div class="about-feature-icon">💰</div>
+          <div>
+            <h4 style="font-weight: 750; color: var(--text-dark); font-size: 1.05rem;">Honest ₹50–₹80 Meals</h4>
+            <p style="font-size: 0.88rem; color: var(--text-light);">Tested strictly with everyday grocery staples found at any local corner store.</p>
+          </div>
+        </div>
+
+        <div class="about-feature-item">
+          <div class="about-feature-icon">⏱️</div>
+          <div>
+            <h4 style="font-weight: 750; color: var(--text-dark); font-size: 1.05rem;">Interactive Cook Mode & Audio Chimes</h4>
+            <p style="font-size: 0.88rem; color: var(--text-light);">Live step-by-step guidance with timers built right into your browser.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ===== FINAL CTA SECTION ===== -->
 <section class="final-cta">
   <div class="container">
@@ -3136,6 +4282,159 @@
       </div>
       <div class="form-message" id="profileFormMessage"></div>
     </form>
+  </div>
+</div>
+
+<!-- ===== OPEN YOUR SHOP / PARTNER MODAL ===== -->
+<div class="dash-modal" id="shopModal">
+  <div class="dash-modal-content">
+    <button class="dash-modal-close" onclick="closeShopModal()">×</button>
+    <div class="dash-modal-badge">✨ KITCHEN PARTNER PROGRAM</div>
+    <h3 class="dash-modal-title">Open Your Kitchen & Feed Local Bachelors</h3>
+    <p class="dash-modal-subtitle">Turn your home cooking or cloud kitchen into guaranteed daily revenue. Over 500+ bachelors & students in your area order daily meal boxes.</p>
+
+    <!-- Earnings Estimator -->
+    <div class="partner-earnings-box">
+      <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-light); text-transform: uppercase;">Estimated Monthly Income</div>
+      <div class="partner-earnings-val" id="partnerEarningVal">₹36,000 / mo</div>
+      <div style="font-size: 0.82rem; color: #065f46; font-weight: 600;">Based on serving <span id="partnerMealsCount">20</span> bachelors daily</div>
+      <input type="range" min="5" max="50" value="20" step="5" style="width: 100%; margin-top: 12px; accent-color: #059669;" oninput="updatePartnerEarnings(this.value)">
+    </div>
+
+    <form onsubmit="handleShopRegister(event)">
+      <div class="form-group">
+        <label for="shopKitchenName">Kitchen / Shop Name *</label>
+        <input type="text" id="shopKitchenName" required placeholder="e.g. Annapoorna Home Tiffins">
+      </div>
+      <div class="form-group">
+        <label for="shopCity">Operating Area / City *</label>
+        <select id="shopCity" class="form-select">
+          <option value="Kangeyam">Kangeyam (Tirupur District)</option>
+          <option value="Coimbatore">Coimbatore (RS Puram / Peelamedu)</option>
+          <option value="Tirupur">Tirupur (City Center)</option>
+          <option value="Erode">Erode (Perundurai / Collectorate)</option>
+          <option value="Bangalore">Bangalore (Koramangala / HSR)</option>
+          <option value="Chennai">Chennai (Anna Nagar / OMR)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="shopSpecialty">Specialty Cuisine</label>
+        <select id="shopSpecialty" class="form-select">
+          <option value="home_tiffin">🍲 Homestyle South Indian Meals & Tiffin</option>
+          <option value="protein_box">🍗 High Protein Bachelor Meal Prep</option>
+          <option value="diet_veg">🥦 Pure Veg Healthy Thali</option>
+          <option value="midnight_quick">🌙 Late Night Quick Eats</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="shopPhone">WhatsApp / Phone Number *</label>
+        <input type="tel" id="shopPhone" required placeholder="+91 98765 43210">
+      </div>
+      <button type="submit" class="form-submit" style="background: #064e3b; margin-top: 10px;">
+        🚀 Register Shop & Start Selling
+      </button>
+      <div id="shopFormMessage" class="form-message"></div>
+    </form>
+  </div>
+</div>
+
+<!-- ===== APPOINTMENTS / DAILY TIFFIN MODAL ===== -->
+<div class="dash-modal" id="appointmentsModal">
+  <div class="dash-modal-content">
+    <button class="dash-modal-close" onclick="closeAppointmentsModal()">×</button>
+    <div class="dash-modal-badge">📅 DAILY MEAL SCHEDULE</div>
+    <h3 class="dash-modal-title">Book a Meal Plan or Chef Appointment</h3>
+    <p class="dash-modal-subtitle">Never worry about what to eat for dinner. Schedule hot, freshly cooked bachelor meals or book a doorstep cook appointment.</p>
+
+    <form onsubmit="handleAppointmentSubmit(event)">
+      <div class="form-group">
+        <label for="aptMealPlan">Select Meal Schedule / Plan</label>
+        <select id="aptMealPlan" class="form-select">
+          <option value="single_trial">⚡ Single Trial Meal (₹69) — Delivered Hot in 20 mins</option>
+          <option value="weekly_dinner">🥘 Weekly 7-Day Dinner Plan (₹420) — Mon to Sun</option>
+          <option value="monthly_lunch_dinner">👑 Monthly Lunch + Dinner VIP Pass (₹1,999) — ₹33/meal</option>
+          <option value="cook_visit">👨‍🍳 Doorstep Batch Cook (₹350/visit) — Preps 3 days food in 1 hour</option>
+        </select>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+        <div class="form-group">
+          <label for="aptDate">Preferred Date *</label>
+          <input type="date" id="aptDate" required>
+        </div>
+        <div class="form-group">
+          <label for="aptTimeSlot">Delivery Time Slot *</label>
+          <select id="aptTimeSlot" class="form-select">
+            <option value="lunch">🌞 Lunch (12:30 PM - 1:30 PM)</option>
+            <option value="dinner" selected>🌙 Dinner (7:45 PM - 8:45 PM)</option>
+            <option value="late_night">🌌 Midnight Bite (11:00 PM - 12:00 AM)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="aptAddress">Delivery Hostel / Room Address *</label>
+        <input type="text" id="aptAddress" required placeholder="e.g. Room 304, Green Palms PG, Kangeyam Main Rd">
+      </div>
+
+      <div class="form-group">
+        <label for="aptPhone">Contact Phone Number *</label>
+        <input type="tel" id="aptPhone" required placeholder="+91 98765 43210">
+      </div>
+
+      <button type="submit" class="form-submit" style="background: #064e3b; margin-top: 10px;">
+        ✅ Confirm Meal Appointment & Schedule
+      </button>
+      <div id="aptFormMessage" class="form-message"></div>
+    </form>
+  </div>
+</div>
+
+<!-- ===== SERVICES HUB MODAL ===== -->
+<div class="dash-modal" id="servicesModal">
+  <div class="dash-modal-content" style="max-width: 720px;">
+    <button class="dash-modal-close" onclick="closeServicesModal()">×</button>
+    <div class="dash-modal-badge">🛠️ BACHELOR BITE SUITE</div>
+    <h3 class="dash-modal-title">Solo Cooking Services & AI Tools</h3>
+    <p class="dash-modal-subtitle">Explore all intelligent features designed to make living and cooking alone stress-free, fast, and budget-friendly.</p>
+
+    <div class="services-catalog-grid">
+      <div class="service-card-item" onclick="closeServicesModal(); scrollToPantry();">
+        <div class="service-card-icon">🥘</div>
+        <div class="service-card-title">Fridge Ingredient Matcher</div>
+        <div class="service-card-desc">Pick what you have in your fridge and get exact instant recipes sorted by match percentage.</div>
+      </div>
+
+      <div class="service-card-item" onclick="closeServicesModal(); navigateToSection('orderSection');">
+        <div class="service-card-icon">🛒</div>
+        <div class="service-card-title">12-Min Meal Kit Dispatch</div>
+        <div class="service-card-desc">Portioned ingredients and spices delivered in under 15 minutes to eliminate food waste.</div>
+      </div>
+
+      <div class="service-card-item" onclick="closeServicesModal(); openAppointmentsModal();">
+        <div class="service-card-icon">📅</div>
+        <div class="service-card-title">Daily Tiffin Subscriptions</div>
+        <div class="service-card-desc">Automate your lunch and dinner with verified homestyle cook partners in Kangeyam.</div>
+      </div>
+
+      <div class="service-card-item" onclick="closeServicesModal(); document.querySelector('.calculator').scrollIntoView({behavior: 'smooth'});">
+        <div class="service-card-icon">💰</div>
+        <div class="service-card-title">Delivery App Bleed Calc</div>
+        <div class="service-card-desc">See how much money you save each month by cutting down on delivery platform markups.</div>
+      </div>
+
+      <div class="service-card-item" onclick="closeServicesModal(); openShopModal();">
+        <div class="service-card-icon">🏬</div>
+        <div class="service-card-title">Open Your Own Shop</div>
+        <div class="service-card-desc">Partner with BachelorBite to supply meals, snacks, or meal kits to thousands of bachelors.</div>
+      </div>
+
+      <div class="service-card-item" onclick="closeServicesModal(); openForm('signup');">
+        <div class="service-card-icon">👑</div>
+        <div class="service-card-title">Solo Cook Cloud Sync</div>
+        <div class="service-card-desc">Save your favorite 12-minute dishes and sync your pantry across all your devices.</div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -4280,18 +5579,323 @@
     if (saveEl) saveEl.textContent = '₹' + savings.toLocaleString();
   }
 
-  function scrollToTop() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  // ===== VAANGLY-STYLE DASHBOARD NAVIGATION & LOCATION LOGIC =====
+  let currentLocation = localStorage.getItem('bachelorBite_loc') || 'Kangeyam';
+
+  function initLocation() {
+    const nameEl = document.getElementById('currentLocationName');
+    const badgeEl = document.getElementById('orderCityBadge');
+    if (nameEl) nameEl.textContent = currentLocation;
+    if (badgeEl) badgeEl.textContent = currentLocation.toUpperCase();
   }
 
-  document.getElementById('formModal').addEventListener('click', function(e) {
-    if (e.target === this) closeForm();
+  function toggleLocationDropdown(event) {
+    if (event) event.stopPropagation();
+    const wrap = document.getElementById('locationSelectorWrap');
+    wrap.classList.toggle('active');
+    // Close user profile dropdown if open
+    const userWrap = document.getElementById('userProfileWrapper');
+    if (userWrap) userWrap.classList.remove('active');
+  }
+
+  function selectLocation(cityName, subtext) {
+    currentLocation = cityName;
+    localStorage.setItem('bachelorBite_loc', cityName);
+    initLocation();
+    
+    // Update active check in dropdown
+    document.querySelectorAll('.loc-item-btn').forEach(btn => {
+      btn.classList.toggle('selected', btn.textContent.includes(cityName));
+    });
+
+    const wrap = document.getElementById('locationSelectorWrap');
+    if (wrap) wrap.classList.remove('active');
+
+    showToast(`📍 Switched location to ${cityName} (${subtext || 'Active'})`);
+  }
+
+  function detectUserLocation() {
+    const wrap = document.getElementById('locationSelectorWrap');
+    if (wrap) wrap.classList.remove('active');
+    showToast('🔍 Detecting closest bachelor delivery hub...');
+    setTimeout(() => {
+      selectLocation('Kangeyam', 'Detected via IP/GPS');
+      showToast('🎯 Location verified: Kangeyam Hub (Delivery < 15 mins)');
+    }, 800);
+  }
+
+  // Smooth Navigation & Tab Highlighting
+  function navigateToSection(sectionId) {
+    const el = document.getElementById(sectionId);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+    setActiveNavTab(sectionId);
+  }
+
+  function setActiveNavTab(targetSectionId) {
+    const navMap = {
+      'heroSection': 'navLinkHome',
+      'pantrySection': 'navLinkRecipes',
+      'howItWorksSection': 'navLinkHow',
+      'calculatorSection': 'navLinkCalc',
+      'aboutSection': 'navLinkAbout'
+    };
+
+    document.querySelectorAll('.nav-link-item').forEach(link => link.classList.remove('active'));
+    const targetLink = document.getElementById(navMap[targetSectionId]);
+    if (targetLink) targetLink.classList.add('active');
+  }
+
+  // Mobile Nav Drawer Toggle
+  function toggleMobileNav() {
+    const drawer = document.getElementById('mobileNavDrawer');
+    if (drawer) drawer.classList.toggle('open');
+  }
+
+  // ===== OPEN YOUR SHOP / PARTNER MODAL LOGIC =====
+  function openShopModal() {
+    const modal = document.getElementById('shopModal');
+    if (modal) modal.classList.add('active');
+  }
+
+  function closeShopModal() {
+    const modal = document.getElementById('shopModal');
+    if (modal) modal.classList.remove('active');
+  }
+
+  function updatePartnerEarnings(bachelorCount) {
+    const count = parseInt(bachelorCount) || 20;
+    const monthlyTotal = count * 60 * 30; // ₹60/meal * 30 days
+    const countEl = document.getElementById('partnerMealsCount');
+    const valEl = document.getElementById('partnerEarningVal');
+    if (countEl) countEl.textContent = count;
+    if (valEl) valEl.textContent = '₹' + monthlyTotal.toLocaleString() + ' / mo';
+  }
+
+  function handleShopRegister(event) {
+    event.preventDefault();
+    const name = document.getElementById('shopKitchenName').value;
+    const city = document.getElementById('shopCity').value;
+    const phone = document.getElementById('shopPhone').value;
+    const msg = document.getElementById('shopFormMessage');
+
+    msg.className = 'form-message success';
+    msg.textContent = `🎉 Congratulations! ${name} has been registered for ${city}. Verification WhatsApp sent to ${phone}.`;
+    showToast(`✨ Partner shop registered: ${name}!`);
+
+    setTimeout(() => {
+      closeShopModal();
+      msg.textContent = '';
+    }, 2500);
+  }
+
+  // ===== APPOINTMENTS / DAILY TIFFIN LOGIC =====
+  function openAppointmentsModal() {
+    const modal = document.getElementById('appointmentsModal');
+    if (modal) modal.classList.add('active');
+    // Set default date to today/tomorrow
+    const dateInput = document.getElementById('aptDate');
+    if (dateInput && !dateInput.value) {
+      const today = new Date().toISOString().split('T')[0];
+      dateInput.value = today;
+    }
+  }
+
+  function closeAppointmentsModal() {
+    const modal = document.getElementById('appointmentsModal');
+    if (modal) modal.classList.remove('active');
+  }
+
+  function handleAppointmentSubmit(event) {
+    event.preventDefault();
+    const plan = document.getElementById('aptMealPlan').value;
+    const date = document.getElementById('aptDate').value;
+    const slot = document.getElementById('aptTimeSlot').value;
+    const addr = document.getElementById('aptAddress').value;
+    const msg = document.getElementById('aptFormMessage');
+
+    msg.className = 'form-message success';
+    msg.textContent = `✅ Meal scheduled for ${date} (${slot}) at ${addr}! Confirmation SMS dispatched.`;
+    showToast(`📅 Meal Appointment confirmed for ${date}!`);
+
+    setTimeout(() => {
+      closeAppointmentsModal();
+      msg.textContent = '';
+    }, 2500);
+  }
+
+  // ===== SERVICES HUB LOGIC =====
+  function openServicesModal() {
+    const modal = document.getElementById('servicesModal');
+    if (modal) modal.classList.add('active');
+  }
+
+  function closeServicesModal() {
+    const modal = document.getElementById('servicesModal');
+    if (modal) modal.classList.remove('active');
+  }
+
+  // Quick Meal Kit Order Simulator
+  function handleQuickOrder(kitTitle, price) {
+    showToast(`🛒 Added ${kitTitle} (₹${price}) to your cart!`);
+    setTimeout(() => {
+      showToast(`⚡ Order dispatched! Estimated arrival in 14 mins.`);
+    }, 1200);
+  }
+
+  // Global Outside Click Listener
+  document.addEventListener('click', (e) => {
+    const profWrap = document.getElementById('userProfileWrapper');
+    if (profWrap && !profWrap.contains(e.target)) {
+      profWrap.classList.remove('active');
+    }
   });
 
-  document.getElementById('recipeModal').addEventListener('click', function(e) {
-    if (e.target === this) closeRecipeModal();
+  // Modal Backdrop Click Closers
+  ['shopModal', 'appointmentsModal', 'servicesModal', 'formModal', 'recipeModal', 'profileModal'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener('click', function(e) {
+        if (e.target === this) {
+          this.classList.remove('active');
+        }
+      });
+    }
   });
 
+  // Highlight Nav Links on Scroll
+  window.addEventListener('scroll', () => {
+    const scrollPos = window.scrollY + 200;
+    const sections = ['heroSection', 'pantrySection', 'howItWorksSection', 'calculatorSection', 'aboutSection'];
+    for (let secId of sections) {
+      const el = document.getElementById(secId);
+      if (el) {
+        const top = el.offsetTop;
+        const height = el.offsetHeight;
+        if (scrollPos >= top && scrollPos < top + height) {
+          setActiveNavTab(secId);
+          break;
+        }
+      }
+    }
+  });
+
+  // ===== PROGRESSIVE WEB APP (PWA) INSTALLATION ENGINE =====
+  let deferredPwaPrompt = null;
+
+  // Check if app is running in installed standalone mode
+  function isRunningStandalone() {
+    return window.matchMedia('(display-mode: standalone)').matches ||
+           window.navigator.standalone === true ||
+           document.referrer.includes('android-app://');
+  }
+
+  // Register Service Worker for offline capability & PWA installability
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then((reg) => {
+          console.log('⚡ [PWA] Service Worker registered successfully! Scope:', reg.scope);
+        })
+        .catch((err) => {
+          console.warn('⚠️ [PWA] Service Worker registration failed:', err);
+        });
+    });
+  }
+
+  // Capture beforeinstallprompt event from browser
+  window.addEventListener('beforeinstallprompt', (e) => {
+    // Prevent default mini-infobar on mobile Chrome
+    e.preventDefault();
+    deferredPwaPrompt = e;
+    console.log('📱 [PWA] beforeinstallprompt event captured and ready.');
+
+    // Reveal Install UI elements if not already dismissed or installed
+    if (!isRunningStandalone()) {
+      const navInstallBtn = document.getElementById('navInstallPwaBtn');
+      const mobileDrawerBtn = document.getElementById('mobileDrawerInstallBtn');
+      const stripBanner = document.getElementById('pwaInstallStrip');
+
+      if (navInstallBtn) navInstallBtn.style.display = 'inline-flex';
+      if (mobileDrawerBtn) mobileDrawerBtn.style.display = 'flex';
+
+      // Show top strip banner unless dismissed in this session
+      const dismissed = sessionStorage.getItem('bachelorBite_pwa_dismissed');
+      if (stripBanner && !dismissed) {
+        stripBanner.style.display = 'block';
+      }
+    }
+  });
+
+  // Trigger PWA Installation Prompt
+  async function triggerPwaInstall() {
+    if (deferredPwaPrompt) {
+      try {
+        // Show native browser install prompt
+        deferredPwaPrompt.prompt();
+        const choiceResult = await deferredPwaPrompt.userChoice;
+        console.log('📲 [PWA] User choice outcome:', choiceResult.outcome);
+
+        if (choiceResult.outcome === 'accepted') {
+          showToast('🚀 Installing BachelorBite to your device...');
+          hideAllPwaInstallPrompts();
+        } else {
+          showToast('Install cancelled. You can install anytime from the header!');
+        }
+        deferredPwaPrompt = null;
+      } catch (err) {
+        console.error('Error triggering PWA install prompt:', err);
+      }
+    } else if (/iphone|ipad|ipod/i.test(navigator.userAgent)) {
+      // iOS Safari does not support beforeinstallprompt; guide users
+      showToast("📲 Tap the Share button (⎋) in Safari and choose 'Add to Home Screen'!");
+    } else if (isRunningStandalone()) {
+      showToast('✨ BachelorBite is already installed & running as an app!');
+    } else {
+      // Desktop Chrome / Edge fallback instruction
+      showToast("📲 Click the install icon (⊕) in your browser's address bar to install!");
+    }
+  }
+
+  // Dismiss Top Install Strip Banner
+  function dismissPwaStrip() {
+    const strip = document.getElementById('pwaInstallStrip');
+    if (strip) {
+      strip.style.display = 'none';
+      sessionStorage.setItem('bachelorBite_pwa_dismissed', 'true');
+    }
+  }
+
+  // Hide all install prompts once installed
+  function hideAllPwaInstallPrompts() {
+    const strip = document.getElementById('pwaInstallStrip');
+    const navInstallBtn = document.getElementById('navInstallPwaBtn');
+    const mobileDrawerBtn = document.getElementById('mobileDrawerInstallBtn');
+    const installedPill = document.getElementById('navPwaInstalledPill');
+
+    if (strip) strip.style.display = 'none';
+    if (navInstallBtn) navInstallBtn.style.display = 'none';
+    if (mobileDrawerBtn) mobileDrawerBtn.style.display = 'none';
+    if (installedPill) installedPill.style.display = 'inline-flex';
+  }
+
+  // Listen for successful installation
+  window.addEventListener('appinstalled', (evt) => {
+    console.log('🎉 [PWA] BachelorBite app was successfully installed!');
+    deferredPwaPrompt = null;
+    hideAllPwaInstallPrompts();
+    showToast('🎉 BachelorBite installed! Launch it anytime from your home screen.');
+  });
+
+  // Initial check on load
+  document.addEventListener('DOMContentLoaded', () => {
+    if (isRunningStandalone()) {
+      hideAllPwaInstallPrompts();
+    }
+  });
+
+  initLocation();
   updateSlider(1500);
 </script>
 
