@@ -1535,7 +1535,7 @@
     .nav-controls {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
     }
 
     .theme-toggle-btn {
@@ -1559,6 +1559,277 @@
       transform: scale(1.1) rotate(12deg);
       border-color: var(--primary);
       box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+    }
+
+    /* ===== USER PROFILE NAVIGATION BUTTON & DROPDOWN ===== */
+    .user-profile-wrapper {
+      position: relative;
+    }
+
+    .user-profile-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px 6px 6px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      font-family: inherit;
+      color: var(--text-dark);
+    }
+
+    .user-profile-btn:hover {
+      background: #eff6ff;
+      border-color: var(--primary);
+      box-shadow: 0 2px 10px rgba(37, 99, 235, 0.12);
+    }
+
+    .user-avatar-circle {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+      font-weight: 700;
+      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+    }
+
+    .user-nav-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+      max-width: 110px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .user-dropdown-arrow {
+      font-size: 0.75rem;
+      color: var(--text-light);
+      transition: transform 0.2s ease;
+    }
+
+    .user-profile-wrapper.active .user-dropdown-arrow {
+      transform: rotate(180deg);
+    }
+
+    /* Profile Dropdown Menu */
+    .user-profile-dropdown {
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      width: 290px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12);
+      padding: 18px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-8px);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 200;
+    }
+
+    .user-profile-wrapper.active .user-profile-dropdown {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .profile-dropdown-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .profile-header-avatar {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .profile-header-info h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      line-height: 1.2;
+    }
+
+    .profile-header-info p {
+      font-size: 0.78rem;
+      color: var(--text-light);
+      margin: 2px 0 4px;
+      word-break: break-all;
+    }
+
+    .badge-tier {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .profile-quick-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      background: var(--bg-light);
+      padding: 10px;
+      border-radius: var(--radius-md);
+      margin: 12px 0;
+      text-align: center;
+    }
+
+    .p-stat-num {
+      display: block;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .p-stat-lbl {
+      font-size: 0.7rem;
+      color: var(--text-light);
+      font-weight: 600;
+    }
+
+    .profile-dropdown-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .dropdown-action-btn {
+      width: 100%;
+      text-align: left;
+      padding: 8px 12px;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .dropdown-action-btn:hover {
+      background: #f1f5f9;
+      color: var(--primary);
+      transform: translateX(2px);
+    }
+
+    /* Full Profile Modal */
+    .profile-modal-content {
+      max-width: 480px;
+    }
+
+    .modal-profile-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .modal-profile-avatar {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      font-weight: 800;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+      flex-shrink: 0;
+    }
+
+    .modal-profile-title h3 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-dark);
+    }
+
+    .modal-profile-title p {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      margin-bottom: 4px;
+    }
+
+    .form-select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      font-size: 0.95rem;
+      font-family: inherit;
+      background: white;
+      color: var(--text-dark);
+    }
+
+    .profile-stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 16px 0 20px;
+    }
+
+    .profile-stat-box {
+      background: var(--bg-light);
+      padding: 14px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .ps-val {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .ps-lbl {
+      font-size: 0.75rem;
+      color: var(--text-light);
+      margin-top: 2px;
+    }
+
+    .profile-modal-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .profile-modal-buttons button {
+      flex: 1;
     }
 
     /* ===== DARK MODE COMPONENT OVERRIDES ===== */
@@ -1740,6 +2011,52 @@
       background: #0f172a;
     }
 
+    body.dark-mode .user-profile-btn {
+      background: #1e293b;
+      border-color: #334155;
+      color: #f8fafc;
+    }
+
+    body.dark-mode .user-profile-btn:hover {
+      background: #334155;
+      border-color: #3b82f6;
+    }
+
+    body.dark-mode .user-profile-dropdown {
+      background: #1e293b;
+      border-color: #334155;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    body.dark-mode .badge-tier {
+      background: #78350f;
+      color: #fef3c7;
+    }
+
+    body.dark-mode .profile-quick-stats {
+      background: #0f172a;
+    }
+
+    body.dark-mode .dropdown-action-btn {
+      color: #cbd5e1;
+    }
+
+    body.dark-mode .dropdown-action-btn:hover {
+      background: #0f172a;
+      color: #60a5fa;
+    }
+
+    body.dark-mode .form-select {
+      background: #0f172a;
+      color: #f8fafc;
+      border-color: #334155;
+    }
+
+    body.dark-mode .profile-stat-box {
+      background: #0f172a;
+      border-color: #334155;
+    }
+
     /* ===== FOOTER ===== */
     footer {
       background: var(--text-dark);
@@ -1774,6 +2091,55 @@
       <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleDarkMode()" aria-label="Toggle dark/light mode" title="Toggle theme">
         <span id="themeToggleIcon">🌙</span>
       </button>
+      
+      <!-- User Profile Navigation Component -->
+      <div class="user-profile-wrapper" id="userProfileWrapper">
+        <button class="user-profile-btn" id="userProfileBtn" onclick="toggleProfileDropdown(event)" aria-label="User Profile" title="View Profile">
+          <div class="user-avatar-circle" id="navAvatarCircle">👨‍🍳</div>
+          <span class="user-nav-name" id="userNavName">Guest Cook</span>
+          <span class="user-dropdown-arrow">▾</span>
+        </button>
+
+        <!-- Dropdown Menu -->
+        <div class="user-profile-dropdown" id="userProfileDropdown">
+          <div class="profile-dropdown-header">
+            <div class="profile-header-avatar" id="dropdownAvatar">👨‍🍳</div>
+            <div class="profile-header-info">
+              <h4 id="dropdownUserName">Guest Solo Cook</h4>
+              <p id="dropdownUserEmail">guest@bachelorbite.app</p>
+              <span class="badge-tier" id="dropdownUserTier">⭐ Free Explorer</span>
+            </div>
+          </div>
+
+          <div class="profile-quick-stats">
+            <div class="p-stat">
+              <span class="p-stat-num" id="statSavedMoney">₹2,400</span>
+              <span class="p-stat-lbl">Saved</span>
+            </div>
+            <div class="p-stat">
+              <span class="p-stat-num" id="statCookCount">18</span>
+              <span class="p-stat-lbl">Cooked</span>
+            </div>
+            <div class="p-stat">
+              <span class="p-stat-num" id="statFavCount">6</span>
+              <span class="p-stat-lbl">Favorites</span>
+            </div>
+          </div>
+
+          <div class="profile-dropdown-actions">
+            <button class="dropdown-action-btn" onclick="openProfileModal(); closeProfileDropdown();">
+              <span>👤</span> View Full Profile
+            </button>
+            <button class="dropdown-action-btn" onclick="scrollToPantry(); closeProfileDropdown();">
+              <span>🥘</span> Match Fridge Ingredients
+            </button>
+            <button class="dropdown-action-btn" id="dropdownAuthActionBtn" onclick="handleDropdownAuthAction(); closeProfileDropdown();">
+              <span>🚀</span> Sign In / Join
+            </button>
+          </div>
+        </div>
+      </div>
+
       <div class="nav-auth-box" id="navAuthBox">
         <button class="btn btn-primary btn-nav-auth" onclick="openForm('login')">Log In</button>
         <button class="btn btn-secondary btn-nav-auth" onclick="openForm('signup')">Sign Up</button>
@@ -2315,6 +2681,54 @@
   </div>
 </div>
 
+<!-- ===== USER PROFILE MODAL ===== -->
+<div class="form-modal" id="profileModal">
+  <div class="form-content profile-modal-content">
+    <button class="form-close" onclick="closeProfileModal()">×</button>
+    <div class="modal-profile-header">
+      <div class="modal-profile-avatar" id="modalProfileAvatar">👨‍🍳</div>
+      <div class="modal-profile-title">
+        <h3 id="modalProfileName">Guest Solo Cook</h3>
+        <p id="modalProfileEmail">guest@bachelorbite.app</p>
+        <span class="badge-tier" id="modalProfileBadge">✨ BachelorBite Explorer</span>
+      </div>
+    </div>
+
+    <form id="profileEditForm" onsubmit="handleProfileSave(event)">
+      <div class="form-group">
+        <label for="profileInputName">Display Name</label>
+        <input type="text" id="profileInputName" placeholder="Your name">
+      </div>
+      <div class="form-group">
+        <label for="profileInputGoal">Primary Cooking Goal</label>
+        <select id="profileInputGoal" class="form-select">
+          <option value="quick">⚡ Quick 12-Minute Dinners</option>
+          <option value="budget">💰 Broke Edition (Under ₹60)</option>
+          <option value="protein">🏋️ High Protein Single Skillet</option>
+          <option value="midnight">🌙 Midnight Study Snacks</option>
+        </select>
+      </div>
+
+      <div class="profile-stats-grid">
+        <div class="profile-stat-box">
+          <div class="ps-val">₹6,000+</div>
+          <div class="ps-lbl">Monthly Target Savings</div>
+        </div>
+        <div class="profile-stat-box">
+          <div class="ps-val">1 Pan</div>
+          <div class="ps-lbl">Cookware Preference</div>
+        </div>
+      </div>
+
+      <div class="profile-modal-buttons">
+        <button type="submit" class="form-submit" style="margin-top: 0;">Save Profile</button>
+        <button type="button" class="btn btn-secondary" onclick="handleLogout(); closeProfileModal();" id="profileLogoutBtn">Log Out</button>
+      </div>
+      <div class="form-message" id="profileFormMessage"></div>
+    </form>
+  </div>
+</div>
+
 <!-- ===== FOOTER ===== -->
 <footer>
   <div class="container">
@@ -2488,25 +2902,142 @@
     }
   }
 
-  // Auth Navigation Header Update
+  // Auth & Profile Navigation Header Update
   function updateAuthNav(user) {
     const box = document.getElementById('navAuthBox');
-    if (!box) return;
+    const userNavName = document.getElementById('userNavName');
+    const navAvatarCircle = document.getElementById('navAvatarCircle');
+    const dropdownAvatar = document.getElementById('dropdownAvatar');
+    const dropdownUserName = document.getElementById('dropdownUserName');
+    const dropdownUserEmail = document.getElementById('dropdownUserEmail');
+    const dropdownUserTier = document.getElementById('dropdownUserTier');
+    const dropdownAuthActionBtn = document.getElementById('dropdownAuthActionBtn');
+    const modalProfileAvatar = document.getElementById('modalProfileAvatar');
+    const modalProfileName = document.getElementById('modalProfileName');
+    const modalProfileEmail = document.getElementById('modalProfileEmail');
+    const modalProfileBadge = document.getElementById('modalProfileBadge');
+    const profileInputName = document.getElementById('profileInputName');
+    const profileLogoutBtn = document.getElementById('profileLogoutBtn');
 
     if (user) {
       const displayName = user.displayName || user.name || (user.email ? user.email.split('@')[0] : 'Solo Cook');
-      box.innerHTML = `
-        <div class="user-pill">
-          <span>👨‍🍳</span>
-          <span>${displayName}</span>
-        </div>
-        <button class="btn-nav-logout" onclick="handleLogout()">Log Out</button>
-      `;
+      const initials = displayName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() || '👨‍🍳';
+
+      if (userNavName) userNavName.textContent = displayName;
+      if (navAvatarCircle) navAvatarCircle.textContent = initials.length > 0 ? initials : '👨‍🍳';
+      if (dropdownAvatar) dropdownAvatar.textContent = initials.length > 0 ? initials : '👨‍🍳';
+      if (dropdownUserName) dropdownUserName.textContent = displayName;
+      if (dropdownUserEmail) dropdownUserEmail.textContent = user.email || 'Verified Account';
+      if (dropdownUserTier) dropdownUserTier.textContent = '🌟 Verified Solo Chef';
+      if (dropdownAuthActionBtn) dropdownAuthActionBtn.innerHTML = '<span>🚪</span> Log Out';
+
+      if (modalProfileAvatar) modalProfileAvatar.textContent = initials.length > 0 ? initials : '👨‍🍳';
+      if (modalProfileName) modalProfileName.textContent = displayName;
+      if (modalProfileEmail) modalProfileEmail.textContent = user.email || '';
+      if (modalProfileBadge) modalProfileBadge.textContent = '🌟 Verified Solo Chef';
+      if (profileInputName) profileInputName.value = displayName;
+      if (profileLogoutBtn) profileLogoutBtn.style.display = 'block';
+
+      if (box) {
+        box.innerHTML = `
+          <button class="btn-nav-logout" onclick="handleLogout()">Log Out</button>
+        `;
+      }
     } else {
-      box.innerHTML = `
-        <button class="btn btn-primary btn-nav-auth" onclick="openForm('login')">Log In</button>
-        <button class="btn btn-secondary btn-nav-auth" onclick="openForm('signup')">Sign Up</button>
-      `;
+      if (userNavName) userNavName.textContent = 'Guest Cook';
+      if (navAvatarCircle) navAvatarCircle.textContent = '👨‍🍳';
+      if (dropdownAvatar) dropdownAvatar.textContent = '👨‍🍳';
+      if (dropdownUserName) dropdownUserName.textContent = 'Guest Solo Cook';
+      if (dropdownUserEmail) dropdownUserEmail.textContent = 'guest@bachelorbite.app';
+      if (dropdownUserTier) dropdownUserTier.textContent = '⭐ Free Explorer';
+      if (dropdownAuthActionBtn) dropdownAuthActionBtn.innerHTML = '<span>🚀</span> Sign In / Join';
+
+      if (modalProfileAvatar) modalProfileAvatar.textContent = '👨‍🍳';
+      if (modalProfileName) modalProfileName.textContent = 'Guest Solo Cook';
+      if (modalProfileEmail) modalProfileEmail.textContent = 'Sign up to sync your preferences';
+      if (modalProfileBadge) modalProfileBadge.textContent = '⭐ Free Explorer';
+      if (profileInputName) profileInputName.value = '';
+      if (profileLogoutBtn) profileLogoutBtn.style.display = 'none';
+
+      if (box) {
+        box.innerHTML = `
+          <button class="btn btn-primary btn-nav-auth" onclick="openForm('login')">Log In</button>
+          <button class="btn btn-secondary btn-nav-auth" onclick="openForm('signup')">Sign Up</button>
+        `;
+      }
+    }
+  }
+
+  // Profile Dropdown Toggle
+  function toggleProfileDropdown(event) {
+    if (event) event.stopPropagation();
+    const wrapper = document.getElementById('userProfileWrapper');
+    if (wrapper) {
+      wrapper.classList.toggle('active');
+    }
+  }
+
+  function closeProfileDropdown() {
+    const wrapper = document.getElementById('userProfileWrapper');
+    if (wrapper) {
+      wrapper.classList.remove('active');
+    }
+  }
+
+  // Close dropdown on outside click
+  document.addEventListener('click', (e) => {
+    const wrapper = document.getElementById('userProfileWrapper');
+    if (wrapper && !wrapper.contains(e.target)) {
+      wrapper.classList.remove('active');
+    }
+  });
+
+  // Profile Modal
+  function openProfileModal() {
+    document.getElementById('profileModal').classList.add('active');
+  }
+
+  function closeProfileModal() {
+    document.getElementById('profileModal').classList.remove('active');
+    const msg = document.getElementById('profileFormMessage');
+    if (msg) msg.className = 'form-message';
+  }
+
+  function handleProfileSave(event) {
+    event.preventDefault();
+    const newName = document.getElementById('profileInputName').value.trim();
+    const msg = document.getElementById('profileFormMessage');
+    
+    let savedUser = localStorage.getItem('bachelorBite_user');
+    let userObj = savedUser ? JSON.parse(savedUser) : { email: 'guest@bachelorbite.app' };
+    
+    if (newName) {
+      userObj.displayName = newName;
+      userObj.name = newName;
+      localStorage.setItem('bachelorBite_user', JSON.stringify(userObj));
+      updateAuthNav(userObj);
+    }
+
+    if (msg) {
+      msg.textContent = 'Profile preferences updated successfully! 🍳';
+      msg.className = 'form-message success';
+      setTimeout(() => closeProfileModal(), 1200);
+    }
+  }
+
+  function scrollToPantry() {
+    const pantrySec = document.querySelector('.pantry');
+    if (pantrySec) {
+      pantrySec.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  function handleDropdownAuthAction() {
+    const savedUser = localStorage.getItem('bachelorBite_user');
+    if (savedUser) {
+      handleLogout();
+    } else {
+      openForm('signup');
     }
   }
 
