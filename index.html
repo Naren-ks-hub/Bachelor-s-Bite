@@ -4,6 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BachelorBite - Solo Cooking Made Simple</title>
+  
+  <!-- Google Fonts: Outfit (Headings) & Inter (UI/Body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
   <style>
     * {
       margin: 0;
@@ -13,25 +19,30 @@
 
     :root {
       --primary: #2563eb;
-      --primary-dark: #1e40af;
+      --primary-dark: #1d4ed8;
+      --primary-light: #eff6ff;
       --secondary: #f59e0b;
-      --text-dark: #1f2937;
-      --text-light: #6b7280;
-      --border: #e5e7eb;
-      --bg-light: #f9fafb;
+      --text-dark: #0f172a;
+      --text-light: #64748b;
+      --border: #e2e8f0;
+      --bg-light: #f8fafc;
       --card-bg: #ffffff;
-      --section-alt-bg: #f9fafb;
-      --pantry-bg: #f3f4f6;
+      --section-alt-bg: #f8fafc;
+      --pantry-bg: #f1f5f9;
       --success: #10b981;
       --error: #ef4444;
-      --radius-sm: 6px;
-      --radius-md: 12px;
-      --radius-lg: 16px;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 10px 30px -5px rgba(0, 0, 0, 0.08);
+      --shadow-lg: 0 20px 40px -10px rgba(0, 0, 0, 0.12);
     }
 
     html.dark-mode, body.dark-mode {
       --primary: #3b82f6;
       --primary-dark: #60a5fa;
+      --primary-light: #1e293b;
       --text-dark: #f8fafc;
       --text-light: #94a3b8;
       --border: #334155;
@@ -39,6 +50,9 @@
       --card-bg: #1e293b;
       --section-alt-bg: #0b1120;
       --pantry-bg: #1e293b;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 10px 30px -5px rgba(0, 0, 0, 0.5);
+      --shadow-lg: 0 20px 40px -10px rgba(0, 0, 0, 0.7);
     }
 
     html {
@@ -46,11 +60,17 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       color: var(--text-dark);
       line-height: 1.6;
       background: var(--card-bg);
       transition: background-color 0.3s ease, color 0.3s ease;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, h4, .nav-brand, .metric-value, .ps-val, .savings-card-value, .recipe-title, .section-badge {
+      font-family: 'Outfit', sans-serif;
+      letter-spacing: -0.015em;
     }
 
     .container {
@@ -2057,6 +2077,361 @@
       border-color: #334155;
     }
 
+    /* ===== PANTRY CATEGORY TABS & QUICK SEARCH ===== */
+    .pantry-category-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 0 auto 24px;
+      justify-content: center;
+      max-width: 800px;
+    }
+
+    .pantry-cat-pill {
+      padding: 9px 18px;
+      border-radius: 9999px;
+      background: white;
+      border: 1px solid var(--border);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      font-family: inherit;
+    }
+
+    .pantry-cat-pill:hover,
+    .pantry-cat-pill.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.25);
+    }
+
+    .pantry-search-box {
+      position: relative;
+      max-width: 540px;
+      margin: 0 auto 30px;
+    }
+
+    .pantry-search-input {
+      width: 100%;
+      padding: 14px 20px 14px 46px;
+      border-radius: 9999px;
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--text-dark);
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.25s ease;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    }
+
+    .pantry-search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+    }
+
+    .pantry-search-icon {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.1rem;
+      color: var(--text-light);
+      pointer-events: none;
+    }
+
+    .btn-clear-chips {
+      background: none;
+      border: none;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-light);
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      transition: all 0.2s ease;
+    }
+
+    .btn-clear-chips:hover {
+      color: var(--error);
+      background: #fee2e2;
+    }
+
+    .match-results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 32px 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .match-results-header h3 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-dark);
+    }
+
+    .sort-badge {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-light);
+      background: var(--bg-light);
+      padding: 4px 10px;
+      border-radius: 9999px;
+    }
+
+    /* Recipe Heart & Macro Badges */
+    .recipe-heart-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.15rem;
+      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 10;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .recipe-heart-btn:hover {
+      transform: scale(1.18);
+    }
+
+    .recipe-heart-btn.active {
+      background: #fee2e2;
+      border-color: #fca5a5;
+    }
+
+    .macro-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 10px 0 14px;
+    }
+
+    .macro-chip {
+      background: var(--bg-light);
+      color: var(--text-dark);
+      border: 1px solid var(--border);
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    /* Cooking Mode inside Recipe Modal */
+    .cook-mode-header {
+      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+      color: white;
+      padding: 16px 20px;
+      border-radius: var(--radius-md);
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cook-progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(0, 0, 0, 0.08);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .cook-progress-fill {
+      height: 100%;
+      background: var(--secondary);
+      transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .cook-step-card {
+      background: var(--bg-light);
+      border: 2px solid var(--primary);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    .cook-step-num {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .cook-step-text {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: var(--text-dark);
+      font-weight: 500;
+    }
+
+    .cook-nav-btns {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .cook-nav-btns button {
+      flex: 1;
+    }
+
+    /* Toast System */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .toast {
+      background: #0f172a;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 9999px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      animation: slideInToast 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      pointer-events: auto;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    @keyframes slideInToast {
+      from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* Back to Top Button */
+    .back-to-top-btn {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      font-weight: 800;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35);
+      z-index: 90;
+    }
+
+    .back-to-top-btn.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .back-to-top-btn:hover {
+      transform: translateY(-4px);
+      background: var(--primary-dark);
+    }
+
+    /* Dark Mode Overrides for newly added elements */
+    body.dark-mode .pantry-cat-pill {
+      background: #1e293b;
+      border-color: #334155;
+      color: #f8fafc;
+    }
+
+    body.dark-mode .pantry-cat-pill:hover,
+    body.dark-mode .pantry-cat-pill.active {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+
+    body.dark-mode .pantry-search-input {
+      background: #1e293b;
+      border-color: #334155;
+      color: #f8fafc;
+    }
+
+    body.dark-mode .pantry-search-input:focus {
+      border-color: var(--primary);
+    }
+
+    body.dark-mode .btn-clear-chips:hover {
+      background: #450a0a;
+      color: #fca5a5;
+    }
+
+    body.dark-mode .recipe-heart-btn {
+      background: rgba(30, 41, 59, 0.9);
+      border-color: #334155;
+    }
+
+    body.dark-mode .recipe-heart-btn.active {
+      background: #450a0a;
+      border-color: #7f1d1d;
+    }
+
+    body.dark-mode .macro-chip {
+      background: #0f172a;
+      border-color: #334155;
+      color: #cbd5e1;
+    }
+
+    body.dark-mode .cook-step-card {
+      background: #0f172a;
+      border-color: #3b82f6;
+    }
+
+    body.dark-mode .cook-step-text {
+      color: #f8fafc;
+    }
+
+    body.dark-mode .match-results-header {
+      border-color: #334155;
+    }
+
+    body.dark-mode .sort-badge {
+      background: #0f172a;
+      color: #94a3b8;
+    }
+
     /* ===== FOOTER ===== */
     footer {
       background: var(--text-dark);
@@ -2184,17 +2559,37 @@
 </section>
 
 <!-- ===== PANTRY SECTION ===== -->
-<section class="pantry">
+<section class="pantry" id="pantrySection">
   <div class="container">
     <div class="section-header">
-      <div class="section-badge">🥘 INTERACTIVE PANTRY</div>
+      <div class="section-badge">🥘 INTERACTIVE PANTRY ENGINE</div>
       <h2>What's In Your Fridge Right Now?</h2>
-      <p>Pick your current ingredients and we'll instantly match you with doable recipes using what you have.</p>
+      <p>Pick your ingredients or search below to instantly see doable 12-minute recipes with exact match scores.</p>
+    </div>
+
+    <!-- Category Filter Tabs -->
+    <div class="pantry-category-tabs">
+      <button class="pantry-cat-pill active" onclick="setQuickCategory('all', this)">🌟 All Recipes</button>
+      <button class="pantry-cat-pill" onclick="setQuickCategory('veg', this)">🥦 Pure Veg</button>
+      <button class="pantry-cat-pill" onclick="setQuickCategory('protein', this)">🍗 High Protein</button>
+      <button class="pantry-cat-pill" onclick="setQuickCategory('budget', this)">💰 Under ₹60</button>
+      <button class="pantry-cat-pill" onclick="setQuickCategory('quick', this)">⚡ Under 12m</button>
+      <button class="pantry-cat-pill" onclick="setQuickCategory('favorites', this)">❤️ My Saved (<span id="savedTabCount">0</span>)</button>
+    </div>
+
+    <!-- Quick Search Input -->
+    <div class="pantry-search-box">
+      <span class="pantry-search-icon">🔍</span>
+      <input type="text" class="pantry-search-input" id="pantrySearchInput" placeholder="Search by ingredient or recipe (e.g. eggs, noodles, butter)..." oninput="handlePantrySearch(this.value)">
     </div>
 
     <div class="pantry-container">
-      <div class="ingredient-label">Select your current ingredients:</div>
-      <div class="ingredient-chips">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <div class="ingredient-label" style="margin-bottom: 0;">Tap ingredients you have:</div>
+        <button class="btn-clear-chips" onclick="clearSelectedIngredients()">Clear All ✕</button>
+      </div>
+
+      <div class="ingredient-chips" id="pantryIngredientChips">
         <div class="chip" onclick="toggleChip(this)">Eggs</div>
         <div class="chip" onclick="toggleChip(this)">Pasta</div>
         <div class="chip" onclick="toggleChip(this)">Chicken</div>
@@ -2204,21 +2599,24 @@
         <div class="chip" onclick="toggleChip(this)">Butter</div>
         <div class="chip" onclick="toggleChip(this)">Garlic</div>
         <div class="chip" onclick="toggleChip(this)">Onions</div>
+        <div class="chip" onclick="toggleChip(this)">Bread</div>
+        <div class="chip" onclick="toggleChip(this)">Soy Sauce</div>
+        <div class="chip" onclick="toggleChip(this)">Chili Flakes</div>
       </div>
 
       <div class="filters-section">
         <div class="filter-group">
-          <div class="filter-label">💰 Budget</div>
+          <div class="filter-label">💰 Max Budget</div>
           <div class="filter-buttons">
-            <button class="filter-btn" onclick="toggleFilter(this, 'budget', '60')">₹40-60</button>
-            <button class="filter-btn" onclick="toggleFilter(this, 'budget', '90')">₹60-90</button>
-            <button class="filter-btn" onclick="toggleFilter(this, 'budget', '120')">₹90-120</button>
+            <button class="filter-btn" onclick="toggleFilter(this, 'budget', '50')">Under ₹50</button>
+            <button class="filter-btn" onclick="toggleFilter(this, 'budget', '80')">Under ₹80</button>
+            <button class="filter-btn" onclick="toggleFilter(this, 'budget', '120')">Under ₹120</button>
           </div>
         </div>
         <div class="filter-group">
-          <div class="filter-label">⏱️ Max Time</div>
+          <div class="filter-label">⏱️ Cooking Time</div>
           <div class="filter-buttons">
-            <button class="filter-btn" onclick="toggleFilter(this, 'time', '10')">Under 10m</button>
+            <button class="filter-btn" onclick="toggleFilter(this, 'time', '10')">⚡ < 10m</button>
             <button class="filter-btn" onclick="toggleFilter(this, 'time', '15')">10-15m</button>
             <button class="filter-btn" onclick="toggleFilter(this, 'time', '20')">15-20m</button>
           </div>
@@ -2226,13 +2624,25 @@
         <div class="filter-group">
           <div class="filter-label">🍳 Cookware</div>
           <div class="filter-buttons">
-            <button class="filter-btn" onclick="toggleFilter(this, 'cookware', 'single-pan')">Single Pan</button>
+            <button class="filter-btn" onclick="toggleFilter(this, 'cookware', 'single-pan')">🥘 Single Pan</button>
             <button class="filter-btn" onclick="toggleFilter(this, 'cookware', 'two-pans')">Two Pans</button>
-            <button class="filter-btn" onclick="toggleFilter(this, 'cookware', 'no-cook')">No Cook</button>
+            <button class="filter-btn" onclick="toggleFilter(this, 'cookware', 'no-cook')">No Stove</button>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- Active Match Info Bar -->
+    <div class="match-results-header">
+      <h3 id="matchResultsCount">Showing 3 Matched Recipes</h3>
+      <span class="sort-badge">Sorted by Match Score & Rating</span>
+    </div>
+
+    <div class="recipe-cards" id="pantryRecipeGrid">
+      <!-- Dynamically filled by JS -->
+    </div>
+  </div>
+</section>
 
     <div class="recipe-cards" id="pantryRecipeGrid">
       <div class="recipe-card">
@@ -3247,6 +3657,191 @@
     
     parentGroup.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
 
+  // State & Data
+  let authMode = 'signup';
+  let selectedIngredients = new Set();
+  let activeFilters = { budget: null, time: null, cookware: null };
+  let activeCategory = 'all';
+  let searchQuery = '';
+  let cachedRecipes = [];
+  let currentCookingRecipe = null;
+  let currentStepIdx = 0;
+  let timerInterval = null;
+
+  // Extended Fallback Recipes with Nutrition & Timers
+  const fallbackRecipes = [
+    {
+      slug: 'garlic-butter-chili-noodles',
+      title: 'Garlic Butter Chili Noodles',
+      badge: '🍝 Pasta',
+      category: 'quick',
+      image: 'images/recipe_noodles.jpg',
+      cook_time_min: 12,
+      budget_inr: 50,
+      difficulty: 'Easy',
+      rating: 4.9,
+      single_pan: true,
+      description: 'Uses pasta, garlic, butter, and that leftover chili flake packet in your drawer.',
+      ingredients: ['Pasta', 'Garlic', 'Butter', 'Chili Flakes', 'Soy Sauce'],
+      steps: [
+        { step: 1, instruction: 'Boil pasta in a single pan with water and salt until al dente (approx 7 mins), then drain and set aside.', timer_min: 7 },
+        { step: 2, instruction: 'In the same pan, melt 2 tbsp butter over medium heat. Sauté 4 cloves of finely chopped garlic until aromatic and golden.', timer_min: 2 },
+        { step: 3, instruction: 'Toss the boiled pasta into the fragrant garlic butter. Add 1 tsp chili flakes, 1 tbsp soy sauce, and stir-fry for 2 mins until well coated.', timer_min: 2 }
+      ],
+      nutrition: { calories: 380, protein_g: 11, carbs_g: 54, fat_g: 14 }
+    },
+    {
+      slug: 'crispy-egg-cheese-toast-fold',
+      title: 'Crispy Egg & Cheese Toast Fold',
+      badge: '🥚 Breakfast',
+      category: 'protein',
+      image: 'images/recipe_egg_toast.jpg',
+      cook_time_min: 8,
+      budget_inr: 45,
+      difficulty: 'Easy',
+      rating: 4.9,
+      single_pan: true,
+      description: 'One skillet, 2 slices of stale bread, 2 beaten eggs, and gooey melted cheese.',
+      ingredients: ['Eggs', 'Cheese', 'Butter', 'Bread', 'Black Pepper'],
+      steps: [
+        { step: 1, instruction: 'Crack 2 eggs into a bowl with a pinch of salt and black pepper; whisk vigorously with a fork.', timer_min: 1 },
+        { step: 2, instruction: 'Melt 1 tbsp butter in a non-stick pan over medium heat. Pour in beaten eggs, then briefly dip both bread slices into egg and flip them over.', timer_min: 2 },
+        { step: 3, instruction: 'Once the egg base is set, flip the entire egg and bread layer over in one swift move.', timer_min: 2 },
+        { step: 4, instruction: 'Place a cheese slice in the center, fold excess egg edges inward, and fold bread into a crispy golden toasted sandwich.', timer_min: 2 }
+      ],
+      nutrition: { calories: 410, protein_g: 22, carbs_g: 28, fat_g: 23 }
+    },
+    {
+      slug: 'one-pan-smokey-black-bean-rice',
+      title: 'One-Pan Smokey Bean Rice',
+      badge: '🍚 Rice',
+      category: 'veg',
+      image: 'images/recipe_smokey_rice.jpg',
+      cook_time_min: 15,
+      budget_inr: 65,
+      difficulty: 'Medium',
+      rating: 4.7,
+      single_pan: true,
+      description: 'Breathes fresh life into yesterday\'s cold takeout rice with onions, spices and beans.',
+      ingredients: ['Rice', 'Garlic', 'Onions', 'Vegetables', 'Butter'],
+      steps: [
+        { step: 1, instruction: 'Melt butter or heat 1 tbsp oil in pan. Sauté chopped onions and minced garlic for 2 minutes until translucent.', timer_min: 2 },
+        { step: 2, instruction: 'Add chopped vegetables, cooked beans, 1/2 tsp cumin, and pinch of chili powder; sauté for 3 minutes.', timer_min: 3 },
+        { step: 3, instruction: 'Add 1.5 cups cooked rice, 2 tbsp water, mix thoroughly, cover pan and steam on low flame for 5 minutes.', timer_min: 5 }
+      ],
+      nutrition: { calories: 460, protein_g: 15, carbs_g: 72, fat_g: 12 }
+    }
+  ];
+
+  // Initialize
+  document.addEventListener('DOMContentLoaded', () => {
+    initTheme();
+    fetchMatchingRecipes();
+    updateSavedCount();
+    
+    // Check cached auth user
+    const savedUser = localStorage.getItem('bachelorBite_user');
+    if (savedUser) {
+      try {
+        updateAuthNav(JSON.parse(savedUser));
+      } catch (e) {}
+    }
+
+    // Scroll listener for Back to Top Button
+    window.addEventListener('scroll', () => {
+      const btt = document.getElementById('backToTopBtn');
+      if (btt) {
+        if (window.scrollY > 400) {
+          btt.classList.add('visible');
+        } else {
+          btt.classList.remove('visible');
+        }
+      }
+    });
+  });
+
+  // Dark Mode Management
+  function initTheme() {
+    const savedTheme = localStorage.getItem('bachelorBite_theme');
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const isDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
+    applyTheme(isDark);
+  }
+
+  function toggleDarkMode() {
+    const isDark = document.body.classList.contains('dark-mode');
+    applyTheme(!isDark);
+    localStorage.setItem('bachelorBite_theme', !isDark ? 'dark' : 'light');
+    showToast(!isDark ? '🌙 Dark mode activated' : '☀️ Light mode activated');
+  }
+
+  function applyTheme(isDark) {
+    const icon = document.getElementById('themeToggleIcon');
+    if (isDark) {
+      document.body.classList.add('dark-mode');
+      document.documentElement.classList.add('dark-mode');
+      if (icon) icon.textContent = '☀️';
+    } else {
+      document.body.classList.remove('dark-mode');
+      document.documentElement.classList.remove('dark-mode');
+      if (icon) icon.textContent = '🌙';
+    }
+  }
+
+  // Toast Notification System
+  function showToast(message) {
+    const container = document.getElementById('toastContainer');
+    if (!container) return;
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.innerHTML = `<span>✨</span><span>${message}</span>`;
+    container.appendChild(toast);
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateY(10px)';
+      setTimeout(() => toast.remove(), 300);
+    }, 2800);
+  }
+
+  // Quick Category Filters
+  function setQuickCategory(category, btn) {
+    activeCategory = category;
+    document.querySelectorAll('.pantry-cat-pill').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    fetchMatchingRecipes();
+  }
+
+  // Live Pantry Search Input
+  function handlePantrySearch(query) {
+    searchQuery = query.toLowerCase().trim();
+    fetchMatchingRecipes();
+  }
+
+  // Toggle Ingredient Chip
+  function toggleChip(element) {
+    element.classList.toggle('active');
+    const ingredient = element.textContent.trim();
+    if (selectedIngredients.has(ingredient)) {
+      selectedIngredients.delete(ingredient);
+    } else {
+      selectedIngredients.add(ingredient);
+    }
+    fetchMatchingRecipes();
+  }
+
+  function clearSelectedIngredients() {
+    selectedIngredients.clear();
+    document.querySelectorAll('#pantryIngredientChips .chip').forEach(c => c.classList.remove('active'));
+    fetchMatchingRecipes();
+    showToast('Pantry selections cleared');
+  }
+
+  // Toggle Filter Buttons
+  function toggleFilter(btn, type, value) {
+    const parentGroup = btn.parentElement;
+    const isAlreadyActive = btn.classList.contains('active');
+    parentGroup.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+
     if (isAlreadyActive) {
       activeFilters[type] = null;
     } else {
@@ -3259,7 +3854,8 @@
   // Fetch or Compute Matching Recipes
   async function fetchMatchingRecipes() {
     const ingredientsArray = Array.from(selectedIngredients);
-    
+    let recipes = [...fallbackRecipes];
+
     try {
       const response = await fetch(`${API_BASE}/recipes/match`, {
         method: 'POST',
@@ -3273,16 +3869,12 @@
 
       if (response.ok) {
         const data = await response.json();
-        cachedRecipes = data.recipes;
-        renderRecipeCards(data.recipes);
-        return;
+        recipes = data.recipes;
       }
-    } catch (err) {
-      // Fallback to local computation if API offline
-    }
+    } catch (err) {}
 
-    // Local fallback matching
-    const localMatched = fallbackRecipes.map(recipe => {
+    // Apply Local Fallback Scoring
+    let filtered = recipes.map(recipe => {
       const matched = recipe.ingredients.filter(i => 
         ingredientsArray.some(userI => i.toLowerCase().includes(userI.toLowerCase()) || userI.toLowerCase().includes(i.toLowerCase()))
       );
@@ -3290,55 +3882,106 @@
       return { ...recipe, match_score: matchScore };
     });
 
-    localMatched.sort((a, b) => b.match_score - a.match_score);
-    cachedRecipes = localMatched;
-    renderRecipeCards(localMatched);
+    // Apply Budget Filter
+    if (activeFilters.budget) {
+      filtered = filtered.filter(r => r.budget_inr <= Number(activeFilters.budget));
+    }
+
+    // Apply Time Filter
+    if (activeFilters.time) {
+      filtered = filtered.filter(r => r.cook_time_min <= Number(activeFilters.time));
+    }
+
+    // Apply Category Tab Filter
+    if (activeCategory === 'veg') {
+      filtered = filtered.filter(r => r.badge.includes('Rice') || r.badge.includes('Pasta') || r.category === 'veg');
+    } else if (activeCategory === 'protein') {
+      filtered = filtered.filter(r => (r.nutrition && r.nutrition.protein_g >= 20) || r.category === 'protein');
+    } else if (activeCategory === 'budget') {
+      filtered = filtered.filter(r => r.budget_inr <= 55);
+    } else if (activeCategory === 'quick') {
+      filtered = filtered.filter(r => r.cook_time_min <= 12);
+    } else if (activeCategory === 'favorites') {
+      filtered = filtered.filter(r => isRecipeSaved(r.slug));
+    }
+
+    // Apply Live Search Query Filter
+    if (searchQuery) {
+      filtered = filtered.filter(r => 
+        r.title.toLowerCase().includes(searchQuery) ||
+        r.description.toLowerCase().includes(searchQuery) ||
+        r.ingredients.some(ing => ing.toLowerCase().includes(searchQuery))
+      );
+    }
+
+    filtered.sort((a, b) => b.match_score - a.match_score || b.rating - a.rating);
+    cachedRecipes = filtered;
+    renderRecipeCards(filtered);
   }
 
-  // Render Recipe Cards
+  // Render Recipe Cards with Heart Bookmarks & Macro Badges
   function renderRecipeCards(recipes) {
     const container = document.getElementById('pantryRecipeGrid');
+    const matchCount = document.getElementById('matchResultsCount');
     if (!container) return;
+
+    if (matchCount) {
+      matchCount.textContent = `Showing ${recipes.length} Matched Recipes`;
+    }
 
     if (recipes.length === 0) {
       container.innerHTML = `
-        <div style="grid-column: 1 / -1; text-align: center; padding: 40px; background: #f9fafb; border-radius: 12px;">
-          <h3>No matching recipes found</h3>
-          <p style="color: var(--text-light); margin-top: 8px;">Try clearing some filters or selecting different ingredients!</p>
+        <div style="grid-column: 1 / -1; text-align: center; padding: 48px; background: var(--bg-light); border: 2px dashed var(--border); border-radius: 16px;">
+          <div style="font-size: 2.5rem; margin-bottom: 12px;">🍳</div>
+          <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--text-dark);">No matching recipes found</h3>
+          <p style="color: var(--text-light); margin: 8px auto 16px; max-width: 400px;">Try clearing some filters or searching for different pantry ingredients!</p>
+          <button class="btn btn-primary" onclick="clearSelectedIngredients(); setQuickCategory('all', document.querySelector('.pantry-cat-pill'))">Show All Recipes</button>
         </div>
       `;
       return;
     }
 
-    container.innerHTML = recipes.slice(0, 6).map(recipe => {
+    container.innerHTML = recipes.map(recipe => {
       const isSaved = isRecipeSaved(recipe.slug);
+      const nut = recipe.nutrition || { calories: 380, protein_g: 15 };
       return `
       <div class="recipe-card">
         <div class="recipe-image">
           <img src="${recipe.image}" alt="${recipe.title}">
           <span class="recipe-badge">${recipe.badge}</span>
-          <span class="recipe-time">${recipe.cook_time_min} min</span>
+          <span class="recipe-time">⏱️ ${recipe.cook_time_min}m</span>
+          <button class="recipe-heart-btn ${isSaved ? 'active' : ''}" onclick="toggleSaveRecipe('${recipe.slug}', event)" title="Save to favorites">
+            ${isSaved ? '❤️' : '🤍'}
+          </button>
         </div>
         <div class="recipe-content">
           <div class="recipe-meta">
-            <span>${recipe.difficulty || 'Easy'}</span>
-            <span>⭐ ${recipe.rating || '4.8'}</span>
+            <span style="font-weight: 600; color: var(--primary);">₹${recipe.budget_inr} • ${recipe.difficulty || 'Easy'}</span>
+            <span style="font-weight: 700;">⭐ ${recipe.rating || '4.8'}</span>
           </div>
           <h3 class="recipe-title">${recipe.title}</h3>
           <p class="recipe-desc">${recipe.description}</p>
+          
+          <div class="macro-chips">
+            <span class="macro-chip">🔥 ${nut.calories} kcal</span>
+            <span class="macro-chip">💪 ${nut.protein_g}g Protein</span>
+            <span class="macro-chip">🍳 ${recipe.single_pan ? '1 Pan' : 'Standard'}</span>
+          </div>
+
           <div class="match-bar">
             <div class="match-labels">
               <span>Ingredient Match</span>
-              <span>${recipe.match_score || 85}%</span>
+              <span style="font-weight: 700; color: ${recipe.match_score >= 80 ? '#10b981' : '#f59e0b'};">${recipe.match_score || 85}% Match</span>
             </div>
             <div class="progress-bar">
-              <div class="progress-fill" style="width: ${recipe.match_score || 85}%;"></div>
+              <div class="progress-fill" style="width: ${recipe.match_score || 85}%; background: ${recipe.match_score >= 80 ? '#10b981' : 'var(--primary)'};"></div>
             </div>
           </div>
+
           <div style="display: flex; gap: 8px; margin-top: 16px;">
-            <button class="recipe-btn" style="margin-top: 0; flex: 1;" onclick="openRecipeModal('${recipe.slug}')">View Steps →</button>
-            <button class="btn btn-secondary" style="padding: 10px 14px; font-size: 0.85rem;" onclick="toggleSaveRecipe('${recipe.slug}')" title="Save to favorites">
-              ${isSaved ? '❤️ Saved' : '🤍 Save'}
+            <button class="recipe-btn" style="margin-top: 0; flex: 1;" onclick="openRecipeModal('${recipe.slug}')">View Recipe →</button>
+            <button class="btn btn-secondary" style="padding: 10px 14px; font-size: 0.85rem;" onclick="startCookingMode('${recipe.slug}')" title="Interactive step-by-step cooking guide">
+              👨‍🍳 Cook Mode
             </button>
           </div>
         </div>
@@ -3347,55 +3990,47 @@
     }).join('');
   }
 
-  // Protected Feature: Save/Bookmark Recipe (Requires Auth)
+  // Favorite / Bookmark Recipe
   function isRecipeSaved(slug) {
-    const user = window.currentUser || JSON.parse(localStorage.getItem('bachelorBite_user') || 'null');
-    if (!user) return false;
-    const userKey = 'savedRecipes_' + (user.email || user.uid || 'guest');
-    const saved = JSON.parse(localStorage.getItem(userKey) || '[]');
+    const saved = JSON.parse(localStorage.getItem('bachelorBite_favorites') || '[]');
     return saved.includes(slug);
   }
 
-  function toggleSaveRecipe(slug) {
-    const user = window.currentUser || JSON.parse(localStorage.getItem('bachelorBite_user') || 'null');
-    if (!user) {
-      openForm('login');
-      showError('Please log in to save recipes to your favorites!');
-      return;
-    }
-
-    const userKey = 'savedRecipes_' + (user.email || user.uid || 'guest');
-    let saved = JSON.parse(localStorage.getItem(userKey) || '[]');
+  function toggleSaveRecipe(slug, event) {
+    if (event) event.stopPropagation();
+    let saved = JSON.parse(localStorage.getItem('bachelorBite_favorites') || '[]');
 
     if (saved.includes(slug)) {
       saved = saved.filter(s => s !== slug);
+      showToast('Removed from favorites 💔');
     } else {
       saved.push(slug);
+      showToast('Saved to your favorites ❤️');
     }
 
-    localStorage.setItem(userKey, JSON.stringify(saved));
+    localStorage.setItem('bachelorBite_favorites', JSON.stringify(saved));
+    updateSavedCount();
     renderRecipeCards(cachedRecipes);
   }
 
-  // Open Recipe Modal
+  function updateSavedCount() {
+    const saved = JSON.parse(localStorage.getItem('bachelorBite_favorites') || '[]');
+    const tabCount = document.getElementById('savedTabCount');
+    const statFavCount = document.getElementById('statFavCount');
+    if (tabCount) tabCount.textContent = saved.length;
+    if (statFavCount) statFavCount.textContent = saved.length;
+  }
+
+  // Open Full Recipe Modal
   async function openRecipeModal(slug) {
     let recipe = cachedRecipes.find(r => r.slug === slug);
-
     if (!recipe || !recipe.steps) {
-      try {
-        const res = await fetch(`${API_BASE}/recipes/${slug}`);
-        if (res.ok) {
-          recipe = await res.json();
-        }
-      } catch (e) {}
-    }
-
-    if (!recipe) {
       recipe = fallbackRecipes.find(r => r.slug === slug) || fallbackRecipes[0];
     }
 
     const modalBody = document.getElementById('recipeModalBody');
     const nutrition = recipe.nutrition || {};
+    const isSaved = isRecipeSaved(recipe.slug);
 
     modalBody.innerHTML = `
       <div class="modal-hero">
@@ -3407,17 +4042,23 @@
         </div>
       </div>
 
-      <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--text-dark); margin-bottom: 8px;">${recipe.title}</h2>
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+        <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--text-dark);">${recipe.title}</h2>
+        <button class="recipe-heart-btn ${isSaved ? 'active' : ''}" style="position: static;" onclick="toggleSaveRecipe('${recipe.slug}'); openRecipeModal('${recipe.slug}');">
+          ${isSaved ? '❤️' : '🤍'}
+        </button>
+      </div>
+
       <p style="color: var(--text-light); font-size: 0.95rem;">${recipe.description}</p>
 
       <div class="recipe-quick-stats">
         <div>
           <div class="quick-stat-label">Difficulty</div>
-          <div class="quick-stat-val">${recipe.difficulty}</div>
+          <div class="quick-stat-val">${recipe.difficulty || 'Easy'}</div>
         </div>
         <div>
           <div class="quick-stat-label">Calories</div>
-          <div class="quick-stat-val">${nutrition.calories || 400} kcal</div>
+          <div class="quick-stat-val">${nutrition.calories || 380} kcal</div>
         </div>
         <div>
           <div class="quick-stat-label">Protein</div>
@@ -3427,6 +4068,12 @@
           <div class="quick-stat-label">Cookware</div>
           <div class="quick-stat-val">${recipe.single_pan ? '1 Pan' : 'Standard'}</div>
         </div>
+      </div>
+
+      <div style="margin: 18px 0; text-align: center;">
+        <button class="btn btn-primary" onclick="startCookingMode('${recipe.slug}')" style="width: 100%; font-size: 1.05rem; padding: 14px;">
+          👨‍🍳 Start Interactive Step-by-Step Cook Mode →
+        </button>
       </div>
 
       <div class="modal-section-title">📦 Ingredients Checklist</div>
@@ -3439,7 +4086,7 @@
         `).join('')}
       </div>
 
-      <div class="modal-section-title">🍳 Step-by-Step Instructions</div>
+      <div class="modal-section-title">🍳 Step-by-Step Overview</div>
       <div class="steps-list">
         ${(recipe.steps || []).map((step, idx) => `
           <div class="step-card">
@@ -3457,15 +4104,97 @@
           </div>
         `).join('')}
       </div>
-
-      <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); text-align: center;">
-        <button class="btn btn-primary" onclick="closeRecipeModal(); openForm('signup');" style="width: 100%;">
-          Get 200+ More Recipes & Save ₹6,000/Month →
-        </button>
-      </div>
     `;
 
     document.getElementById('recipeModal').classList.add('active');
+  }
+
+  // Interactive Live Cook Mode
+  function startCookingMode(slug) {
+    let recipe = cachedRecipes.find(r => r.slug === slug) || fallbackRecipes.find(r => r.slug === slug) || fallbackRecipes[0];
+    currentCookingRecipe = recipe;
+    currentStepIdx = 0;
+    renderCookingStep();
+    document.getElementById('recipeModal').classList.add('active');
+  }
+
+  function renderCookingStep() {
+    const recipe = currentCookingRecipe;
+    const steps = recipe.steps || [];
+    const totalSteps = steps.length;
+    const step = steps[currentStepIdx] || { step: 1, instruction: 'Prepare ingredients', timer_min: null };
+    const progressPercent = Math.round(((currentStepIdx + 1) / totalSteps) * 100);
+
+    const modalBody = document.getElementById('recipeModalBody');
+    modalBody.innerHTML = `
+      <div class="cook-mode-header">
+        <div>
+          <span style="font-size: 0.8rem; text-transform: uppercase; font-weight: 700; opacity: 0.9;">👨‍🍳 COOK MODE • ${recipe.title}</span>
+          <div style="font-size: 1.1rem; font-weight: 800; margin-top: 4px;">Step ${currentStepIdx + 1} of ${totalSteps}</div>
+        </div>
+        <button class="btn" onclick="openRecipeModal('${recipe.slug}')" style="background: rgba(255,255,255,0.2); color: white; padding: 6px 12px; font-size: 0.85rem;">
+          ✕ Exit Guide
+        </button>
+      </div>
+
+      <div class="cook-progress-track">
+        <div class="cook-progress-fill" style="width: ${progressPercent}%;"></div>
+      </div>
+
+      <div class="cook-step-card" style="margin-top: 20px;">
+        <div class="cook-step-num">STEP ${step.step || currentStepIdx + 1}</div>
+        <div class="cook-step-text">${step.instruction}</div>
+
+        ${step.timer_min ? `
+          <div class="step-timer-box" id="cookTimerBox" style="margin-top: 20px; padding: 14px;">
+            <div>
+              <div style="font-weight: 700; font-size: 0.9rem;">⏳ Step Timer (${step.timer_min} min)</div>
+              <div style="font-size: 0.75rem; color: var(--text-light);">Timer will chime when ready</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div class="step-timer-display" id="cookTimerDisplay" style="font-size: 1.4rem;">${String(step.timer_min).padStart(2, '0')}:00</div>
+              <button class="step-timer-btn" onclick="startStepTimer('cook', ${step.timer_min})">▶ Start</button>
+            </div>
+          </div>
+        ` : ''}
+      </div>
+
+      <div class="cook-nav-btns">
+        <button class="btn btn-secondary" onclick="prevCookingStep()" ${currentStepIdx === 0 ? 'disabled style="opacity: 0.5;"' : ''}>
+          ← Previous Step
+        </button>
+        ${currentStepIdx < totalSteps - 1 ? `
+          <button class="btn btn-primary" onclick="nextCookingStep()">
+            Next Step →
+          </button>
+        ` : `
+          <button class="btn btn-primary" onclick="finishCooking()" style="background: #10b981; border-color: #10b981;">
+            🎉 Finish & Enjoy Meal!
+          </button>
+        `}
+      </div>
+    `;
+  }
+
+  function nextCookingStep() {
+    if (timerInterval) clearInterval(timerInterval);
+    if (currentCookingRecipe && currentStepIdx < currentCookingRecipe.steps.length - 1) {
+      currentStepIdx++;
+      renderCookingStep();
+    }
+  }
+
+  function prevCookingStep() {
+    if (timerInterval) clearInterval(timerInterval);
+    if (currentStepIdx > 0) {
+      currentStepIdx--;
+      renderCookingStep();
+    }
+  }
+
+  function finishCooking() {
+    showToast('🍳 Congratulations on cooking a fresh 12-min meal! 🎉');
+    closeRecipeModal();
   }
 
   function closeRecipeModal() {
@@ -3473,16 +4202,20 @@
     document.getElementById('recipeModal').classList.remove('active');
   }
 
-  // Interactive Kitchen Countdown Timer
+  // Interactive Kitchen Countdown Timer with Sound Chime
   function startStepTimer(idx, minutes) {
     if (timerInterval) clearInterval(timerInterval);
 
     let remainingSeconds = minutes * 60;
-    const display = document.getElementById(`timerDisplay-${idx}`);
-    const timerBox = document.getElementById(`timerBox-${idx}`);
+    const display = document.getElementById(idx === 'cook' ? 'cookTimerDisplay' : `timerDisplay-${idx}`);
+    const timerBox = document.getElementById(idx === 'cook' ? 'cookTimerBox' : `timerBox-${idx}`);
 
-    timerBox.style.background = '#e0f2fe';
-    timerBox.style.borderColor = '#0284c7';
+    if (timerBox) {
+      timerBox.style.background = '#e0f2fe';
+      timerBox.style.borderColor = '#0284c7';
+    }
+
+    showToast(`⏱️ ${minutes}-minute cooking timer started!`);
 
     function update() {
       const mins = Math.floor(remainingSeconds / 60);
@@ -3493,19 +4226,13 @@
 
       if (remainingSeconds <= 0) {
         clearInterval(timerInterval);
-        if (display) display.textContent = '🎉 DONE!';
-        timerBox.style.background = '#dcfce7';
-        timerBox.style.borderColor = '#16a34a';
-        try {
-          // Play gentle web audio beep
-          const ctx = new (window.AudioContext || window.webkitAudioContext)();
-          const osc = ctx.createOscillator();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5 note
-          osc.connect(ctx.destination);
-          osc.start();
-          osc.stop(ctx.currentTime + 0.5);
-        } catch (e) {}
+        if (display) display.textContent = '🎉 READY!';
+        if (timerBox) {
+          timerBox.style.background = '#dcfce7';
+          timerBox.style.borderColor = '#16a34a';
+        }
+        playAudioChime();
+        showToast('🔔 Step timer finished! Ready for the next move.');
       } else {
         remainingSeconds--;
       }
@@ -3515,18 +4242,46 @@
     timerInterval = setInterval(update, 1000);
   }
 
+  // Web Audio Synthesizer Chime
+  function playAudioChime() {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const now = ctx.currentTime;
+      [523.25, 659.25, 783.99].forEach((freq, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, now + i * 0.15);
+        gain.gain.setValueAtTime(0.3, now + i * 0.15);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.15 + 0.4);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now + i * 0.15);
+        osc.stop(now + i * 0.15 + 0.4);
+      });
+    } catch (e) {}
+  }
+
   // Savings Calculator
   function updateSlider(value) {
     const numValue = parseInt(value);
-    document.getElementById('sliderValue').textContent = '₹' + numValue.toLocaleString();
+    const sliderEl = document.getElementById('sliderValue');
+    if (sliderEl) sliderEl.textContent = '₹' + numValue.toLocaleString();
     
     const deliveryWeekly = numValue;
     const cookedWeekly = Math.round(numValue * 0.3);
     const savings = deliveryWeekly - cookedWeekly;
 
-    document.getElementById('deliveryValue').textContent = '₹' + deliveryWeekly.toLocaleString();
-    document.getElementById('cookedValue').textContent = '₹' + cookedWeekly.toLocaleString();
-    document.getElementById('savings').textContent = '₹' + savings.toLocaleString();
+    const delEl = document.getElementById('deliveryValue');
+    const cookEl = document.getElementById('cookedValue');
+    const saveEl = document.getElementById('savings');
+    if (delEl) delEl.textContent = '₹' + deliveryWeekly.toLocaleString();
+    if (cookEl) cookEl.textContent = '₹' + cookedWeekly.toLocaleString();
+    if (saveEl) saveEl.textContent = '₹' + savings.toLocaleString();
+  }
+
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   document.getElementById('formModal').addEventListener('click', function(e) {
@@ -3539,6 +4294,14 @@
 
   updateSlider(1500);
 </script>
+
+<!-- Floating Back to Top Button -->
+<button class="back-to-top-btn" id="backToTopBtn" onclick="scrollToTop()" aria-label="Scroll to top" title="Back to top">
+  ↑
+</button>
+
+<!-- Toast Notifications Container -->
+<div class="toast-container" id="toastContainer"></div>
 
 </body>
 </html>
