@@ -2308,47 +2308,432 @@
       transform: translateX(2px);
     }
 
-    /* Full Profile Modal */
+    /* ===== COMPREHENSIVE USER PROFILE & COOKING STATS DASHBOARD ===== */
     .profile-modal-content {
-      max-width: 480px;
+      max-width: 680px;
+      width: 95%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 28px;
+      border-radius: var(--radius-lg);
+      position: relative;
     }
 
-    .modal-profile-header {
+    /* Modal Header & Chef XP Card */
+    .profile-hero-card {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      color: white;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .profile-hero-card::before {
+      content: '';
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 140px;
+      height: 140px;
+      background: radial-gradient(circle, rgba(239, 68, 68, 0.3) 0%, rgba(239, 68, 68, 0) 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .profile-hero-main {
       display: flex;
       align-items: center;
       gap: 16px;
-      margin-bottom: 20px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--border);
+      position: relative;
+      z-index: 2;
     }
 
-    .modal-profile-avatar {
-      width: 60px;
-      height: 60px;
-      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-      color: white;
+    .profile-avatar-large {
+      width: 68px;
+      height: 68px;
       border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary) 0%, #f97316 100%);
+      color: white;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 1.8rem;
       font-weight: 800;
-      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2), 0 8px 16px rgba(239, 68, 68, 0.3);
       flex-shrink: 0;
     }
 
-    .modal-profile-title h3 {
-      font-size: 1.25rem;
-      font-weight: 800;
-      color: var(--text-dark);
+    .profile-info-block {
+      flex: 1;
     }
 
-    .modal-profile-title p {
+    .profile-info-block h3 {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: white;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .profile-info-block p {
       font-size: 0.85rem;
+      color: #94a3b8;
+      margin: 2px 0 6px;
+    }
+
+    .profile-chef-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    /* Level & XP Progress */
+    .profile-xp-box {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .profile-xp-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      color: #cbd5e1;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .profile-xp-track {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .profile-xp-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #f59e0b, #ef4444);
+      border-radius: 10px;
+      transition: width 0.5s ease;
+    }
+
+    /* Dashboard Tab Navigation */
+    .profile-tabs-nav {
+      display: flex;
+      gap: 6px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+      margin-bottom: 20px;
+      overflow-x: auto;
+    }
+
+    .profile-tab-btn {
+      padding: 8px 14px;
+      border: none;
+      background: transparent;
       color: var(--text-light);
+      font-size: 0.88rem;
+      font-weight: 700;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .profile-tab-btn:hover {
+      color: var(--primary);
+      background: rgba(239, 68, 68, 0.06);
+    }
+
+    .profile-tab-btn.active {
+      color: white;
+      background: var(--primary);
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+    }
+
+    /* Dashboard Tab Panes */
+    .profile-tab-pane {
+      display: none;
+      animation: fadeInPane 0.25s ease;
+    }
+
+    .profile-tab-pane.active {
+      display: block;
+    }
+
+    @keyframes fadeInPane {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Tab 1: Stats Grid */
+    .dash-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .dash-metric-card {
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      position: relative;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .dash-metric-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--primary);
+    }
+
+    .dash-metric-icon {
+      font-size: 1.5rem;
+      margin-bottom: 6px;
+    }
+
+    .dash-metric-value {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      letter-spacing: -0.5px;
+    }
+
+    .dash-metric-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-light);
+      margin-top: 2px;
+    }
+
+    .dash-metric-sub {
+      font-size: 0.72rem;
+      color: #10b981;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    /* Milestones Tracker Banner */
+    .savings-milestone-box {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.05) 100%);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 18px;
+    }
+
+    .savings-milestone-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #065f46;
+      margin-bottom: 8px;
+    }
+
+    html.dark-mode .savings-milestone-header {
+      color: #34d399;
+    }
+
+    .milestone-track {
+      height: 8px;
+      background: rgba(0, 0, 0, 0.08);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    html.dark-mode .milestone-track {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .milestone-fill {
+      height: 100%;
+      background: #10b981;
+      border-radius: 10px;
+      transition: width 0.5s ease;
+    }
+
+    /* Tab 2: Achievements Grid */
+    .badges-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 12px;
+    }
+
+    .badge-card {
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      text-align: center;
+      position: relative;
+      transition: all 0.2s ease;
+    }
+
+    .badge-card.unlocked {
+      border-color: rgba(245, 158, 11, 0.5);
+      background: linear-gradient(180deg, rgba(245, 158, 11, 0.05) 0%, transparent 100%);
+    }
+
+    .badge-card.locked {
+      opacity: 0.5;
+      filter: grayscale(1);
+    }
+
+    .badge-card-icon {
+      font-size: 2.2rem;
+      margin-bottom: 6px;
+    }
+
+    .badge-card-title {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--text-dark);
       margin-bottom: 4px;
     }
 
+    .badge-card-desc {
+      font-size: 0.72rem;
+      color: var(--text-light);
+      line-height: 1.3;
+    }
+
+    .badge-card-status {
+      display: inline-block;
+      margin-top: 8px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+
+    .badge-card.unlocked .badge-card-status {
+      background: rgba(16, 185, 129, 0.15);
+      color: #059669;
+    }
+
+    .badge-card.locked .badge-card-status {
+      background: rgba(100, 116, 139, 0.15);
+      color: #64748b;
+    }
+
+    /* Tab 3: Cooking History Log */
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .history-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      gap: 12px;
+    }
+
+    .history-item-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .history-thumb {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-sm);
+      object-fit: cover;
+    }
+
+    .history-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .history-meta {
+      font-size: 0.75rem;
+      color: var(--text-light);
+      margin-top: 2px;
+    }
+
+    .history-badge-saved {
+      background: rgba(16, 185, 129, 0.12);
+      color: #059669;
+      font-weight: 700;
+      font-size: 0.75rem;
+      padding: 4px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+
+    /* Tab 4: Saved Favorites Grid */
+    .favs-profile-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .fav-profile-card {
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .fav-profile-img {
+      width: 100%;
+      height: 100px;
+      object-fit: cover;
+    }
+
+    .fav-profile-body {
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .fav-profile-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+    }
+
+    .fav-profile-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: auto;
+      padding-top: 8px;
+    }
+
+    /* Preferences Form */
     .form-select {
       width: 100%;
       padding: 12px;
@@ -2360,41 +2745,38 @@
       color: var(--text-dark);
     }
 
-    .profile-stats-grid {
+    html.dark-mode .form-select {
+      background: #1e293b;
+      border-color: #334155;
+      color: #f8fafc;
+    }
+
+    .pref-grid-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin: 16px 0 20px;
-    }
-
-    .profile-stat-box {
-      background: var(--bg-light);
-      padding: 14px;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border);
-      text-align: center;
-    }
-
-    .ps-val {
-      font-size: 1.2rem;
-      font-weight: 800;
-      color: var(--primary);
-    }
-
-    .ps-lbl {
-      font-size: 0.75rem;
-      color: var(--text-light);
-      margin-top: 2px;
+      gap: 14px;
     }
 
     .profile-modal-buttons {
       display: flex;
       gap: 12px;
-      margin-top: 16px;
+      margin-top: 20px;
     }
 
     .profile-modal-buttons button {
       flex: 1;
+    }
+
+    @media (max-width: 600px) {
+      .dash-metrics-grid {
+        grid-template-columns: 1fr;
+      }
+      .pref-grid-2 {
+        grid-template-columns: 1fr;
+      }
+      .profile-modal-content {
+        padding: 18px;
+      }
     }
 
     /* ===== DARK MODE COMPONENT OVERRIDES ===== */
@@ -3428,11 +3810,12 @@
 
     <!-- Center Navigation Links -->
     <ul class="nav-center-menu">
-      <li><a class="nav-link-item active" id="navLinkHome" onclick="navigateToSection('heroSection'); return false;">Home</a></li>
-      <li><a class="nav-link-item" id="navLinkRecipes" onclick="navigateToSection('pantrySection'); return false;">Recipes</a></li>
-      <li><a class="nav-link-item" id="navLinkHow" onclick="navigateToSection('howItWorksSection'); return false;">How It Works</a></li>
-      <li><a class="nav-link-item" id="navLinkCalc" onclick="navigateToSection('calculatorSection'); return false;">Savings</a></li>
-      <li><a class="nav-link-item" id="navLinkAbout" onclick="navigateToSection('aboutSection'); return false;">About</a></li>
+      <li><a href="#heroSection" class="nav-link-item active" id="navLinkHome" onclick="navigateToSection('heroSection'); return false;">Home</a></li>
+      <li><a href="#pantrySection" class="nav-link-item" id="navLinkRecipes" onclick="navigateToSection('pantrySection'); return false;">Recipes</a></li>
+      <li><a href="#collectionsSection" class="nav-link-item" id="navLinkCollections" onclick="navigateToSection('collectionsSection'); return false;">Collections</a></li>
+      <li><a href="#howItWorksSection" class="nav-link-item" id="navLinkHow" onclick="navigateToSection('howItWorksSection'); return false;">How It Works</a></li>
+      <li><a href="#calculatorSection" class="nav-link-item" id="navLinkCalc" onclick="navigateToSection('calculatorSection'); return false;">Savings</a></li>
+      <li><a href="#aboutSection" class="nav-link-item" id="navLinkAbout" onclick="navigateToSection('aboutSection'); return false;">About</a></li>
     </ul>
 
     <!-- Right Controls: PWA Install, Theme, User Profile & Auth -->
@@ -3512,11 +3895,12 @@
 
   <!-- Mobile Drawer -->
   <div class="mobile-nav-drawer" id="mobileNavDrawer">
-    <a class="nav-link-item active" onclick="navigateToSection('heroSection'); toggleMobileNav();">🏠 Home</a>
-    <a class="nav-link-item" onclick="navigateToSection('pantrySection'); toggleMobileNav();">🍳 12-Min Recipes & Pantry</a>
-    <a class="nav-link-item" onclick="navigateToSection('howItWorksSection'); toggleMobileNav();">⚡ How It Works</a>
-    <a class="nav-link-item" onclick="navigateToSection('calculatorSection'); toggleMobileNav();">💰 Savings Calculator</a>
-    <a class="nav-link-item" onclick="navigateToSection('aboutSection'); toggleMobileNav();">📖 About BachelorBite</a>
+    <a href="#heroSection" class="nav-link-item active" onclick="navigateToSection('heroSection'); toggleMobileNav(); return false;">🏠 Home</a>
+    <a href="#pantrySection" class="nav-link-item" onclick="navigateToSection('pantrySection'); toggleMobileNav(); return false;">🍳 12-Min Recipes & Pantry</a>
+    <a href="#collectionsSection" class="nav-link-item" onclick="navigateToSection('collectionsSection'); toggleMobileNav(); return false;">📚 Situational Collections</a>
+    <a href="#howItWorksSection" class="nav-link-item" onclick="navigateToSection('howItWorksSection'); toggleMobileNav(); return false;">⚡ How It Works</a>
+    <a href="#calculatorSection" class="nav-link-item" onclick="navigateToSection('calculatorSection'); toggleMobileNav(); return false;">💰 Savings Calculator</a>
+    <a href="#aboutSection" class="nav-link-item" onclick="navigateToSection('aboutSection'); toggleMobileNav(); return false;">📖 About BachelorBite</a>
     <button class="mobile-nav-install-btn" id="mobileDrawerInstallBtn" onclick="triggerPwaInstall(); toggleMobileNav();" style="display: none; margin-top: 8px;">
       📥 Install BachelorBite App
     </button>
@@ -3640,88 +4024,6 @@
 
     <div class="recipe-cards" id="pantryRecipeGrid">
       <!-- Dynamically filled by JS -->
-    </div>
-  </div>
-</section>
-
-    <div class="recipe-cards" id="pantryRecipeGrid">
-      <div class="recipe-card">
-        <div class="recipe-image">
-          <img src="images/recipe_noodles.jpg" alt="Garlic Butter Chili Noodles">
-          <span class="recipe-badge">🍝 Pasta</span>
-          <span class="recipe-time">12 min</span>
-        </div>
-        <div class="recipe-content">
-          <div class="recipe-meta">
-            <span>Easy</span>
-            <span>⭐ 4.8</span>
-          </div>
-          <h3 class="recipe-title">Garlic Butter Chili Noodles</h3>
-          <p class="recipe-desc">Uses pasta, garlic, butter, and that leftover chili flake packet in your drawer.</p>
-          <div class="match-bar">
-            <div class="match-labels">
-              <span>Ingredient Match</span>
-              <span>92%</span>
-            </div>
-            <div class="progress-bar">
-              <div class="progress-fill" style="width: 92%;"></div>
-            </div>
-          </div>
-          <button class="recipe-btn" onclick="openForm()">View Recipe →</button>
-        </div>
-      </div>
-
-      <div class="recipe-card">
-        <div class="recipe-image">
-          <img src="images/recipe_egg_toast.jpg" alt="Crispy Egg & Cheese Toast Fold">
-          <span class="recipe-badge">🥚 Breakfast</span>
-          <span class="recipe-time">8 min</span>
-        </div>
-        <div class="recipe-content">
-          <div class="recipe-meta">
-            <span>Easy</span>
-            <span>⭐ 4.9</span>
-          </div>
-          <h3 class="recipe-title">Crispy Egg & Cheese Toast Fold</h3>
-          <p class="recipe-desc">One skillet, 2 slices of stale bread, 2 beaten eggs, and gooey melted cheese.</p>
-          <div class="match-bar">
-            <div class="match-labels">
-              <span>Ingredient Match</span>
-              <span>88%</span>
-            </div>
-            <div class="progress-bar">
-              <div class="progress-fill" style="width: 88%;"></div>
-            </div>
-          </div>
-          <button class="recipe-btn" onclick="openForm()">View Recipe →</button>
-        </div>
-      </div>
-
-      <div class="recipe-card">
-        <div class="recipe-image">
-          <img src="images/recipe_smokey_rice.jpg" alt="One-Pan Smokey Black Bean Rice">
-          <span class="recipe-badge">🍚 Rice</span>
-          <span class="recipe-time">15 min</span>
-        </div>
-        <div class="recipe-content">
-          <div class="recipe-meta">
-            <span>Medium</span>
-            <span>⭐ 4.7</span>
-          </div>
-          <h3 class="recipe-title">One-Pan Smokey Black Bean Rice</h3>
-          <p class="recipe-desc">Breathes fresh life into yesterday's cold takeout rice with cumin and black beans.</p>
-          <div class="match-bar">
-            <div class="match-labels">
-              <span>Ingredient Match</span>
-              <span>75%</span>
-            </div>
-            <div class="progress-bar">
-              <div class="progress-fill" style="width: 75%;"></div>
-            </div>
-          </div>
-          <button class="recipe-btn" onclick="openForm()">View Recipe →</button>
-        </div>
-      </div>
     </div>
   </div>
 </section>
@@ -3995,7 +4297,7 @@
 </section>
 
 <!-- ===== COLLECTIONS SECTION ===== -->
-<section class="collections">
+<section class="collections" id="collectionsSection">
   <div class="container">
     <div class="section-header">
       <div class="section-badge">📚 CURATED COLLECTIONS</div>
@@ -4004,7 +4306,7 @@
     </div>
 
     <div class="collections-grid">
-      <div class="collection-card" onclick="openForm()">
+      <div class="collection-card" onclick="filterByCollection('budget')">
         <div class="collection-image">
           <img src="images/collection_budget.jpg" alt="End-of-Month Broke Edition">
           <span class="collection-badge">💰 Budget</span>
@@ -4013,13 +4315,13 @@
           <h3 class="collection-title">End-of-Month Broke Edition</h3>
           <p class="collection-desc">Meals when your bank account is low but you refuse to eat plain tap water ramen.</p>
           <div class="collection-footer">
-            <span class="collection-count">24 recipes</span>
-            <span class="collection-arrow">→</span>
+            <span class="collection-count">Under ₹60 Recipes</span>
+            <span class="collection-arrow">Explore Recipes →</span>
           </div>
         </div>
       </div>
 
-      <div class="collection-card" onclick="openForm()">
+      <div class="collection-card" onclick="filterByCollection('quick')">
         <div class="collection-image">
           <img src="images/collection_quick.jpg" alt="10-Minute Hangry Meals">
           <span class="collection-badge">⚡ Quick</span>
@@ -4028,13 +4330,13 @@
           <h3 class="collection-title">10-Minute Hangry Meals</h3>
           <p class="collection-desc">Faster than putting your shoes on to walk to the deli or waiting 50 mins on delivery.</p>
           <div class="collection-footer">
-            <span class="collection-count">18 recipes</span>
-            <span class="collection-arrow">→</span>
+            <span class="collection-count">⚡ Under 12m Dinners</span>
+            <span class="collection-arrow">Explore Recipes →</span>
           </div>
         </div>
       </div>
 
-      <div class="collection-card" onclick="openForm()">
+      <div class="collection-card" onclick="filterByCollection('protein')">
         <div class="collection-image">
           <img src="images/collection_protein.jpg" alt="Single Skillet Gains">
           <span class="collection-badge">💪 Protein</span>
@@ -4043,13 +4345,13 @@
           <h3 class="collection-title">Single Skillet Gains</h3>
           <p class="collection-desc">High protein macros for gym rats who despise Sunday batch-prepping 14 tubs.</p>
           <div class="collection-footer">
-            <span class="collection-count">22 recipes</span>
-            <span class="collection-arrow">→</span>
+            <span class="collection-count">🍗 20g+ Protein Skillets</span>
+            <span class="collection-arrow">Explore Recipes →</span>
           </div>
         </div>
       </div>
 
-      <div class="collection-card" onclick="openForm()">
+      <div class="collection-card" onclick="filterByCollection('midnight')">
         <div class="collection-image">
           <img src="images/collection_midnight.jpg" alt="Late Night Study Cravings">
           <span class="collection-badge">🌙 Study</span>
@@ -4058,8 +4360,8 @@
           <h3 class="collection-title">Late Night Study Cravings</h3>
           <p class="collection-desc">Silent, low-smell midnight snacks you can whip up without waking your roommate.</p>
           <div class="collection-footer">
-            <span class="collection-count">16 recipes</span>
-            <span class="collection-arrow">→</span>
+            <span class="collection-count">🌙 Midnight Craving Matches</span>
+            <span class="collection-arrow">Explore Recipes →</span>
           </div>
         </div>
       </div>
@@ -4237,51 +4539,163 @@
   </div>
 </div>
 
-<!-- ===== USER PROFILE MODAL ===== -->
+<!-- ===== USER PROFILE & COOKING STATS DASHBOARD MODAL ===== -->
 <div class="form-modal" id="profileModal">
   <div class="form-content profile-modal-content">
     <button class="form-close" onclick="closeProfileModal()">×</button>
-    <div class="modal-profile-header">
-      <div class="modal-profile-avatar" id="modalProfileAvatar">👨‍🍳</div>
-      <div class="modal-profile-title">
-        <h3 id="modalProfileName">Guest Solo Cook</h3>
-        <p id="modalProfileEmail">guest@bachelorbite.app</p>
-        <span class="badge-tier" id="modalProfileBadge">✨ BachelorBite Explorer</span>
+    
+    <!-- Hero Profile & Level Progression Card -->
+    <div class="profile-hero-card">
+      <div class="profile-hero-main">
+        <div class="profile-avatar-large" id="modalProfileAvatar">👨‍🍳</div>
+        <div class="profile-info-block">
+          <h3 id="modalProfileName">Guest Solo Cook</h3>
+          <p id="modalProfileEmail">guest@bachelorbite.app</p>
+          <span class="profile-chef-badge" id="modalProfileBadge">⭐ Level 1: Noodle Novice</span>
+        </div>
+      </div>
+      
+      <!-- XP Progress Track -->
+      <div class="profile-xp-box">
+        <div class="profile-xp-labels">
+          <span id="profileXpLevelLabel">Chef Level 1 • 60 XP</span>
+          <span id="profileXpNextLabel">140 XP to Level 2 (Skillet Pro)</span>
+        </div>
+        <div class="profile-xp-track">
+          <div class="profile-xp-fill" id="profileXpFill" style="width: 30%;"></div>
+        </div>
       </div>
     </div>
 
-    <form id="profileEditForm" onsubmit="handleProfileSave(event)">
-      <div class="form-group">
-        <label for="profileInputName">Display Name</label>
-        <input type="text" id="profileInputName" placeholder="Your name">
-      </div>
-      <div class="form-group">
-        <label for="profileInputGoal">Primary Cooking Goal</label>
-        <select id="profileInputGoal" class="form-select">
-          <option value="quick">⚡ Quick 12-Minute Dinners</option>
-          <option value="budget">💰 Broke Edition (Under ₹60)</option>
-          <option value="protein">🏋️ High Protein Single Skillet</option>
-          <option value="midnight">🌙 Midnight Study Snacks</option>
-        </select>
+    <!-- Dashboard Tabs Navigation -->
+    <div class="profile-tabs-nav">
+      <button class="profile-tab-btn active" onclick="switchProfileTab('analytics', this)">📊 Analytics</button>
+      <button class="profile-tab-btn" onclick="switchProfileTab('badges', this)">🏆 Badges <span id="unlockedBadgeCountPill" style="background: rgba(0,0,0,0.12); padding: 1px 6px; border-radius: 10px; font-size: 0.72rem;">0/6</span></button>
+      <button class="profile-tab-btn" onclick="switchProfileTab('history', this)">🍳 History</button>
+      <button class="profile-tab-btn" onclick="switchProfileTab('favorites', this)">❤️ Favorites</button>
+      <button class="profile-tab-btn" onclick="switchProfileTab('preferences', this)">⚙️ Goals</button>
+    </div>
+
+    <!-- TAB 1: Analytics & Stats -->
+    <div class="profile-tab-pane active" id="profTabAnalytics">
+      <!-- 4 Key Metrics -->
+      <div class="dash-metrics-grid">
+        <div class="dash-metric-card">
+          <div class="dash-metric-icon">💰</div>
+          <div class="dash-metric-value" id="profStatSaved">₹2,400</div>
+          <div class="dash-metric-label">Delivery Bleed Saved</div>
+          <div class="dash-metric-sub">⚡ vs ₹200/meal takeout apps</div>
+        </div>
+        <div class="dash-metric-card">
+          <div class="dash-metric-icon">🍳</div>
+          <div class="dash-metric-value" id="profStatCooked">18</div>
+          <div class="dash-metric-label">Meals Cooked</div>
+          <div class="dash-metric-sub" id="profStatCookedSub">🎯 12-min avg cook time</div>
+        </div>
+        <div class="dash-metric-card">
+          <div class="dash-metric-icon">🔥</div>
+          <div class="dash-metric-value" id="profStatStreak">3 Days</div>
+          <div class="dash-metric-label">Cooking Streak</div>
+          <div class="dash-metric-sub">Keep cooking daily!</div>
+        </div>
+        <div class="dash-metric-card">
+          <div class="dash-metric-icon">⏱️</div>
+          <div class="dash-metric-value" id="profStatTimeSaved">3.6 hrs</div>
+          <div class="dash-metric-label">Delivery Wait Time Saved</div>
+          <div class="dash-metric-sub">🚀 Instant home meals</div>
+        </div>
       </div>
 
-      <div class="profile-stats-grid">
-        <div class="profile-stat-box">
-          <div class="ps-val">₹6,000+</div>
-          <div class="ps-lbl">Monthly Target Savings</div>
+      <!-- Savings Milestone Banner -->
+      <div class="savings-milestone-box">
+        <div class="savings-milestone-header">
+          <span id="milestoneTargetTitle">🎯 Milestone: ₹5,000 Delivery Saved</span>
+          <span id="milestonePercentText">48% Complete</span>
         </div>
-        <div class="profile-stat-box">
-          <div class="ps-val">1 Pan</div>
-          <div class="ps-lbl">Cookware Preference</div>
+        <div class="milestone-track">
+          <div class="milestone-fill" id="milestoneFillBar" style="width: 48%;"></div>
         </div>
       </div>
+    </div>
 
-      <div class="profile-modal-buttons">
-        <button type="submit" class="form-submit" style="margin-top: 0;">Save Profile</button>
-        <button type="button" class="btn btn-secondary" onclick="handleLogout(); closeProfileModal();" id="profileLogoutBtn">Log Out</button>
+    <!-- TAB 2: Achievements & Badges -->
+    <div class="profile-tab-pane" id="profTabBadges">
+      <div class="badges-grid" id="profileBadgesGrid">
+        <!-- Dynamically rendered by JS -->
       </div>
-      <div class="form-message" id="profileFormMessage"></div>
-    </form>
+    </div>
+
+    <!-- TAB 3: Cooking History Log -->
+    <div class="profile-tab-pane" id="profTabHistory">
+      <div class="history-list" id="profileHistoryList">
+        <!-- Dynamically rendered by JS -->
+      </div>
+    </div>
+
+    <!-- TAB 4: Saved Favorites -->
+    <div class="profile-tab-pane" id="profTabFavorites">
+      <div class="favs-profile-grid" id="profileFavsGrid">
+        <!-- Dynamically rendered by JS -->
+      </div>
+    </div>
+
+    <!-- TAB 5: Preferences & Dietary Goals -->
+    <div class="profile-tab-pane" id="profTabPreferences">
+      <form id="profileEditForm" onsubmit="handleProfileSave(event)">
+        <div class="form-group">
+          <label for="profileInputName">Chef / Display Name</label>
+          <input type="text" id="profileInputName" placeholder="Your name (e.g., Solo Chef Naren)">
+        </div>
+        
+        <div class="pref-grid-2">
+          <div class="form-group">
+            <label for="profileInputDiet">Dietary Preference</label>
+            <select id="profileInputDiet" class="form-select">
+              <option value="all">🍗 Non-Veg & All Meals</option>
+              <option value="egg">🍳 Eggetarian</option>
+              <option value="veg">🥦 Pure Veg</option>
+              <option value="protein">🏋️ High Protein Gym Macros</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="profileInputCookware">Cookware Setup</label>
+            <select id="profileInputCookware" class="form-select">
+              <option value="single-pan">🍳 Single Pan / Skillet Only</option>
+              <option value="induction">⚡ Induction + Pot</option>
+              <option value="pressure">🍲 Pressure Cooker</option>
+              <option value="all">👨‍🍳 Full Kitchen Setup</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="pref-grid-2">
+          <div class="form-group">
+            <label for="profileInputGoal">Primary Cooking Goal</label>
+            <select id="profileInputGoal" class="form-select">
+              <option value="quick">⚡ Quick 12-Minute Dinners</option>
+              <option value="budget">💰 Broke Edition (Under ₹60)</option>
+              <option value="protein">🏋️ High Protein Single Skillet</option>
+              <option value="midnight">🌙 Midnight Study Snacks</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="profileInputSpice">Spice Level</label>
+            <select id="profileInputSpice" class="form-select">
+              <option value="mild">🍃 Mild & Comforting</option>
+              <option value="medium" selected>🔥 Medium Bachelor Spice</option>
+              <option value="spicy">🌶️🌶️ Fiery Hot Cravings</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="profile-modal-buttons">
+          <button type="submit" class="form-submit" style="margin-top: 0;">💾 Save Preferences</button>
+          <button type="button" class="btn btn-secondary" onclick="handleLogout(); closeProfileModal();" id="profileLogoutBtn">🚪 Log Out</button>
+        </div>
+        <div class="form-message" id="profileFormMessage"></div>
+      </form>
+    </div>
+
   </div>
 </div>
 
@@ -4502,462 +4916,8 @@
   const APPSCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz5UmQfKxDVZbyLODUAb9xDuEOkzVAAtuTJd5DSf_UiYwDk2bHtzCAiO_EPEmAJXRNbGQ/exec';
   const API_BASE = '/api';
 
-  // State
+  // State & Filters
   let authMode = 'signup'; // 'signup' | 'login'
-  let selectedIngredients = new Set();
-  let activeFilters = { budget: null, time: null, cookware: null };
-  let cachedRecipes = [];
-  let timerInterval = null;
-
-  // Initial recipes fallback
-  const fallbackRecipes = [
-    {
-      slug: 'garlic-butter-chili-noodles',
-      title: 'Garlic Butter Chili Noodles',
-      badge: '🍝 Pasta',
-      image: 'images/recipe_noodles.jpg',
-      cook_time_min: 12,
-      budget_inr: 50,
-      difficulty: 'Easy',
-      rating: 4.8,
-      single_pan: true,
-      description: 'Uses pasta, garlic, butter, and that leftover chili flake packet in your drawer.',
-      ingredients: ['Pasta', 'Garlic', 'Butter', 'Chili Flakes', 'Soy Sauce'],
-      steps: [
-        { step: 1, instruction: 'Boil pasta in a single pan with water and salt until al dente (approx 7 mins), then drain and set aside.', timer_min: 7 },
-        { step: 2, instruction: 'In the same pan, melt 2 tbsp butter over medium heat. Sauté 4 cloves of finely chopped garlic until aromatic and golden.', timer_min: 2 },
-        { step: 3, instruction: 'Toss the boiled pasta into the fragrant garlic butter. Add 1 tsp chili flakes, 1 tbsp soy sauce, and stir-fry for 2 mins until well coated.', timer_min: 2 }
-      ],
-      nutrition: { calories: 380, protein_g: 11, carbs_g: 54, fat_g: 14 }
-    },
-    {
-      slug: 'crispy-egg-cheese-toast-fold',
-      title: 'Crispy Egg & Cheese Toast Fold',
-      badge: '🥚 Breakfast',
-      image: 'images/recipe_egg_toast.jpg',
-      cook_time_min: 8,
-      budget_inr: 45,
-      difficulty: 'Easy',
-      rating: 4.9,
-      single_pan: true,
-      description: 'One skillet, 2 slices of stale bread, 2 beaten eggs, and gooey melted cheese.',
-      ingredients: ['Eggs', 'Cheese', 'Butter', 'Bread', 'Black Pepper'],
-      steps: [
-        { step: 1, instruction: 'Crack 2 eggs into a bowl with a pinch of salt and black pepper; whisk vigorously with a fork.', timer_min: 1 },
-        { step: 2, instruction: 'Melt 1 tbsp butter in a non-stick pan over medium heat. Pour in beaten eggs, then briefly dip both bread slices into egg and flip them over.', timer_min: 2 },
-        { step: 3, instruction: 'Once the egg base is set, flip the entire egg and bread layer over in one swift move.', timer_min: 2 },
-        { step: 4, instruction: 'Place a cheese slice in the center, fold excess egg edges inward, and fold bread into a crispy golden toasted sandwich.', timer_min: 2 }
-      ],
-      nutrition: { calories: 410, protein_g: 22, carbs_g: 28, fat_g: 23 }
-    },
-    {
-      slug: 'one-pan-smokey-black-bean-rice',
-      title: 'One-Pan Smokey Black Bean Rice',
-      badge: '🍚 Rice',
-      image: 'images/recipe_smokey_rice.jpg',
-      cook_time_min: 15,
-      budget_inr: 65,
-      difficulty: 'Medium',
-      rating: 4.7,
-      single_pan: true,
-      description: 'Breathes fresh life into yesterday\'s cold takeout rice with cumin and black beans.',
-      ingredients: ['Rice', 'Garlic', 'Onions', 'Vegetables', 'Butter'],
-      steps: [
-        { step: 1, instruction: 'Melt butter or heat 1 tbsp oil in pan. Sauté chopped onions and minced garlic for 2 minutes until translucent.', timer_min: 2 },
-        { step: 2, instruction: 'Add chopped vegetables, cooked beans, 1/2 tsp cumin, and pinch of chili powder; sauté for 3 minutes.', timer_min: 3 },
-        { step: 3, instruction: 'Add 1.5 cups cooked rice, 2 tbsp water, mix thoroughly, cover pan and steam on low flame for 5 minutes.', timer_min: 5 }
-      ],
-      nutrition: { calories: 460, protein_g: 15, carbs_g: 72, fat_g: 12 }
-    }
-  ];
-
-  // Initialize
-  document.addEventListener('DOMContentLoaded', () => {
-    initTheme();
-    fetchMatchingRecipes();
-    // Check cached auth user
-    const savedUser = localStorage.getItem('bachelorBite_user');
-    if (savedUser) {
-      try {
-        updateAuthNav(JSON.parse(savedUser));
-      } catch (e) {}
-    }
-  });
-
-  // Dark Mode Management
-  function initTheme() {
-    const savedTheme = localStorage.getItem('bachelorBite_theme');
-    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const isDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
-    applyTheme(isDark);
-  }
-
-  function toggleDarkMode() {
-    const isDark = document.body.classList.contains('dark-mode');
-    applyTheme(!isDark);
-    localStorage.setItem('bachelorBite_theme', !isDark ? 'dark' : 'light');
-  }
-
-  function applyTheme(isDark) {
-    const icon = document.getElementById('themeToggleIcon');
-    if (isDark) {
-      document.body.classList.add('dark-mode');
-      document.documentElement.classList.add('dark-mode');
-      if (icon) icon.textContent = '☀️';
-    } else {
-      document.body.classList.remove('dark-mode');
-      document.documentElement.classList.remove('dark-mode');
-      if (icon) icon.textContent = '🌙';
-    }
-  }
-
-  // Auth & Profile Navigation Header Update
-  function updateAuthNav(user) {
-    const box = document.getElementById('navAuthBox');
-    const userNavName = document.getElementById('userNavName');
-    const navAvatarCircle = document.getElementById('navAvatarCircle');
-    const dropdownAvatar = document.getElementById('dropdownAvatar');
-    const dropdownUserName = document.getElementById('dropdownUserName');
-    const dropdownUserEmail = document.getElementById('dropdownUserEmail');
-    const dropdownUserTier = document.getElementById('dropdownUserTier');
-    const dropdownAuthActionBtn = document.getElementById('dropdownAuthActionBtn');
-    const modalProfileAvatar = document.getElementById('modalProfileAvatar');
-    const modalProfileName = document.getElementById('modalProfileName');
-    const modalProfileEmail = document.getElementById('modalProfileEmail');
-    const modalProfileBadge = document.getElementById('modalProfileBadge');
-    const profileInputName = document.getElementById('profileInputName');
-    const profileLogoutBtn = document.getElementById('profileLogoutBtn');
-
-    if (user) {
-      const displayName = user.displayName || user.name || (user.email ? user.email.split('@')[0] : 'Solo Cook');
-      const initials = displayName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() || '👨‍🍳';
-
-      if (userNavName) userNavName.textContent = displayName;
-      if (navAvatarCircle) navAvatarCircle.textContent = initials.length > 0 ? initials : '👨‍🍳';
-      if (dropdownAvatar) dropdownAvatar.textContent = initials.length > 0 ? initials : '👨‍🍳';
-      if (dropdownUserName) dropdownUserName.textContent = displayName;
-      if (dropdownUserEmail) dropdownUserEmail.textContent = user.email || 'Verified Account';
-      if (dropdownUserTier) dropdownUserTier.textContent = '🌟 Verified Solo Chef';
-      if (dropdownAuthActionBtn) dropdownAuthActionBtn.innerHTML = '<span>🚪</span> Log Out';
-
-      if (modalProfileAvatar) modalProfileAvatar.textContent = initials.length > 0 ? initials : '👨‍🍳';
-      if (modalProfileName) modalProfileName.textContent = displayName;
-      if (modalProfileEmail) modalProfileEmail.textContent = user.email || '';
-      if (modalProfileBadge) modalProfileBadge.textContent = '🌟 Verified Solo Chef';
-      if (profileInputName) profileInputName.value = displayName;
-      if (profileLogoutBtn) profileLogoutBtn.style.display = 'block';
-
-      if (box) {
-        box.innerHTML = `
-          <button class="btn-nav-logout" onclick="handleLogout()">Log Out</button>
-        `;
-      }
-    } else {
-      if (userNavName) userNavName.textContent = 'Guest Cook';
-      if (navAvatarCircle) navAvatarCircle.textContent = '👨‍🍳';
-      if (dropdownAvatar) dropdownAvatar.textContent = '👨‍🍳';
-      if (dropdownUserName) dropdownUserName.textContent = 'Guest Solo Cook';
-      if (dropdownUserEmail) dropdownUserEmail.textContent = 'guest@bachelorbite.app';
-      if (dropdownUserTier) dropdownUserTier.textContent = '⭐ Free Explorer';
-      if (dropdownAuthActionBtn) dropdownAuthActionBtn.innerHTML = '<span>🚀</span> Sign In / Join';
-
-      if (modalProfileAvatar) modalProfileAvatar.textContent = '👨‍🍳';
-      if (modalProfileName) modalProfileName.textContent = 'Guest Solo Cook';
-      if (modalProfileEmail) modalProfileEmail.textContent = 'Sign up to sync your preferences';
-      if (modalProfileBadge) modalProfileBadge.textContent = '⭐ Free Explorer';
-      if (profileInputName) profileInputName.value = '';
-      if (profileLogoutBtn) profileLogoutBtn.style.display = 'none';
-
-      if (box) {
-        box.innerHTML = `
-          <button class="btn btn-primary btn-nav-auth" onclick="openForm('login')">Log In</button>
-          <button class="btn btn-secondary btn-nav-auth" onclick="openForm('signup')">Sign Up</button>
-        `;
-      }
-    }
-  }
-
-  // Profile Dropdown Toggle
-  function toggleProfileDropdown(event) {
-    if (event) event.stopPropagation();
-    const wrapper = document.getElementById('userProfileWrapper');
-    if (wrapper) {
-      wrapper.classList.toggle('active');
-    }
-  }
-
-  function closeProfileDropdown() {
-    const wrapper = document.getElementById('userProfileWrapper');
-    if (wrapper) {
-      wrapper.classList.remove('active');
-    }
-  }
-
-  // Close dropdown on outside click
-  document.addEventListener('click', (e) => {
-    const wrapper = document.getElementById('userProfileWrapper');
-    if (wrapper && !wrapper.contains(e.target)) {
-      wrapper.classList.remove('active');
-    }
-  });
-
-  // Profile Modal
-  function openProfileModal() {
-    document.getElementById('profileModal').classList.add('active');
-  }
-
-  function closeProfileModal() {
-    document.getElementById('profileModal').classList.remove('active');
-    const msg = document.getElementById('profileFormMessage');
-    if (msg) msg.className = 'form-message';
-  }
-
-  function handleProfileSave(event) {
-    event.preventDefault();
-    const newName = document.getElementById('profileInputName').value.trim();
-    const msg = document.getElementById('profileFormMessage');
-    
-    let savedUser = localStorage.getItem('bachelorBite_user');
-    let userObj = savedUser ? JSON.parse(savedUser) : { email: 'guest@bachelorbite.app' };
-    
-    if (newName) {
-      userObj.displayName = newName;
-      userObj.name = newName;
-      localStorage.setItem('bachelorBite_user', JSON.stringify(userObj));
-      updateAuthNav(userObj);
-    }
-
-    if (msg) {
-      msg.textContent = 'Profile preferences updated successfully! 🍳';
-      msg.className = 'form-message success';
-      setTimeout(() => closeProfileModal(), 1200);
-    }
-  }
-
-  function scrollToPantry() {
-    const pantrySec = document.querySelector('.pantry');
-    if (pantrySec) {
-      pantrySec.scrollIntoView({ behavior: 'smooth' });
-    }
-  }
-
-  function handleDropdownAuthAction() {
-    const savedUser = localStorage.getItem('bachelorBite_user');
-    if (savedUser) {
-      handleLogout();
-    } else {
-      openForm('signup');
-    }
-  }
-
-  // Switch Auth Mode
-  function setAuthMode(mode) {
-    authMode = mode;
-    const tabSignup = document.getElementById('tabSignup');
-    const tabLogin = document.getElementById('tabLogin');
-    const authModalTitle = document.getElementById('authModalTitle');
-    const authModalSubtitle = document.getElementById('authModalSubtitle');
-    const groupName = document.getElementById('groupName');
-    const groupPhone = document.getElementById('groupPhone');
-    const submitBtn = document.getElementById('submitBtn');
-    const authSwitchLink = document.getElementById('authSwitchLink');
-    const formMessage = document.getElementById('formMessage');
-
-    formMessage.className = 'form-message';
-    formMessage.textContent = '';
-
-    if (mode === 'signup') {
-      tabSignup.classList.add('active');
-      tabLogin.classList.remove('active');
-      authModalTitle.textContent = 'Join BachelorBite';
-      authModalSubtitle.textContent = 'Get instant access to easy recipes & save ₹6,000/month';
-      groupName.style.display = 'block';
-      groupPhone.style.display = 'block';
-      document.getElementById('name').required = true;
-      submitBtn.textContent = 'Create Account & Get Access';
-      authSwitchLink.innerHTML = 'Already have an account? <a onclick="setAuthMode(\'login\')">Log In</a>';
-    } else {
-      tabLogin.classList.add('active');
-      tabSignup.classList.remove('active');
-      authModalTitle.textContent = 'Welcome Back!';
-      authModalSubtitle.textContent = 'Log in to continue cooking quick & delicious meals';
-      groupName.style.display = 'none';
-      groupPhone.style.display = 'none';
-      document.getElementById('name').required = false;
-      submitBtn.textContent = 'Log In to BachelorBite';
-      authSwitchLink.innerHTML = 'Don\'t have an account? <a onclick="setAuthMode(\'signup\')">Sign Up</a>';
-    }
-  }
-
-  function openForm(mode = 'signup') {
-    setAuthMode(mode);
-    document.getElementById('formModal').classList.add('active');
-  }
-
-  function closeForm() {
-    document.getElementById('formModal').classList.remove('active');
-    document.getElementById('contactForm').reset();
-    document.getElementById('formMessage').className = 'form-message';
-    document.getElementById('submitBtn').disabled = false;
-  }
-
-  // Handle Firebase Auth Login / Signup
-  async function handleAuthSubmit(event) {
-    event.preventDefault();
-
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value;
-    const name = document.getElementById('name').value.trim();
-    const phone = document.getElementById('phone').value.trim();
-    const submitBtn = document.getElementById('submitBtn');
-    const formMessage = document.getElementById('formMessage');
-
-    if (!email || !password) {
-      showError('Please fill in both email and password.');
-      return;
-    }
-
-    if (password.length < 6) {
-      showError('Password must be at least 6 characters long.');
-      return;
-    }
-
-    submitBtn.disabled = true;
-    submitBtn.textContent = authMode === 'signup' ? 'Creating Account...' : 'Logging In...';
-
-    try {
-      if (window.firebaseAuth && window.fbAuth) {
-        if (authMode === 'signup') {
-          // 1. Firebase Create User
-          const userCredential = await window.fbAuth.createUser(window.firebaseAuth, email, password);
-          const user = userCredential.user;
-
-          if (name && window.fbAuth.updateProfile) {
-            try {
-              await window.fbAuth.updateProfile(user, { displayName: name });
-            } catch (e) {}
-          }
-
-          // Also notify backend lead endpoint
-          try {
-            fetch(`${API_BASE}/leads`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ name: name || email.split('@')[0], email, phone })
-            });
-          } catch (e) {}
-
-          showSuccess('Account created successfully! Welcome to BachelorBite 🎉');
-          setTimeout(() => closeForm(), 1500);
-          return;
-        } else {
-          // 2. Firebase Sign In
-          const userCredential = await window.fbAuth.signIn(window.firebaseAuth, email, password);
-          showSuccess('Logged in successfully! Welcome back 🍳');
-          setTimeout(() => closeForm(), 1500);
-          return;
-        }
-      }
-    } catch (firebaseErr) {
-      console.warn('Firebase auth attempt returned:', firebaseErr);
-      const userFriendlyMsg = mapAuthError(firebaseErr);
-      showError(userFriendlyMsg);
-      submitBtn.disabled = false;
-      submitBtn.textContent = authMode === 'signup' ? 'Create Account & Get Access' : 'Log In to BachelorBite';
-      return;
-    }
-
-    // Fallback: Local simulated authentication if Firebase script is blocked/offline
-    setTimeout(() => {
-      const userObj = { email, displayName: name || email.split('@')[0] };
-      localStorage.setItem('bachelorBite_user', JSON.stringify(userObj));
-      updateAuthNav(userObj);
-      showSuccess(authMode === 'signup' ? 'Access granted! Welcome to BachelorBite 🎉' : 'Logged in successfully! 🎉');
-      setTimeout(() => closeForm(), 1500);
-    }, 500);
-  }
-
-  // Handle Logout
-  async function handleLogout() {
-    if (window.firebaseAuth && window.fbAuth) {
-      try {
-        await window.fbAuth.signOut(window.firebaseAuth);
-      } catch (e) {}
-    }
-    localStorage.removeItem('bachelorBite_user');
-    window.currentUser = null;
-    updateAuthNav(null);
-  }
-
-  // Map Firebase Error Codes to Clear User-Friendly Messages
-  function mapAuthError(err) {
-    const code = err.code || '';
-    if (code === 'auth/invalid-email') {
-      return 'Please enter a valid email address (e.g. you@example.com).';
-    }
-    if (code === 'auth/weak-password') {
-      return 'Password is too weak. Please use at least 6 characters.';
-    }
-    if (code === 'auth/email-already-in-use' || code === 'auth/email-already-exists') {
-      return 'This email address is already registered. Please log in instead.';
-    }
-    if (code === 'auth/wrong-password') {
-      return 'Incorrect password. Please double check and try again.';
-    }
-    if (code === 'auth/user-not-found') {
-      return 'No user account found with this email. Please sign up first.';
-    }
-    if (code === 'auth/invalid-credential') {
-      return 'Invalid email or password. Please verify your credentials.';
-    }
-    if (code === 'auth/operation-not-allowed') {
-      return 'Email/Password sign-in is not enabled in Firebase Console. Please enable it under Authentication > Sign-in method.';
-    }
-    if (code === 'auth/user-disabled') {
-      return 'This account has been disabled. Please contact support.';
-    }
-    if (code === 'auth/too-many-requests') {
-      return 'Too many failed attempts. Please wait a moment and try again.';
-    }
-    if (code === 'auth/network-request-failed') {
-      return 'Network connection error. Please check your internet connection.';
-    }
-    return err.message || 'Authentication error. Please try again.';
-  }
-
-  function showSuccess(message) {
-    const formMessage = document.getElementById('formMessage');
-    formMessage.textContent = message;
-    formMessage.className = 'form-message success';
-  }
-
-  function showError(message) {
-    const formMessage = document.getElementById('formMessage');
-    formMessage.textContent = message;
-    formMessage.className = 'form-message error';
-  }
-
-  // Toggle Ingredient Chip
-  function toggleChip(element) {
-    element.classList.toggle('active');
-    const ingredient = element.textContent.trim();
-    if (selectedIngredients.has(ingredient)) {
-      selectedIngredients.delete(ingredient);
-    } else {
-      selectedIngredients.add(ingredient);
-    }
-    fetchMatchingRecipes();
-  }
-
-  // Toggle Filter Buttons
-  function toggleFilter(btn, type, value) {
-    const parentGroup = btn.parentElement;
-    const isAlreadyActive = btn.classList.contains('active');
-    
-    parentGroup.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-
-  // State & Data
-  let authMode = 'signup';
   let selectedIngredients = new Set();
   let activeFilters = { budget: null, time: null, cookware: null };
   let activeCategory = 'all';
@@ -4966,8 +4926,9 @@
   let currentCookingRecipe = null;
   let currentStepIdx = 0;
   let timerInterval = null;
+  let currentLocation = localStorage.getItem('bachelorBite_loc') || 'Kangeyam';
 
-  // Extended Fallback Recipes with Nutrition & Timers
+  // Comprehensive Recipes Dataset
   const fallbackRecipes = [
     {
       slug: 'garlic-butter-chili-noodles',
@@ -4983,7 +4944,7 @@
       description: 'Uses pasta, garlic, butter, and that leftover chili flake packet in your drawer.',
       ingredients: ['Pasta', 'Garlic', 'Butter', 'Chili Flakes', 'Soy Sauce'],
       steps: [
-        { step: 1, instruction: 'Boil pasta in a single pan with water and salt until al dente (approx 7 mins), then drain and set aside.', timer_min: 7 },
+        { step: 1, instruction: 'Boil pasta in a single pan with water and a pinch of salt until al dente (approx 7 mins), then drain and set aside.', timer_min: 7 },
         { step: 2, instruction: 'In the same pan, melt 2 tbsp butter over medium heat. Sauté 4 cloves of finely chopped garlic until aromatic and golden.', timer_min: 2 },
         { step: 3, instruction: 'Toss the boiled pasta into the fragrant garlic butter. Add 1 tsp chili flakes, 1 tbsp soy sauce, and stir-fry for 2 mins until well coated.', timer_min: 2 }
       ],
@@ -5029,37 +4990,69 @@
         { step: 3, instruction: 'Add 1.5 cups cooked rice, 2 tbsp water, mix thoroughly, cover pan and steam on low flame for 5 minutes.', timer_min: 5 }
       ],
       nutrition: { calories: 460, protein_g: 15, carbs_g: 72, fat_g: 12 }
+    },
+    {
+      slug: '10-min-cheesy-scrambled-eggs',
+      title: '10-Min Cheesy Soft Scramble',
+      badge: '⚡ Quick',
+      category: 'quick',
+      image: 'images/recipe_egg_toast.jpg',
+      cook_time_min: 6,
+      budget_inr: 40,
+      difficulty: 'Easy',
+      rating: 4.8,
+      single_pan: true,
+      description: 'Velvety soft eggs with melty cheese and black pepper for high-speed breakfast or midnight study snack.',
+      ingredients: ['Eggs', 'Cheese', 'Butter', 'Black Pepper'],
+      steps: [
+        { step: 1, instruction: 'Whisk 3 eggs with a dash of milk/water, salt, and black pepper.', timer_min: 1 },
+        { step: 2, instruction: 'Melt butter on low flame. Pour in eggs and gently push with a spatula from edges to center for soft curds.', timer_min: 3 },
+        { step: 3, instruction: 'Toss shredded cheese on top, turn off heat, and let residual heat melt cheese.', timer_min: 1 }
+      ],
+      nutrition: { calories: 320, protein_g: 21, carbs_g: 4, fat_g: 24 }
+    },
+    {
+      slug: 'high-protein-chicken-skillet',
+      title: 'Single-Skillet Garlic Chicken',
+      badge: '💪 Protein',
+      category: 'protein',
+      image: 'images/collection_protein.jpg',
+      cook_time_min: 16,
+      budget_inr: 85,
+      difficulty: 'Easy',
+      rating: 4.9,
+      single_pan: true,
+      description: 'Juicy seared chicken breast cubes with garlic butter glaze and 34g protein macros.',
+      ingredients: ['Chicken', 'Garlic', 'Butter', 'Onions', 'Black Pepper'],
+      steps: [
+        { step: 1, instruction: 'Cut 150g chicken into bite-sized cubes; season with salt, pepper, and garlic powder.', timer_min: 2 },
+        { step: 2, instruction: 'Sear in 1 tbsp oil over medium-high heat for 6 mins until golden on all sides.', timer_min: 6 },
+        { step: 3, instruction: 'Add 1 tbsp butter, minced garlic, and diced onions. Toss together for 3 mins until caramelized.', timer_min: 3 }
+      ],
+      nutrition: { calories: 420, protein_g: 34, carbs_g: 6, fat_g: 18 }
+    },
+    {
+      slug: 'broke-edition-onion-rice-toss',
+      title: 'End-of-Month Broke Rice Toss',
+      badge: '💰 Budget',
+      category: 'budget',
+      image: 'images/collection_budget.jpg',
+      cook_time_min: 10,
+      budget_inr: 30,
+      difficulty: 'Easy',
+      rating: 4.6,
+      single_pan: true,
+      description: 'Turn plain leftover rice and one humble onion into an aromatic savory bowl under ₹30.',
+      ingredients: ['Rice', 'Onions', 'Butter', 'Chili Flakes', 'Soy Sauce'],
+      steps: [
+        { step: 1, instruction: 'Heat 1 tbsp oil or butter. Sauté sliced onions until golden brown and crispy on edges.', timer_min: 4 },
+        { step: 2, instruction: 'Add leftover rice, splash of soy sauce, and chili flakes. Stir fry over high heat for 3 mins.', timer_min: 3 }
+      ],
+      nutrition: { calories: 360, protein_g: 7, carbs_g: 68, fat_g: 9 }
     }
   ];
 
-  // Initialize
-  document.addEventListener('DOMContentLoaded', () => {
-    initTheme();
-    fetchMatchingRecipes();
-    updateSavedCount();
-    
-    // Check cached auth user
-    const savedUser = localStorage.getItem('bachelorBite_user');
-    if (savedUser) {
-      try {
-        updateAuthNav(JSON.parse(savedUser));
-      } catch (e) {}
-    }
-
-    // Scroll listener for Back to Top Button
-    window.addEventListener('scroll', () => {
-      const btt = document.getElementById('backToTopBtn');
-      if (btt) {
-        if (window.scrollY > 400) {
-          btt.classList.add('visible');
-        } else {
-          btt.classList.remove('visible');
-        }
-      }
-    });
-  });
-
-  // Dark Mode Management
+  // ===== THEME MANAGEMENT =====
   function initTheme() {
     const savedTheme = localStorage.getItem('bachelorBite_theme');
     const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -5087,7 +5080,7 @@
     }
   }
 
-  // Toast Notification System
+  // ===== TOAST SYSTEM =====
   function showToast(message) {
     const container = document.getElementById('toastContainer');
     if (!container) return;
@@ -5102,7 +5095,695 @@
     }, 2800);
   }
 
-  // Quick Category Filters
+  // ===== USER STATS & BADGES ENGINE =====
+  const DEFAULT_USER_STATS = {
+    moneySaved: 2400,
+    mealsCooked: 18,
+    streakDays: 3,
+    lastCookDate: new Date().toISOString().split('T')[0],
+    xp: 180,
+    timeSavedMin: 216
+  };
+
+  const ALL_BADGES = [
+    {
+      id: 'first_meal',
+      title: 'First Flame',
+      icon: '🔥',
+      desc: 'Cooked your first 12-min single skillet meal',
+      check: (stats, history) => (stats.mealsCooked || history.length) >= 1
+    },
+    {
+      id: 'speed_demon',
+      title: '12-Min Speedster',
+      icon: '⚡',
+      desc: 'Completed a quick meal in 10 minutes or under',
+      check: (stats, history) => history.some(h => (h.cook_time_min || 12) <= 10)
+    },
+    {
+      id: 'single_pan_pro',
+      title: 'Single-Pan Samurai',
+      icon: '🍳',
+      desc: 'Cooked 3+ one-pan recipes with zero sink piles',
+      check: (stats, history) => (stats.mealsCooked || history.length) >= 3
+    },
+    {
+      id: 'pocket_saver',
+      title: 'Delivery Buster',
+      icon: '💰',
+      desc: 'Saved over ₹2,000 cooking at home vs takeout apps',
+      check: (stats) => (stats.moneySaved || 0) >= 2000
+    },
+    {
+      id: 'streak_beast',
+      title: 'Streak Titan',
+      icon: '🏆',
+      desc: 'Maintained a 3+ day consecutive cooking streak',
+      check: (stats) => (stats.streakDays || 0) >= 3
+    },
+    {
+      id: 'midnight_master',
+      title: 'Midnight Maestro',
+      icon: '🌙',
+      desc: 'Cooked a late-night hunger-buster study craving meal',
+      check: (stats, history) => history.some(h => h.isMidnight || (h.date && (h.date.includes('PM') || h.date.includes('AM'))))
+    }
+  ];
+
+  function getUserStats() {
+    const stored = localStorage.getItem('bachelorBite_stats');
+    if (!stored) {
+      localStorage.setItem('bachelorBite_stats', JSON.stringify(DEFAULT_USER_STATS));
+      return { ...DEFAULT_USER_STATS };
+    }
+    try {
+      return JSON.parse(stored);
+    } catch (e) {
+      return { ...DEFAULT_USER_STATS };
+    }
+  }
+
+  function saveUserStats(stats) {
+    localStorage.setItem('bachelorBite_stats', JSON.stringify(stats));
+    updateDashboardHeaderStats(stats);
+  }
+
+  function getCookingHistory() {
+    const stored = localStorage.getItem('bachelorBite_history');
+    if (!stored) {
+      const initialHistory = [
+        {
+          slug: 'crispy-egg-cheese-toast-fold',
+          title: 'Crispy Egg & Cheese Toast Fold',
+          image: 'images/recipe_egg_toast.jpg',
+          date: 'Yesterday, 8:45 PM',
+          budget_inr: 45,
+          saved_inr: 155,
+          cook_time_min: 8,
+          isMidnight: false
+        },
+        {
+          slug: 'garlic-butter-chili-noodles',
+          title: 'Garlic Butter Chili Noodles',
+          image: 'images/recipe_noodles.jpg',
+          date: '2 days ago, 11:30 PM',
+          budget_inr: 50,
+          saved_inr: 150,
+          cook_time_min: 12,
+          isMidnight: true
+        }
+      ];
+      localStorage.setItem('bachelorBite_history', JSON.stringify(initialHistory));
+      return initialHistory;
+    }
+    try {
+      return JSON.parse(stored);
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveCookingHistory(history) {
+    localStorage.setItem('bachelorBite_history', JSON.stringify(history));
+  }
+
+  function getUserPreferences() {
+    const stored = localStorage.getItem('bachelorBite_prefs');
+    if (!stored) {
+      return { diet: 'all', cookware: 'single-pan', goal: 'quick', spice: 'medium' };
+    }
+    try {
+      return JSON.parse(stored);
+    } catch (e) {
+      return { diet: 'all', cookware: 'single-pan', goal: 'quick', spice: 'medium' };
+    }
+  }
+
+  function saveUserPreferences(prefs) {
+    localStorage.setItem('bachelorBite_prefs', JSON.stringify(prefs));
+  }
+
+  function calculateChefLevel(xp) {
+    if (xp < 100) {
+      return { level: 1, title: '⭐ Level 1: Noodle Novice', currentXp: xp, nextLevelXp: 100, nextTitle: 'Skillet Specialist' };
+    } else if (xp < 250) {
+      return { level: 2, title: '🍳 Level 2: Skillet Specialist', currentXp: xp - 100, nextLevelXp: 150, nextTitle: 'Pantry Master' };
+    } else if (xp < 500) {
+      return { level: 3, title: '🥗 Level 3: Pantry Master', currentXp: xp - 250, nextLevelXp: 250, nextTitle: 'Master Bachelor Chef' };
+    } else {
+      return { level: 4, title: '👑 Level 4: Master Bachelor Chef', currentXp: xp - 500, nextLevelXp: 500, nextTitle: 'Legendary Solo Cook' };
+    }
+  }
+
+  function updateDashboardHeaderStats(stats) {
+    if (!stats) stats = getUserStats();
+    const statSavedMoney = document.getElementById('statSavedMoney');
+    const statCookCount = document.getElementById('statCookCount');
+    if (statSavedMoney) statSavedMoney.textContent = '₹' + (stats.moneySaved || 2400).toLocaleString();
+    if (statCookCount) statCookCount.textContent = (stats.mealsCooked || 18);
+  }
+
+  // ===== PROFILE DASHBOARD MODAL =====
+  function openProfileModal() {
+    renderProfileDashboard();
+    document.getElementById('profileModal').classList.add('active');
+  }
+
+  function closeProfileModal() {
+    document.getElementById('profileModal').classList.remove('active');
+    const msg = document.getElementById('profileFormMessage');
+    if (msg) msg.className = 'form-message';
+  }
+
+  function switchProfileTab(tabName, btn) {
+    document.querySelectorAll('.profile-tab-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+
+    document.querySelectorAll('.profile-tab-pane').forEach(p => p.classList.remove('active'));
+    const target = document.getElementById(`profTab${tabName.charAt(0).toUpperCase() + tabName.slice(1)}`);
+    if (target) target.classList.add('active');
+
+    if (tabName === 'badges') renderProfileBadges();
+    if (tabName === 'history') renderProfileHistory();
+    if (tabName === 'favorites') renderProfileFavorites();
+  }
+
+  function renderProfileDashboard() {
+    const stats = getUserStats();
+    const history = getCookingHistory();
+    const prefs = getUserPreferences();
+    const savedUser = JSON.parse(localStorage.getItem('bachelorBite_user') || 'null');
+
+    const displayName = savedUser?.displayName || savedUser?.name || 'Guest Solo Cook';
+    const email = savedUser?.email || 'guest@bachelorbite.app';
+    const initials = displayName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() || '👨‍🍳';
+
+    const modalAvatar = document.getElementById('modalProfileAvatar');
+    const modalName = document.getElementById('modalProfileName');
+    const modalEmail = document.getElementById('modalProfileEmail');
+    const modalBadge = document.getElementById('modalProfileBadge');
+
+    if (modalAvatar) modalAvatar.textContent = initials;
+    if (modalName) modalName.textContent = displayName;
+    if (modalEmail) modalEmail.textContent = email;
+
+    const chefRank = calculateChefLevel(stats.xp || 180);
+    if (modalBadge) modalBadge.textContent = chefRank.title;
+
+    const xpLvlLabel = document.getElementById('profileXpLevelLabel');
+    const xpNextLabel = document.getElementById('profileXpNextLabel');
+    const xpFill = document.getElementById('profileXpFill');
+
+    const xpPercent = Math.min(100, Math.round((chefRank.currentXp / chefRank.nextLevelXp) * 100));
+    if (xpLvlLabel) xpLvlLabel.textContent = `Chef Level ${chefRank.level} • ${stats.xp || 180} Total XP`;
+    if (xpNextLabel) xpNextLabel.textContent = `${chefRank.nextLevelXp - chefRank.currentXp} XP to ${chefRank.nextTitle}`;
+    if (xpFill) xpFill.style.width = `${xpPercent}%`;
+
+    const profStatSaved = document.getElementById('profStatSaved');
+    const profStatCooked = document.getElementById('profStatCooked');
+    const profStatStreak = document.getElementById('profStatStreak');
+    const profStatTimeSaved = document.getElementById('profStatTimeSaved');
+
+    if (profStatSaved) profStatSaved.textContent = '₹' + (stats.moneySaved || 2400).toLocaleString();
+    if (profStatCooked) profStatCooked.textContent = stats.mealsCooked || 18;
+    if (profStatStreak) profStatStreak.textContent = `${stats.streakDays || 3} Days 🔥`;
+    
+    const hoursSaved = ((stats.timeSavedMin || 216) / 60).toFixed(1);
+    if (profStatTimeSaved) profStatTimeSaved.textContent = `${hoursSaved} hrs`;
+
+    const targetSavings = 5000;
+    const progress = Math.min(100, Math.round(((stats.moneySaved || 2400) / targetSavings) * 100));
+    const mTitle = document.getElementById('milestoneTargetTitle');
+    const mText = document.getElementById('milestonePercentText');
+    const mFill = document.getElementById('milestoneFillBar');
+
+    if (mTitle) mTitle.textContent = `🎯 Milestone: ₹5,000 Takeout Bleed Saved`;
+    if (mText) mText.textContent = `${progress}% Complete (₹${(stats.moneySaved || 2400).toLocaleString()}/₹5,000)`;
+    if (mFill) mFill.style.width = `${progress}%`;
+
+    let unlockedCount = ALL_BADGES.filter(b => b.check(stats, history)).length;
+    const pill = document.getElementById('unlockedBadgeCountPill');
+    if (pill) pill.textContent = `${unlockedCount}/${ALL_BADGES.length}`;
+
+    const inputName = document.getElementById('profileInputName');
+    const inputDiet = document.getElementById('profileInputDiet');
+    const inputCookware = document.getElementById('profileInputCookware');
+    const inputGoal = document.getElementById('profileInputGoal');
+    const inputSpice = document.getElementById('profileInputSpice');
+
+    if (inputName) inputName.value = savedUser?.displayName || savedUser?.name || '';
+    if (inputDiet) inputDiet.value = prefs.diet || 'all';
+    if (inputCookware) inputCookware.value = prefs.cookware || 'single-pan';
+    if (inputGoal) inputGoal.value = prefs.goal || 'quick';
+    if (inputSpice) inputSpice.value = prefs.spice || 'medium';
+
+    updateDashboardHeaderStats(stats);
+  }
+
+  function renderProfileBadges() {
+    const grid = document.getElementById('profileBadgesGrid');
+    if (!grid) return;
+
+    const stats = getUserStats();
+    const history = getCookingHistory();
+
+    grid.innerHTML = ALL_BADGES.map(b => {
+      const isUnlocked = b.check(stats, history);
+      return `
+        <div class="badge-card ${isUnlocked ? 'unlocked' : 'locked'}">
+          <div class="badge-card-icon">${b.icon}</div>
+          <div class="badge-card-title">${b.title}</div>
+          <div class="badge-card-desc">${b.desc}</div>
+          <span class="badge-card-status">${isUnlocked ? '✓ Unlocked' : '🔒 In Progress'}</span>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function renderProfileHistory() {
+    const list = document.getElementById('profileHistoryList');
+    if (!list) return;
+
+    const history = getCookingHistory();
+    if (history.length === 0) {
+      list.innerHTML = `
+        <div style="text-align: center; padding: 32px; background: var(--bg-light); border-radius: 12px; border: 1px dashed var(--border);">
+          <div style="font-size: 2rem; margin-bottom: 8px;">🍳</div>
+          <div style="font-weight: 700; color: var(--text-dark);">No cooked meals logged yet!</div>
+          <p style="font-size: 0.85rem; color: var(--text-light); margin: 6px 0 14px;">Complete your first recipe with Step-by-Step Cook Mode to track live savings.</p>
+          <button class="btn btn-primary" onclick="closeProfileModal(); scrollToPantry();">Find a 12-Min Recipe →</button>
+        </div>
+      `;
+      return;
+    }
+
+    list.innerHTML = history.map(item => `
+      <div class="history-item">
+        <div class="history-item-left">
+          <img src="${item.image || 'images/recipe_egg_toast.jpg'}" alt="${item.title}" class="history-thumb">
+          <div>
+            <div class="history-title">${item.title}</div>
+            <div class="history-meta">⏱️ ${item.cook_time_min || 12}m • Cost: ₹${item.budget_inr || 45} • ${item.date}</div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span class="history-badge-saved">+₹${item.saved_inr || 140} Saved</span>
+          <button class="btn btn-secondary" style="padding: 6px 10px; font-size: 0.8rem;" onclick="cookFromHistory('${item.slug}')">Cook Again</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function renderProfileFavorites() {
+    const grid = document.getElementById('profileFavsGrid');
+    if (!grid) return;
+
+    const savedSlugs = JSON.parse(localStorage.getItem('bachelorBite_favorites') || '[]');
+    const favRecipes = fallbackRecipes.filter(r => savedSlugs.includes(r.slug));
+
+    if (favRecipes.length === 0) {
+      grid.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 32px; background: var(--bg-light); border-radius: 12px; border: 1px dashed var(--border);">
+          <div style="font-size: 2rem; margin-bottom: 8px;">❤️</div>
+          <div style="font-weight: 700; color: var(--text-dark);">No saved favorite recipes</div>
+          <p style="font-size: 0.85rem; color: var(--text-light); margin: 6px 0 14px;">Tap the heart icon on any recipe to save it here for instant access.</p>
+          <button class="btn btn-primary" onclick="closeProfileModal(); scrollToPantry();">Browse Recipes →</button>
+        </div>
+      `;
+      return;
+    }
+
+    grid.innerHTML = favRecipes.map(r => `
+      <div class="fav-profile-card">
+        <img src="${r.image}" alt="${r.title}" class="fav-profile-img">
+        <div class="fav-profile-body">
+          <div class="fav-profile-title">${r.title}</div>
+          <div style="font-size: 0.78rem; color: var(--text-light); margin-bottom: 8px;">⏱️ ${r.cook_time_min}m • ₹${r.budget_inr}</div>
+          <div class="fav-profile-actions">
+            <button class="btn btn-primary" style="flex: 1; padding: 6px 10px; font-size: 0.8rem;" onclick="cookFromFavorites('${r.slug}')">👨‍🍳 Cook</button>
+            <button class="btn btn-secondary" style="padding: 6px 10px; font-size: 0.8rem;" onclick="removeFavoriteFromProfile('${r.slug}')" title="Remove">✕</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function cookFromHistory(slug) {
+    closeProfileModal();
+    startCookingMode(slug);
+  }
+
+  function cookFromFavorites(slug) {
+    closeProfileModal();
+    startCookingMode(slug);
+  }
+
+  function removeFavoriteFromProfile(slug) {
+    toggleSaveRecipe(slug);
+    renderProfileFavorites();
+    renderProfileDashboard();
+  }
+
+  function handleProfileSave(event) {
+    event.preventDefault();
+    const newName = document.getElementById('profileInputName').value.trim();
+    const diet = document.getElementById('profileInputDiet').value;
+    const cookware = document.getElementById('profileInputCookware').value;
+    const goal = document.getElementById('profileInputGoal').value;
+    const spice = document.getElementById('profileInputSpice').value;
+    const msg = document.getElementById('profileFormMessage');
+    
+    let savedUser = localStorage.getItem('bachelorBite_user');
+    let userObj = savedUser ? JSON.parse(savedUser) : { email: 'guest@bachelorbite.app' };
+    
+    if (newName) {
+      userObj.displayName = newName;
+      userObj.name = newName;
+      localStorage.setItem('bachelorBite_user', JSON.stringify(userObj));
+      updateAuthNav(userObj);
+    }
+
+    saveUserPreferences({ diet, cookware, goal, spice });
+    renderProfileDashboard();
+
+    if (msg) {
+      msg.textContent = '✅ Profile & dietary goals saved successfully!';
+      msg.className = 'form-message success';
+      showToast('✨ Profile preferences updated!');
+      setTimeout(() => closeProfileModal(), 1200);
+    }
+  }
+
+  // ===== AUTH & NAVIGATION HEADER =====
+  function updateAuthNav(user) {
+    const box = document.getElementById('navAuthBox');
+    const userNavName = document.getElementById('userNavName');
+    const navAvatarCircle = document.getElementById('navAvatarCircle');
+    const dropdownAvatar = document.getElementById('dropdownAvatar');
+    const dropdownUserName = document.getElementById('dropdownUserName');
+    const dropdownUserEmail = document.getElementById('dropdownUserEmail');
+    const dropdownUserTier = document.getElementById('dropdownUserTier');
+    const dropdownAuthActionBtn = document.getElementById('dropdownAuthActionBtn');
+
+    if (user) {
+      const displayName = user.displayName || user.name || (user.email ? user.email.split('@')[0] : 'Solo Cook');
+      const initials = displayName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() || '👨‍🍳';
+
+      if (userNavName) userNavName.textContent = displayName;
+      if (navAvatarCircle) navAvatarCircle.textContent = initials.length > 0 ? initials : '👨‍🍳';
+      if (dropdownAvatar) dropdownAvatar.textContent = initials.length > 0 ? initials : '👨‍🍳';
+      if (dropdownUserName) dropdownUserName.textContent = displayName;
+      if (dropdownUserEmail) dropdownUserEmail.textContent = user.email || 'Verified Account';
+      if (dropdownUserTier) dropdownUserTier.textContent = '🌟 Verified Solo Chef';
+      if (dropdownAuthActionBtn) dropdownAuthActionBtn.innerHTML = '<span>🚪</span> Log Out';
+
+      if (box) {
+        box.innerHTML = `<button class="btn btn-secondary btn-nav-auth" onclick="handleLogout()">Log Out</button>`;
+      }
+    } else {
+      if (userNavName) userNavName.textContent = 'Guest Cook';
+      if (navAvatarCircle) navAvatarCircle.textContent = '👨‍🍳';
+      if (dropdownAvatar) dropdownAvatar.textContent = '👨‍🍳';
+      if (dropdownUserName) dropdownUserName.textContent = 'Guest Solo Cook';
+      if (dropdownUserEmail) dropdownUserEmail.textContent = 'guest@bachelorbite.app';
+      if (dropdownUserTier) dropdownUserTier.textContent = '⭐ Free Explorer';
+      if (dropdownAuthActionBtn) dropdownAuthActionBtn.innerHTML = '<span>🚀</span> Sign In / Join';
+
+      if (box) {
+        box.innerHTML = `
+          <button class="btn btn-primary btn-nav-auth" onclick="openForm('login')">Log In</button>
+          <button class="btn btn-secondary btn-nav-auth" onclick="openForm('signup')">Sign Up</button>
+        `;
+      }
+    }
+  }
+
+  function toggleProfileDropdown(event) {
+    if (event) event.stopPropagation();
+    const wrapper = document.getElementById('userProfileWrapper');
+    if (wrapper) wrapper.classList.toggle('active');
+  }
+
+  function closeProfileDropdown() {
+    const wrapper = document.getElementById('userProfileWrapper');
+    if (wrapper) wrapper.classList.remove('active');
+  }
+
+  function handleDropdownAuthAction() {
+    const savedUser = localStorage.getItem('bachelorBite_user');
+    if (savedUser) {
+      handleLogout();
+    } else {
+      openForm('signup');
+    }
+  }
+
+  function setAuthMode(mode) {
+    authMode = mode;
+    const tabSignup = document.getElementById('tabSignup');
+    const tabLogin = document.getElementById('tabLogin');
+    const authModalTitle = document.getElementById('authModalTitle');
+    const authModalSubtitle = document.getElementById('authModalSubtitle');
+    const groupName = document.getElementById('groupName');
+    const groupPhone = document.getElementById('groupPhone');
+    const submitBtn = document.getElementById('submitBtn');
+    const authSwitchLink = document.getElementById('authSwitchLink');
+    const formMessage = document.getElementById('formMessage');
+
+    if (formMessage) {
+      formMessage.className = 'form-message';
+      formMessage.textContent = '';
+    }
+
+    if (mode === 'signup') {
+      if (tabSignup) tabSignup.classList.add('active');
+      if (tabLogin) tabLogin.classList.remove('active');
+      if (authModalTitle) authModalTitle.textContent = 'Join BachelorBite';
+      if (authModalSubtitle) authModalSubtitle.textContent = 'Get instant access to easy recipes & save ₹6,000/month';
+      if (groupName) groupName.style.display = 'block';
+      if (groupPhone) groupPhone.style.display = 'block';
+      const nameInput = document.getElementById('name');
+      if (nameInput) nameInput.required = true;
+      if (submitBtn) submitBtn.textContent = 'Create Account & Get Access';
+      if (authSwitchLink) authSwitchLink.innerHTML = 'Already have an account? <a onclick="setAuthMode(\'login\')">Log In</a>';
+    } else {
+      if (tabLogin) tabLogin.classList.add('active');
+      if (tabSignup) tabSignup.classList.remove('active');
+      if (authModalTitle) authModalTitle.textContent = 'Welcome Back!';
+      if (authModalSubtitle) authModalSubtitle.textContent = 'Log in to continue cooking quick & delicious meals';
+      if (groupName) groupName.style.display = 'none';
+      if (groupPhone) groupPhone.style.display = 'none';
+      const nameInput = document.getElementById('name');
+      if (nameInput) nameInput.required = false;
+      if (submitBtn) submitBtn.textContent = 'Log In to BachelorBite';
+      if (authSwitchLink) authSwitchLink.innerHTML = 'Don\'t have an account? <a onclick="setAuthMode(\'signup\')">Sign Up</a>';
+    }
+  }
+
+  function openForm(mode = 'signup') {
+    setAuthMode(mode);
+    document.getElementById('formModal').classList.add('active');
+  }
+
+  function closeForm() {
+    document.getElementById('formModal').classList.remove('active');
+    const form = document.getElementById('contactForm');
+    if (form) form.reset();
+    const msg = document.getElementById('formMessage');
+    if (msg) msg.className = 'form-message';
+  }
+
+  async function handleAuthSubmit(event) {
+    event.preventDefault();
+    const name = document.getElementById('name') ? document.getElementById('name').value.trim() : '';
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const phone = document.getElementById('phone') ? document.getElementById('phone').value.trim() : '';
+    const submitBtn = document.getElementById('submitBtn');
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Processing...';
+
+    // 1. Try Firebase Authentication
+    if (window.firebaseAuth && window.fbAuth) {
+      try {
+        if (authMode === 'signup') {
+          const userCredential = await window.fbAuth.createUser(window.firebaseAuth, email, password);
+          if (name) {
+            await window.fbAuth.updateProfile(userCredential.user, { displayName: name });
+          }
+          const userObj = { email, displayName: name || email.split('@')[0], uid: userCredential.user.uid };
+          localStorage.setItem('bachelorBite_user', JSON.stringify(userObj));
+          updateAuthNav(userObj);
+          showSuccess('Account created successfully! Welcome to BachelorBite 🎉');
+        } else {
+          const userCredential = await window.fbAuth.signIn(window.firebaseAuth, email, password);
+          const userObj = { email, displayName: userCredential.user.displayName || email.split('@')[0], uid: userCredential.user.uid };
+          localStorage.setItem('bachelorBite_user', JSON.stringify(userObj));
+          updateAuthNav(userObj);
+          showSuccess('Logged in successfully! 🍳');
+        }
+
+        // Secondary SQLite & Google Sheets logging
+        fetch(`${API_BASE}/leads`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: name || email.split('@')[0], email, phone: phone || '9999999999' })
+        }).catch(() => {});
+
+        if (APPSCRIPT_URL && authMode === 'signup') {
+          fetch(APPSCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, phone, timestamp: new Date().toISOString() })
+          }).catch(() => {});
+        }
+
+        setTimeout(() => closeForm(), 1200);
+        submitBtn.disabled = false;
+        return;
+      } catch (err) {
+        console.warn('Firebase error, falling back to local lead registration:', err);
+        if (err.code && !err.message.includes('network') && !err.message.includes('fetch')) {
+          showError(mapAuthError(err));
+          submitBtn.disabled = false;
+          submitBtn.textContent = authMode === 'signup' ? 'Create Account & Get Access' : 'Log In to BachelorBite';
+          return;
+        }
+      }
+    }
+
+    // 2. Local / Server Fallback
+    try {
+      const resp = await fetch(`${API_BASE}/leads`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: name || email.split('@')[0], email, phone: phone || '9999999999' })
+      });
+      if (resp.ok) {
+        const data = await resp.json();
+        const userObj = { email, displayName: name || email.split('@')[0] };
+        localStorage.setItem('bachelorBite_user', JSON.stringify(userObj));
+        updateAuthNav(userObj);
+        showSuccess(data.message || 'Access granted! Welcome to BachelorBite 🎉');
+        setTimeout(() => closeForm(), 1200);
+        submitBtn.disabled = false;
+        return;
+      }
+    } catch (e) {}
+
+    // 3. Client Storage Fallback
+    const userObj = { email, displayName: name || email.split('@')[0] };
+    localStorage.setItem('bachelorBite_user', JSON.stringify(userObj));
+    updateAuthNav(userObj);
+    showSuccess('Access granted! Welcome to BachelorBite 🎉');
+    setTimeout(() => closeForm(), 1200);
+    submitBtn.disabled = false;
+  }
+
+  async function handleLogout() {
+    if (window.firebaseAuth && window.fbAuth) {
+      try {
+        await window.fbAuth.signOut(window.firebaseAuth);
+      } catch (e) {}
+    }
+    localStorage.removeItem('bachelorBite_user');
+    window.currentUser = null;
+    updateAuthNav(null);
+    showToast('👋 Logged out successfully');
+  }
+
+  function mapAuthError(err) {
+    const code = err.code || '';
+    if (code === 'auth/invalid-email') return 'Please enter a valid email address (e.g. you@example.com).';
+    if (code === 'auth/weak-password') return 'Password is too weak. Please use at least 6 characters.';
+    if (code === 'auth/email-already-in-use' || code === 'auth/email-already-exists') return 'This email address is already registered. Please log in instead.';
+    if (code === 'auth/wrong-password') return 'Incorrect password. Please double check and try again.';
+    if (code === 'auth/user-not-found') return 'No user account found with this email. Please sign up first.';
+    if (code === 'auth/invalid-credential') return 'Invalid email or password. Please verify your credentials.';
+    return err.message || 'An error occurred during authentication. Please try again.';
+  }
+
+  function showSuccess(message) {
+    const el = document.getElementById('formMessage');
+    if (el) {
+      el.className = 'form-message success';
+      el.textContent = message;
+    }
+    showToast(message);
+  }
+
+  function showError(message) {
+    const el = document.getElementById('formMessage');
+    if (el) {
+      el.className = 'form-message error';
+      el.textContent = message;
+    }
+  }
+
+  // ===== NAVIGATION & SCROLLSPY =====
+  function navigateToSection(sectionId) {
+    const el = document.getElementById(sectionId);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+    setActiveNavTab(sectionId);
+  }
+
+  function setActiveNavTab(targetSectionId) {
+    const navMap = {
+      'heroSection': 'navLinkHome',
+      'pantrySection': 'navLinkRecipes',
+      'collectionsSection': 'navLinkCollections',
+      'howItWorksSection': 'navLinkHow',
+      'calculatorSection': 'navLinkCalc',
+      'aboutSection': 'navLinkAbout'
+    };
+
+    document.querySelectorAll('.nav-link-item').forEach(link => link.classList.remove('active'));
+    const targetLink = document.getElementById(navMap[targetSectionId]);
+    if (targetLink) targetLink.classList.add('active');
+  }
+
+  function toggleMobileNav() {
+    const drawer = document.getElementById('mobileNavDrawer');
+    if (drawer) drawer.classList.toggle('open');
+  }
+
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function scrollToPantry() {
+    navigateToSection('pantrySection');
+  }
+
+  // ===== SITUATIONAL COLLECTIONS FILTER =====
+  function filterByCollection(collectionType) {
+    navigateToSection('pantrySection');
+    
+    if (collectionType === 'budget') {
+      setQuickCategory('budget', document.querySelector('.pantry-cat-pill:nth-child(4)'));
+      showToast('💰 Filtered: Broke Edition (Meals under ₹60)');
+    } else if (collectionType === 'quick') {
+      setQuickCategory('quick', document.querySelector('.pantry-cat-pill:nth-child(5)'));
+      showToast('⚡ Filtered: 10-Minute Hangry Meals');
+    } else if (collectionType === 'protein') {
+      setQuickCategory('protein', document.querySelector('.pantry-cat-pill:nth-child(3)'));
+      showToast('💪 Filtered: Single Skillet Gains (High Protein)');
+    } else if (collectionType === 'midnight') {
+      searchQuery = '';
+      const searchInput = document.getElementById('pantrySearchInput');
+      if (searchInput) searchInput.value = '';
+      setQuickCategory('all', document.querySelector('.pantry-cat-pill:nth-child(1)'));
+      activeFilters.time = '12';
+      fetchMatchingRecipes();
+      showToast('🌙 Filtered: Late-Night Study Cravings');
+    }
+  }
+
+  // ===== PANTRY INGREDIENTS & FILTERING =====
   function setQuickCategory(category, btn) {
     activeCategory = category;
     document.querySelectorAll('.pantry-cat-pill').forEach(b => b.classList.remove('active'));
@@ -5110,13 +5791,11 @@
     fetchMatchingRecipes();
   }
 
-  // Live Pantry Search Input
   function handlePantrySearch(query) {
     searchQuery = query.toLowerCase().trim();
     fetchMatchingRecipes();
   }
 
-  // Toggle Ingredient Chip
   function toggleChip(element) {
     element.classList.toggle('active');
     const ingredient = element.textContent.trim();
@@ -5135,7 +5814,6 @@
     showToast('Pantry selections cleared');
   }
 
-  // Toggle Filter Buttons
   function toggleFilter(btn, type, value) {
     const parentGroup = btn.parentElement;
     const isAlreadyActive = btn.classList.contains('active');
@@ -5150,7 +5828,6 @@
     fetchMatchingRecipes();
   }
 
-  // Fetch or Compute Matching Recipes
   async function fetchMatchingRecipes() {
     const ingredientsArray = Array.from(selectedIngredients);
     let recipes = [...fallbackRecipes];
@@ -5168,43 +5845,44 @@
 
       if (response.ok) {
         const data = await response.json();
-        recipes = data.recipes;
+        if (data.recipes && data.recipes.length > 0) {
+          recipes = data.recipes;
+        }
       }
     } catch (err) {}
 
-    // Apply Local Fallback Scoring
     let filtered = recipes.map(recipe => {
       const matched = recipe.ingredients.filter(i => 
         ingredientsArray.some(userI => i.toLowerCase().includes(userI.toLowerCase()) || userI.toLowerCase().includes(i.toLowerCase()))
       );
-      const matchScore = ingredientsArray.length === 0 ? 85 : Math.round((matched.length / recipe.ingredients.length) * 100);
+      const matchScore = ingredientsArray.length === 0 ? 90 : Math.round((matched.length / recipe.ingredients.length) * 100);
       return { ...recipe, match_score: matchScore };
     });
 
-    // Apply Budget Filter
     if (activeFilters.budget) {
       filtered = filtered.filter(r => r.budget_inr <= Number(activeFilters.budget));
     }
 
-    // Apply Time Filter
     if (activeFilters.time) {
       filtered = filtered.filter(r => r.cook_time_min <= Number(activeFilters.time));
     }
 
-    // Apply Category Tab Filter
+    if (activeFilters.cookware === 'single-pan') {
+      filtered = filtered.filter(r => r.single_pan === true);
+    }
+
     if (activeCategory === 'veg') {
       filtered = filtered.filter(r => r.badge.includes('Rice') || r.badge.includes('Pasta') || r.category === 'veg');
     } else if (activeCategory === 'protein') {
       filtered = filtered.filter(r => (r.nutrition && r.nutrition.protein_g >= 20) || r.category === 'protein');
     } else if (activeCategory === 'budget') {
-      filtered = filtered.filter(r => r.budget_inr <= 55);
+      filtered = filtered.filter(r => r.budget_inr <= 55 || r.category === 'budget');
     } else if (activeCategory === 'quick') {
-      filtered = filtered.filter(r => r.cook_time_min <= 12);
+      filtered = filtered.filter(r => r.cook_time_min <= 12 || r.category === 'quick');
     } else if (activeCategory === 'favorites') {
       filtered = filtered.filter(r => isRecipeSaved(r.slug));
     }
 
-    // Apply Live Search Query Filter
     if (searchQuery) {
       filtered = filtered.filter(r => 
         r.title.toLowerCase().includes(searchQuery) ||
@@ -5218,7 +5896,6 @@
     renderRecipeCards(filtered);
   }
 
-  // Render Recipe Cards with Heart Bookmarks & Macro Badges
   function renderRecipeCards(recipes) {
     const container = document.getElementById('pantryRecipeGrid');
     const matchCount = document.getElementById('matchResultsCount');
@@ -5289,7 +5966,6 @@
     }).join('');
   }
 
-  // Favorite / Bookmark Recipe
   function isRecipeSaved(slug) {
     const saved = JSON.parse(localStorage.getItem('bachelorBite_favorites') || '[]');
     return saved.includes(slug);
@@ -5320,7 +5996,7 @@
     if (statFavCount) statFavCount.textContent = saved.length;
   }
 
-  // Open Full Recipe Modal
+  // ===== RECIPE DETAIL MODAL & COOK GUIDE =====
   async function openRecipeModal(slug) {
     let recipe = cachedRecipes.find(r => r.slug === slug);
     if (!recipe || !recipe.steps) {
@@ -5408,7 +6084,6 @@
     document.getElementById('recipeModal').classList.add('active');
   }
 
-  // Interactive Live Cook Mode
   function startCookingMode(slug) {
     let recipe = cachedRecipes.find(r => r.slug === slug) || fallbackRecipes.find(r => r.slug === slug) || fallbackRecipes[0];
     currentCookingRecipe = recipe;
@@ -5492,8 +6167,52 @@
   }
 
   function finishCooking() {
-    showToast('🍳 Congratulations on cooking a fresh 12-min meal! 🎉');
+    const recipe = currentCookingRecipe || fallbackRecipes[0];
+    const stats = getUserStats();
+    const history = getCookingHistory();
+
+    const takeoutDiff = Math.max(80, 200 - (recipe.budget_inr || 50));
+    stats.moneySaved = (stats.moneySaved || 0) + takeoutDiff;
+    stats.mealsCooked = (stats.mealsCooked || 0) + 1;
+    stats.xp = (stats.xp || 0) + 35;
+    stats.timeSavedMin = (stats.timeSavedMin || 0) + 30;
+
+    const todayStr = new Date().toISOString().split('T')[0];
+    if (stats.lastCookDate !== todayStr) {
+      stats.streakDays = (stats.streakDays || 0) + 1;
+      stats.lastCookDate = todayStr;
+    }
+
+    saveUserStats(stats);
+
+    const now = new Date();
+    const timeFormatted = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const isMidnight = now.getHours() >= 23 || now.getHours() < 5;
+
+    const newHistoryEntry = {
+      slug: recipe.slug,
+      title: recipe.title,
+      image: recipe.image,
+      date: `Today, ${timeFormatted}`,
+      budget_inr: recipe.budget_inr || 45,
+      saved_inr: takeoutDiff,
+      cook_time_min: recipe.cook_time_min || 12,
+      isMidnight: isMidnight
+    };
+
+    history.unshift(newHistoryEntry);
+    saveCookingHistory(history);
+
+    playTimerChime();
+
+    showToast(`🎉 Meal Complete! Saved ₹${takeoutDiff} & earned +35 Chef XP! 🍳`);
+
+    setTimeout(() => {
+      showToast(`🏆 Total Saved: ₹${stats.moneySaved.toLocaleString()} across ${stats.mealsCooked} home meals!`);
+    }, 1800);
+
     closeRecipeModal();
+    updateDashboardHeaderStats(stats);
   }
 
   function closeRecipeModal() {
@@ -5501,7 +6220,6 @@
     document.getElementById('recipeModal').classList.remove('active');
   }
 
-  // Interactive Kitchen Countdown Timer with Sound Chime
   function startStepTimer(idx, minutes) {
     if (timerInterval) clearInterval(timerInterval);
 
@@ -5525,13 +6243,13 @@
 
       if (remainingSeconds <= 0) {
         clearInterval(timerInterval);
-        if (display) display.textContent = '🎉 READY!';
+        playTimerChime();
+        if (display) display.textContent = '00:00 - DONE! 🔔';
         if (timerBox) {
           timerBox.style.background = '#dcfce7';
-          timerBox.style.borderColor = '#16a34a';
+          timerBox.style.borderColor = '#10b981';
         }
-        playAudioChime();
-        showToast('🔔 Step timer finished! Ready for the next move.');
+        showToast('🔔 Cooking step timer finished! Check your skillet.');
       } else {
         remainingSeconds--;
       }
@@ -5541,27 +6259,29 @@
     timerInterval = setInterval(update, 1000);
   }
 
-  // Web Audio Synthesizer Chime
-  function playAudioChime() {
+  function playTimerChime() {
     try {
-      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContext) return;
+      const ctx = new AudioContext();
+      const notes = [523.25, 659.25, 783.99, 1046.50];
       const now = ctx.currentTime;
-      [523.25, 659.25, 783.99].forEach((freq, i) => {
+      notes.forEach((freq, i) => {
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(freq, now + i * 0.15);
-        gain.gain.setValueAtTime(0.3, now + i * 0.15);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.15 + 0.4);
+        osc.frequency.setValueAtTime(freq, now + i * 0.12);
+        gain.gain.setValueAtTime(0.25, now + i * 0.12);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.12 + 0.35);
         osc.connect(gain);
         gain.connect(ctx.destination);
-        osc.start(now + i * 0.15);
-        osc.stop(now + i * 0.15 + 0.4);
+        osc.start(now + i * 0.12);
+        osc.stop(now + i * 0.12 + 0.35);
       });
     } catch (e) {}
   }
 
-  // Savings Calculator
+  // ===== SAVINGS CALCULATOR =====
   function updateSlider(value) {
     const numValue = parseInt(value);
     const sliderEl = document.getElementById('sliderValue');
@@ -5579,9 +6299,7 @@
     if (saveEl) saveEl.textContent = '₹' + savings.toLocaleString();
   }
 
-  // ===== VAANGLY-STYLE DASHBOARD NAVIGATION & LOCATION LOGIC =====
-  let currentLocation = localStorage.getItem('bachelorBite_loc') || 'Kangeyam';
-
+  // ===== LOCATION HUB SELECTOR =====
   function initLocation() {
     const nameEl = document.getElementById('currentLocationName');
     const badgeEl = document.getElementById('orderCityBadge');
@@ -5592,10 +6310,8 @@
   function toggleLocationDropdown(event) {
     if (event) event.stopPropagation();
     const wrap = document.getElementById('locationSelectorWrap');
-    wrap.classList.toggle('active');
-    // Close user profile dropdown if open
-    const userWrap = document.getElementById('userProfileWrapper');
-    if (userWrap) userWrap.classList.remove('active');
+    if (wrap) wrap.classList.toggle('active');
+    closeProfileDropdown();
   }
 
   function selectLocation(cityName, subtext) {
@@ -5603,7 +6319,6 @@
     localStorage.setItem('bachelorBite_loc', cityName);
     initLocation();
     
-    // Update active check in dropdown
     document.querySelectorAll('.loc-item-btn').forEach(btn => {
       btn.classList.toggle('selected', btn.textContent.includes(cityName));
     });
@@ -5624,36 +6339,7 @@
     }, 800);
   }
 
-  // Smooth Navigation & Tab Highlighting
-  function navigateToSection(sectionId) {
-    const el = document.getElementById(sectionId);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
-    setActiveNavTab(sectionId);
-  }
-
-  function setActiveNavTab(targetSectionId) {
-    const navMap = {
-      'heroSection': 'navLinkHome',
-      'pantrySection': 'navLinkRecipes',
-      'howItWorksSection': 'navLinkHow',
-      'calculatorSection': 'navLinkCalc',
-      'aboutSection': 'navLinkAbout'
-    };
-
-    document.querySelectorAll('.nav-link-item').forEach(link => link.classList.remove('active'));
-    const targetLink = document.getElementById(navMap[targetSectionId]);
-    if (targetLink) targetLink.classList.add('active');
-  }
-
-  // Mobile Nav Drawer Toggle
-  function toggleMobileNav() {
-    const drawer = document.getElementById('mobileNavDrawer');
-    if (drawer) drawer.classList.toggle('open');
-  }
-
-  // ===== OPEN YOUR SHOP / PARTNER MODAL LOGIC =====
+  // ===== SHOP / PARTNER MODAL =====
   function openShopModal() {
     const modal = document.getElementById('shopModal');
     if (modal) modal.classList.add('active');
@@ -5666,7 +6352,7 @@
 
   function updatePartnerEarnings(bachelorCount) {
     const count = parseInt(bachelorCount) || 20;
-    const monthlyTotal = count * 60 * 30; // ₹60/meal * 30 days
+    const monthlyTotal = count * 60 * 30;
     const countEl = document.getElementById('partnerMealsCount');
     const valEl = document.getElementById('partnerEarningVal');
     if (countEl) countEl.textContent = count;
@@ -5680,21 +6366,22 @@
     const phone = document.getElementById('shopPhone').value;
     const msg = document.getElementById('shopFormMessage');
 
-    msg.className = 'form-message success';
-    msg.textContent = `🎉 Congratulations! ${name} has been registered for ${city}. Verification WhatsApp sent to ${phone}.`;
+    if (msg) {
+      msg.className = 'form-message success';
+      msg.textContent = `🎉 Congratulations! ${name} has been registered for ${city}. Verification WhatsApp sent to ${phone}.`;
+    }
     showToast(`✨ Partner shop registered: ${name}!`);
 
     setTimeout(() => {
       closeShopModal();
-      msg.textContent = '';
+      if (msg) msg.textContent = '';
     }, 2500);
   }
 
-  // ===== APPOINTMENTS / DAILY TIFFIN LOGIC =====
+  // ===== DAILY TIFFIN & APPOINTMENTS =====
   function openAppointmentsModal() {
     const modal = document.getElementById('appointmentsModal');
     if (modal) modal.classList.add('active');
-    // Set default date to today/tomorrow
     const dateInput = document.getElementById('aptDate');
     if (dateInput && !dateInput.value) {
       const today = new Date().toISOString().split('T')[0];
@@ -5709,23 +6396,24 @@
 
   function handleAppointmentSubmit(event) {
     event.preventDefault();
-    const plan = document.getElementById('aptMealPlan').value;
     const date = document.getElementById('aptDate').value;
     const slot = document.getElementById('aptTimeSlot').value;
     const addr = document.getElementById('aptAddress').value;
     const msg = document.getElementById('aptFormMessage');
 
-    msg.className = 'form-message success';
-    msg.textContent = `✅ Meal scheduled for ${date} (${slot}) at ${addr}! Confirmation SMS dispatched.`;
+    if (msg) {
+      msg.className = 'form-message success';
+      msg.textContent = `✅ Meal scheduled for ${date} (${slot}) at ${addr}! Confirmation SMS dispatched.`;
+    }
     showToast(`📅 Meal Appointment confirmed for ${date}!`);
 
     setTimeout(() => {
       closeAppointmentsModal();
-      msg.textContent = '';
+      if (msg) msg.textContent = '';
     }, 2500);
   }
 
-  // ===== SERVICES HUB LOGIC =====
+  // ===== SERVICES & MEAL KITS HUB =====
   function openServicesModal() {
     const modal = document.getElementById('servicesModal');
     if (modal) modal.classList.add('active');
@@ -5736,7 +6424,6 @@
     if (modal) modal.classList.remove('active');
   }
 
-  // Quick Meal Kit Order Simulator
   function handleQuickOrder(kitTitle, price) {
     showToast(`🛒 Added ${kitTitle} (₹${price}) to your cart!`);
     setTimeout(() => {
@@ -5744,59 +6431,20 @@
     }, 1200);
   }
 
-  // Global Outside Click Listener
-  document.addEventListener('click', (e) => {
-    const profWrap = document.getElementById('userProfileWrapper');
-    if (profWrap && !profWrap.contains(e.target)) {
-      profWrap.classList.remove('active');
-    }
-  });
-
-  // Modal Backdrop Click Closers
-  ['shopModal', 'appointmentsModal', 'servicesModal', 'formModal', 'recipeModal', 'profileModal'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.addEventListener('click', function(e) {
-        if (e.target === this) {
-          this.classList.remove('active');
-        }
-      });
-    }
-  });
-
-  // Highlight Nav Links on Scroll
-  window.addEventListener('scroll', () => {
-    const scrollPos = window.scrollY + 200;
-    const sections = ['heroSection', 'pantrySection', 'howItWorksSection', 'calculatorSection', 'aboutSection'];
-    for (let secId of sections) {
-      const el = document.getElementById(secId);
-      if (el) {
-        const top = el.offsetTop;
-        const height = el.offsetHeight;
-        if (scrollPos >= top && scrollPos < top + height) {
-          setActiveNavTab(secId);
-          break;
-        }
-      }
-    }
-  });
-
-  // ===== PROGRESSIVE WEB APP (PWA) INSTALLATION ENGINE =====
+  // ===== PWA ENGINE =====
   let deferredPwaPrompt = null;
 
-  // Check if app is running in installed standalone mode
   function isRunningStandalone() {
     return window.matchMedia('(display-mode: standalone)').matches ||
            window.navigator.standalone === true ||
            document.referrer.includes('android-app://');
   }
 
-  // Register Service Worker for offline capability & PWA installability
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/sw.js')
         .then((reg) => {
-          console.log('⚡ [PWA] Service Worker registered successfully! Scope:', reg.scope);
+          console.log('⚡ [PWA] Service Worker registered scope:', reg.scope);
         })
         .catch((err) => {
           console.warn('⚠️ [PWA] Service Worker registration failed:', err);
@@ -5804,14 +6452,10 @@
     });
   }
 
-  // Capture beforeinstallprompt event from browser
   window.addEventListener('beforeinstallprompt', (e) => {
-    // Prevent default mini-infobar on mobile Chrome
     e.preventDefault();
     deferredPwaPrompt = e;
-    console.log('📱 [PWA] beforeinstallprompt event captured and ready.');
 
-    // Reveal Install UI elements if not already dismissed or installed
     if (!isRunningStandalone()) {
       const navInstallBtn = document.getElementById('navInstallPwaBtn');
       const mobileDrawerBtn = document.getElementById('mobileDrawerInstallBtn');
@@ -5820,7 +6464,6 @@
       if (navInstallBtn) navInstallBtn.style.display = 'inline-flex';
       if (mobileDrawerBtn) mobileDrawerBtn.style.display = 'flex';
 
-      // Show top strip banner unless dismissed in this session
       const dismissed = sessionStorage.getItem('bachelorBite_pwa_dismissed');
       if (stripBanner && !dismissed) {
         stripBanner.style.display = 'block';
@@ -5828,15 +6471,11 @@
     }
   });
 
-  // Trigger PWA Installation Prompt
   async function triggerPwaInstall() {
     if (deferredPwaPrompt) {
       try {
-        // Show native browser install prompt
         deferredPwaPrompt.prompt();
         const choiceResult = await deferredPwaPrompt.userChoice;
-        console.log('📲 [PWA] User choice outcome:', choiceResult.outcome);
-
         if (choiceResult.outcome === 'accepted') {
           showToast('🚀 Installing BachelorBite to your device...');
           hideAllPwaInstallPrompts();
@@ -5844,21 +6483,16 @@
           showToast('Install cancelled. You can install anytime from the header!');
         }
         deferredPwaPrompt = null;
-      } catch (err) {
-        console.error('Error triggering PWA install prompt:', err);
-      }
+      } catch (err) {}
     } else if (/iphone|ipad|ipod/i.test(navigator.userAgent)) {
-      // iOS Safari does not support beforeinstallprompt; guide users
       showToast("📲 Tap the Share button (⎋) in Safari and choose 'Add to Home Screen'!");
     } else if (isRunningStandalone()) {
       showToast('✨ BachelorBite is already installed & running as an app!');
     } else {
-      // Desktop Chrome / Edge fallback instruction
       showToast("📲 Click the install icon (⊕) in your browser's address bar to install!");
     }
   }
 
-  // Dismiss Top Install Strip Banner
   function dismissPwaStrip() {
     const strip = document.getElementById('pwaInstallStrip');
     if (strip) {
@@ -5867,7 +6501,6 @@
     }
   }
 
-  // Hide all install prompts once installed
   function hideAllPwaInstallPrompts() {
     const strip = document.getElementById('pwaInstallStrip');
     const navInstallBtn = document.getElementById('navInstallPwaBtn');
@@ -5880,23 +6513,82 @@
     if (installedPill) installedPill.style.display = 'inline-flex';
   }
 
-  // Listen for successful installation
-  window.addEventListener('appinstalled', (evt) => {
-    console.log('🎉 [PWA] BachelorBite app was successfully installed!');
+  window.addEventListener('appinstalled', () => {
     deferredPwaPrompt = null;
     hideAllPwaInstallPrompts();
     showToast('🎉 BachelorBite installed! Launch it anytime from your home screen.');
   });
 
-  // Initial check on load
+  // ===== SINGLE CONSOLIDATED INITIALIZATION =====
   document.addEventListener('DOMContentLoaded', () => {
+    initTheme();
+    initLocation();
+    fetchMatchingRecipes();
+    updateSavedCount();
+    updateDashboardHeaderStats();
+    updateSlider(1500);
+
+    const savedUser = localStorage.getItem('bachelorBite_user');
+    if (savedUser) {
+      try {
+        updateAuthNav(JSON.parse(savedUser));
+      } catch (e) {}
+    }
+
     if (isRunningStandalone()) {
       hideAllPwaInstallPrompts();
     }
-  });
 
-  initLocation();
-  updateSlider(1500);
+    // Scroll listener for Back to Top Button & Scrollspy
+    window.addEventListener('scroll', () => {
+      const btt = document.getElementById('backToTopBtn');
+      if (btt) {
+        if (window.scrollY > 400) {
+          btt.classList.add('visible');
+        } else {
+          btt.classList.remove('visible');
+        }
+      }
+
+      const scrollPos = window.scrollY + 200;
+      const sections = ['heroSection', 'pantrySection', 'collectionsSection', 'howItWorksSection', 'calculatorSection', 'aboutSection'];
+      for (let secId of sections) {
+        const el = document.getElementById(secId);
+        if (el) {
+          const top = el.offsetTop;
+          const height = el.offsetHeight;
+          if (scrollPos >= top && scrollPos < top + height) {
+            setActiveNavTab(secId);
+            break;
+          }
+        }
+      }
+    });
+
+    // Outside click dismissers
+    document.addEventListener('click', (e) => {
+      const profWrap = document.getElementById('userProfileWrapper');
+      if (profWrap && !profWrap.contains(e.target)) {
+        profWrap.classList.remove('active');
+      }
+      const locWrap = document.getElementById('locationSelectorWrap');
+      if (locWrap && !locWrap.contains(e.target)) {
+        locWrap.classList.remove('active');
+      }
+    });
+
+    // Modal backdrop click dismissers
+    ['shopModal', 'appointmentsModal', 'servicesModal', 'formModal', 'recipeModal', 'profileModal'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('click', function(e) {
+          if (e.target === this) {
+            this.classList.remove('active');
+          }
+        });
+      }
+    });
+  });
 </script>
 
 <!-- Floating Back to Top Button -->
