@@ -54,11 +54,14 @@ Bachelor-s-Bite/
 
 ## 🔌 Backend REST API Reference
 
-The backend runs on **Node.js**, **Express**, and native **SQLite** (`node:sqlite`).
+The backend runs on **Node.js**, **Express**, and supports **TiDB Cloud** (distributed MySQL-compatible cloud database) with local fallback.
 
 | Method | Endpoint | Description |
 |---|---|---|
-| `GET` | `/api/health` | Service status check |
+| `GET` | `/api/health` | Service & database status check (TiDB Cloud / SQLite) |
+| `GET` | `/api/database/status` | Detailed TiDB Cloud connectivity status |
+| `POST` | `/api/auth/signup` | Native account registration (stores users in TiDB / db) |
+| `POST` | `/api/auth/login` | Native account login & credential verification |
 | `GET` | `/api/recipes` | List recipes (filters: `budget_max`, `time_max`, `cookware`, `category`, `search`) |
 | `GET` | `/api/recipes/:idOrSlug` | Detailed recipe with ingredients, cooking steps, and ratings metadata |
 | `POST` | `/api/recipes/match` | Intelligent pantry matcher: matches ingredient array and computes % match scores |
@@ -66,6 +69,24 @@ The backend runs on **Node.js**, **Express**, and native **SQLite** (`node:sqlit
 | `GET` | `/api/collections/:slug/recipes` | Recipes for a specific collection |
 | `POST` | `/api/leads` | Register waitlist lead with email & phone validation |
 | `GET` | `/api/leads` | Retrieve registered leads |
+
+---
+
+## ☁️ Connecting to TiDB Cloud
+
+1. Create a free cluster on [TiDB Cloud](https://tidbcloud.com).
+2. Go to your cluster overview and click **Connect**.
+3. Choose **Connect with MySQL CLI / Node.js**.
+4. In your project root, open `.env.local` (or copy `.env.example` to `.env.local`) and paste your credentials:
+   ```env
+   TIDB_HOST=gateway01.ap-southeast-1.prod.aws.tidbcloud.com
+   TIDB_PORT=4000
+   TIDB_USER=your_username.root
+   TIDB_PASSWORD=your_password
+   TIDB_DATABASE=bachelor_bite
+   TIDB_ENABLE_SSL=true
+   ```
+5. When the server starts, it will automatically connect over SSL/TLS, create the `users`, `leads`, `recipes`, and `collections` tables, and seed initial data.
 
 ---
 
@@ -82,7 +103,7 @@ The backend runs on **Node.js**, **Express**, and native **SQLite** (`node:sqlit
    npm install
    ```
 
-3. Start the backend & frontend server:
+3. Start the server:
    ```bash
    npm start
    ```
@@ -102,8 +123,8 @@ The backend runs on **Node.js**, **Express**, and native **SQLite** (`node:sqlit
 ## 🛠️ Built With
 
 - **Frontend**: HTML5, Vanilla CSS3, Vanilla JavaScript (Dynamic pantry matcher, 1-to-5 star recipe ratings & review system, interactive cook mode)
-- **Backend API**: Node.js v24, Express.js, CORS
-- **Database**: SQLite via Node native `node:sqlite` (`bachelor_bite.db`)
+- **Backend API**: Node.js, Express.js, CORS
+- **Cloud Database**: TiDB Cloud (Serverless MySQL-compatible distributed SQL via `mysql2`) with automatic local fallback
 - **Automated Tests**: Custom zero-dependency Node HTTP integration test runner (`tests/api.test.js`)
 
 ---

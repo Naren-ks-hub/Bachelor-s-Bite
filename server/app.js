@@ -1,11 +1,19 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const dotenv = require('dotenv');
+
+// Load environment variables from .env.local and .env
+dotenv.config({ path: path.join(__dirname, '..', '.env.local') });
+dotenv.config({ path: path.join(__dirname, '..', '.env') });
+
 const apiRoutes = require('./routes');
 const { initDatabase } = require('./db');
+const { initTiDBDatabase } = require('./tidb');
 
-// Initialize database schema and seeds
+// Initialize database schema and seeds (TiDB Cloud if configured, SQLite fallback)
 initDatabase();
+initTiDBDatabase().catch(err => console.warn('TiDB background init:', err.message));
 
 const app = express();
 

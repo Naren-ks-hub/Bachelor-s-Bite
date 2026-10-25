@@ -9,6 +9,19 @@ db.exec('PRAGMA journal_mode = WAL;');
 db.exec('PRAGMA foreign_keys = ON;');
 
 function initDatabase() {
+  // 0. Users Table (Native Auth replacing Firebase)
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      email TEXT NOT NULL UNIQUE,
+      password_hash TEXT NOT NULL,
+      phone TEXT,
+      status TEXT DEFAULT 'active',
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+
   // 1. Leads Table
   db.exec(`
     CREATE TABLE IF NOT EXISTS leads (
@@ -250,27 +263,94 @@ function seedData() {
   }
 }
 
-// Database helper queries
+const { isTiDBConfigured, tidbQueries } = require('./tidb');
+
+// Database helper queries (seamlessly uses TiDB Cloud when configured, SQLite fallback)
 const dbQueries = {
+  // Users (Native Auth replacing Firebase)
+  createUser: async (name, email, passwordHash, phone) => {
+    if (isTiDBConfigured()) {
+      try {
+        return await tidbQueries.createUser(name, email, passwordHash, phone);
+      } catch (err) {
+        console.warn('TiDB createUser fallback to SQLite:', err.message);
+      }
+    }
+    const stmt = db.prepare('INSERT INTO users (name, email, password_hash, phone) VALUES (?, ?, ?, ?)');
+    const result = stmt.run(name, email, passwordHash, phone || '');
+    return { id: result.lastInsertRowid, name, email, phone };
+  },
+
+  getUserByEmail: async (email) => {
+    if (isTiDBConfigured()) {
+      try {
+        return await tidbQueries.getUserByEmail(email);
+      } catch (err) {
+        console.warn('TiDB getUserByEmail fallback to SQLite:', err.message);
+      }
+    }
+    return db.prepare('SELECT * FROM users WHERE email = ?').get(email) || null;
+  },
+
   // Leads
-  createLead: (name, email, phone) => {
+  createLead: async (name, email, phone) => {
+    if (isTiDBConfigured()) {
+      try {
+        return await tidbQueries.createLead(name, email, phone);
+      } catch (err) {
+        console.warn('TiDB createLead fallback to SQLite:', err.message);
+      }
+    }
     const stmt = db.prepare('INSERT INTO leads (name, email, phone) VALUES (?, ?, ?)');
     const result = stmt.run(name, email, phone);
     return { id: result.lastInsertRowid, name, email, phone };
   },
-  getLeadByEmail: (email) => {
+
+  getLeadByEmail: async (email) => {
+    if (isTiDBConfigured()) {
+      try {
+        return await tidbQueries.getLeadByEmail(email);
+      } catch (err) {
+        console.warn('TiDB getLeadByEmail fallback to SQLite:', err.message);
+      }
+    }
     return db.prepare('SELECT * FROM leads WHERE email = ?').get(email);
   },
-  getAllLeads: () => {
+
+  getAllLeads: async () => {
+    if (isTiDBConfigured()) {
+      try {
+        return await tidbQueries.getAllLeads();
+      } catch (err) {
+        console.warn('TiDB getAllLeads fallback to SQLite:', err.message);
+      }
+    }
     return db.prepare('SELECT id, name, email, phone, status, created_at FROM leads ORDER BY created_at DESC').all();
   },
 
   // Recipes
-  getAllRecipes: () => {
+  getAllRecipes: async () => {
+    if (isTiDBConfigured()) {
+      try {
+        const rows = await tidbQueries.getAllRecipes();
+        if (rows && rows.length > 0) return rows;
+      } catch (err) {
+        console.warn('TiDB getAllRecipes fallback to SQLite:', err.message);
+      }
+    }
     const rows = db.prepare('SELECT * FROM recipes ORDER BY rating DESC').all();
     return rows.map(formatRecipe);
   },
-  getRecipeByIdOrSlug: (idOrSlug) => {
+
+  getRecipeByIdOrSlug: async (idOrSlug) => {
+    if (isTiDBConfigured()) {
+      try {
+        const recipe = await tidbQueries.getRecipeByIdOrSlug(idOrSlug);
+        if (recipe) return recipe;
+      } catch (err) {
+        console.warn('TiDB getRecipeByIdOrSlug fallback to SQLite:', err.message);
+      }
+    }
     let row;
     if (isNaN(idOrSlug)) {
       row = db.prepare('SELECT * FROM recipes WHERE slug = ?').get(idOrSlug);
@@ -279,13 +359,30 @@ const dbQueries = {
     }
     return row ? formatRecipe(row) : null;
   },
-  getRecipesByCategory: (category) => {
+
+  getRecipesByCategory: async (category) => {
+    if (isTiDBConfigured()) {
+      try {
+        const rows = await tidbQueries.getRecipesByCategory(category);
+        if (rows && rows.length > 0) return rows;
+      } catch (err) {
+        console.warn('TiDB getRecipesByCategory fallback to SQLite:', err.message);
+      }
+    }
     const rows = db.prepare('SELECT * FROM recipes WHERE category = ? ORDER BY rating DESC').all(category);
     return rows.map(formatRecipe);
   },
 
   // Collections
-  getAllCollections: () => {
+  getAllCollections: async () => {
+    if (isTiDBConfigured()) {
+      try {
+        const rows = await tidbQueries.getAllCollections();
+        if (rows && rows.length > 0) return rows;
+      } catch (err) {
+        console.warn('TiDB getAllCollections fallback to SQLite:', err.message);
+      }
+    }
     return db.prepare('SELECT * FROM collections ORDER BY id ASC').all();
   }
 };

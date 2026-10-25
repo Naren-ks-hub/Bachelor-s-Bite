@@ -119,6 +119,27 @@ async function runTests() {
     const collectionsRes = await makeRequest('GET', '/api/collections');
     assert(collectionsRes.status === 200 && collectionsRes.body.count === 4, 'GET /api/collections returns 4 situational collections');
 
+    // 9. Database status check
+    const dbStatusRes = await makeRequest('GET', '/api/database/status');
+    assert(dbStatusRes.status === 200 && dbStatusRes.body.database === 'bachelor_bite', 'GET /api/database/status reports database status');
+
+    // 10. Native Auth Signup (Replaces Firebase)
+    const authEmail = `user_${Date.now()}@example.com`;
+    const signupRes = await makeRequest('POST', '/api/auth/signup', {
+      name: 'Naren Cook',
+      email: authEmail,
+      password: 'mypassword123',
+      phone: '+91 98765 00000'
+    });
+    assert(signupRes.status === 201 && signupRes.body.success === true, 'POST /api/auth/signup creates user successfully');
+
+    // 11. Native Auth Login
+    const loginRes = await makeRequest('POST', '/api/auth/login', {
+      email: authEmail,
+      password: 'mypassword123'
+    });
+    assert(loginRes.status === 200 && loginRes.body.success === true && loginRes.body.user.email === authEmail, 'POST /api/auth/login authenticates user successfully');
+
     console.log(`\n📊 Test Summary: ${passed} Passed, ${failed} Failed\n`);
   } catch (err) {
     console.error('Test execution error:', err);

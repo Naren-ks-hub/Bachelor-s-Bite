@@ -5255,26 +5255,20 @@
 <!-- 🔑 STEP 1: API KEYS & MASTER CONFIGURATION (PASTE YOUR API KEY HERE) -->
 <!-- ==================================================================== -->
 <script>
-  // 👇 PASTE YOUR FIREBASE / BACKEND API KEYS HERE 👇
+  // ====================================================================
+  // 🌐 MASTER BACKEND CONFIGURATION (TiDB Cloud Connected API)
+  // ====================================================================
   window.APP_CONFIG = {
-    // 🔑 FIREBASE API KEY (Replace this string with your Firebase API key)
-    FIREBASE_API_KEY: "AIzaSyCSd-ejb82ej2VDI6PpHomRnZ3AFLTCEj0", // <-- [LINE: PASTE YOUR FIREBASE API KEY HERE]
-    FIREBASE_AUTH_DOMAIN: "bachelor-bite-2619d.firebaseapp.com",
-    FIREBASE_PROJECT_ID: "bachelor-bite-2619d",
-    FIREBASE_STORAGE_BUCKET: "bachelor-bite-2619d.firebasestorage.app",
-    FIREBASE_MESSAGING_SENDER_ID: "717778624787",
-    FIREBASE_APP_ID: "1:717778624787:web:bfc46dc256b15a4d6bbae6",
+    // 🌐 BACKEND API BASE URL
+    API_BASE: "/api",
 
     // 📋 GOOGLE APPS SCRIPT WEB APP URL (Optional - For Google Sheets Sync)
     APPSCRIPT_URL: "https://script.google.com/macros/s/AKfycbz5UmQfKxDVZbyLODUAb9xDuEOkzVAAtuTJd5DSf_UiYwDk2bHtzCAiO_EPEmAJXRNbGQ/exec",
 
-    // 🌐 BACKEND API BASE URL
-    API_BASE: "/api"
+    // ☁️ DATABASE ENGINE
+    DATABASE_PROVIDER: "TiDB Cloud"
   };
 
-  // ====================================================================
-  // 👤 STEP 2: USER REGISTRATION & AUTHENTICATION VARIABLES
-  // ====================================================================
   // Stored user variables accessible across the application:
   window.registeredUserData = {
     name: "",         // Stores User's Full Name (e.g. "John Doe")
@@ -5282,59 +5276,17 @@
     password: "",     // Stores User's Password (captured during signup/login)
     phoneNumber: ""   // Stores User's Phone Number (e.g. "+91 98765 43210")
   };
-</script>
 
-<!-- ===== FIREBASE WEB SDK & AUTHENTICATION INITIALIZATION ===== -->
-<script type="module">
-  import { initializeApp, getApps, getApp } from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js';
-  import { 
-    getAuth, 
-    createUserWithEmailAndPassword, 
-    signInWithEmailAndPassword, 
-    signOut, 
-    onAuthStateChanged,
-    updateProfile 
-  } from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js';
-
-  const firebaseConfig = {
-    apiKey: window.APP_CONFIG.FIREBASE_API_KEY,
-    authDomain: window.APP_CONFIG.FIREBASE_AUTH_DOMAIN,
-    projectId: window.APP_CONFIG.FIREBASE_PROJECT_ID,
-    storageBucket: window.APP_CONFIG.FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: window.APP_CONFIG.FIREBASE_MESSAGING_SENDER_ID,
-    appId: window.APP_CONFIG.FIREBASE_APP_ID
-  };
-
-  // Initialize Firebase (guard against duplicate initialization)
-  const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-  const auth = getAuth(app);
-
-  window.firebaseApp = app;
-  window.firebaseAuth = auth;
-  window.fbAuth = {
-    createUser: createUserWithEmailAndPassword,
-    signIn: signInWithEmailAndPassword,
-    signOut: signOut,
-    onAuthStateChanged: onAuthStateChanged,
-    updateProfile: updateProfile
-  };
-
-  // Listen to auth state
-  onAuthStateChanged(auth, (user) => {
-    window.currentUser = user;
-    if (user) {
-      localStorage.setItem('bachelorBite_user', JSON.stringify({
-        uid: user.uid,
-        email: user.email,
-        displayName: user.displayName || user.email.split('@')[0]
-      }));
-    } else {
-      localStorage.removeItem('bachelorBite_user');
+  // Restore existing logged-in session on page load
+  try {
+    const savedUser = JSON.parse(localStorage.getItem('bachelorBite_user') || 'null');
+    if (savedUser) {
+      window.currentUser = savedUser;
+      document.addEventListener('DOMContentLoaded', () => {
+        if (typeof updateAuthNav === 'function') updateAuthNav(savedUser);
+      });
     }
-    updateAuthNav(user);
-  });
-
-  console.log('🔥 Firebase Authentication ready for project:', app.options.projectId);
+  } catch (e) {}
 </script>
 
 <script>
@@ -6055,105 +6007,64 @@
     submitBtn.disabled = true;
     submitBtn.textContent = 'Processing...';
 
-    // 3. Try Firebase Authentication
-    if (window.firebaseAuth && window.fbAuth) {
-      try {
-        if (authMode === 'signup') {
-          const userCredential = await window.fbAuth.createUser(window.firebaseAuth, emailId, password);
-          if (name) {
-            await window.fbAuth.updateProfile(userCredential.user, { displayName: name });
-          }
-          const userObj = { email: emailId, displayName: name || emailId.split('@')[0], uid: userCredential.user.uid, phone: phoneNumber };
-          localStorage.setItem('bachelorBite_user', JSON.stringify(userObj));
-          updateAuthNav(userObj);
-          showSuccess('Account created successfully! Welcome to BachelorBite 🎉');
-        } else {
-          const userCredential = await window.fbAuth.signIn(window.firebaseAuth, emailId, password);
-          const userObj = { email: emailId, displayName: userCredential.user.displayName || emailId.split('@')[0], uid: userCredential.user.uid };
-          localStorage.setItem('bachelorBite_user', JSON.stringify(userObj));
-          updateAuthNav(userObj);
-          showSuccess('Logged in successfully! 🍳');
-        }
-
-        // Secondary SQLite & Google Sheets logging
-        fetch(`${API_BASE}/leads`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name: name || emailId.split('@')[0], email: emailId, phone: phoneNumber || '9999999999' })
-        }).catch(() => {});
-
-        if (APPSCRIPT_URL && authMode === 'signup') {
-          fetch(APPSCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, email: emailId, phone: phoneNumber, timestamp: new Date().toISOString() })
-          }).catch(() => {});
-        }
-
-        setTimeout(() => closeForm(), 1200);
-        submitBtn.disabled = false;
-        return;
-      } catch (err) {
-        console.warn('Firebase error, falling back to local lead registration:', err);
-        if (err.code && !err.message.includes('network') && !err.message.includes('fetch')) {
-          showError(mapAuthError(err));
-          submitBtn.disabled = false;
-          submitBtn.textContent = authMode === 'signup' ? 'Create Account & Get Access' : 'Log In to BachelorBite';
-          return;
-        }
-      }
-    }
-
-    // 4. Local / Server Fallback
+    // 3. Authenticate via Backend API (TiDB Cloud / Native Auth)
     try {
-      const resp = await fetch(`${API_BASE}/leads`, {
+      const endpoint = authMode === 'signup' ? `${API_BASE}/auth/signup` : `${API_BASE}/auth/login`;
+      const resp = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: name || emailId.split('@')[0], email: emailId, phone: phoneNumber || '9999999999' })
+        body: JSON.stringify({ name, email: emailId, password, phone: phoneNumber })
       });
-      if (resp.ok) {
-        const data = await resp.json();
-        const userObj = { email: emailId, displayName: name || emailId.split('@')[0], phone: phoneNumber };
-        localStorage.setItem('bachelorBite_user', JSON.stringify(userObj));
-        updateAuthNav(userObj);
-        showSuccess(data.message || 'Access granted! Welcome to BachelorBite 🎉');
-        setTimeout(() => closeForm(), 1200);
+
+      const data = await resp.json();
+      if (!resp.ok) {
+        showError(data.error || 'Authentication failed. Please verify your details.');
         submitBtn.disabled = false;
+        submitBtn.textContent = authMode === 'signup' ? 'Create Account & Get Access' : 'Log In to BachelorBite';
         return;
       }
-    } catch (e) {}
 
-    // 5. Client Storage Fallback
-    const userObj = { email: emailId, displayName: name || emailId.split('@')[0], phone: phoneNumber };
-    localStorage.setItem('bachelorBite_user', JSON.stringify(userObj));
-    updateAuthNav(userObj);
-    showSuccess('Access granted! Welcome to BachelorBite 🎉');
-    setTimeout(() => closeForm(), 1200);
-    submitBtn.disabled = false;
+      const userObj = data.user || {
+        displayName: name || emailId.split('@')[0],
+        email: emailId,
+        phone: phoneNumber
+      };
+
+      localStorage.setItem('bachelorBite_user', JSON.stringify(userObj));
+      window.currentUser = userObj;
+      updateAuthNav(userObj);
+
+      // Optional Google Sheets logging
+      if (APPSCRIPT_URL && authMode === 'signup') {
+        fetch(APPSCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email: emailId, phone: phoneNumber, timestamp: new Date().toISOString() })
+        }).catch(() => {});
+      }
+
+      showSuccess(data.message || (authMode === 'signup' ? 'Account created successfully! Welcome 🎉' : 'Logged in successfully! 🍳'));
+      setTimeout(() => closeForm(), 1200);
+      submitBtn.disabled = false;
+      return;
+    } catch (err) {
+      console.warn('Network error during auth request, using local session:', err);
+      const userObj = { email: emailId, displayName: name || emailId.split('@')[0], phone: phoneNumber };
+      localStorage.setItem('bachelorBite_user', JSON.stringify(userObj));
+      window.currentUser = userObj;
+      updateAuthNav(userObj);
+      showSuccess(authMode === 'signup' ? 'Access granted! Welcome to BachelorBite 🎉' : 'Logged in successfully! 🍳');
+      setTimeout(() => closeForm(), 1200);
+      submitBtn.disabled = false;
+    }
   }
 
-  async function handleLogout() {
-    if (window.firebaseAuth && window.fbAuth) {
-      try {
-        await window.fbAuth.signOut(window.firebaseAuth);
-      } catch (e) {}
-    }
+  function handleLogout() {
     localStorage.removeItem('bachelorBite_user');
     window.currentUser = null;
     updateAuthNav(null);
     showToast('👋 Logged out successfully');
-  }
-
-  function mapAuthError(err) {
-    const code = err.code || '';
-    if (code === 'auth/invalid-email') return 'Please enter a valid email address (e.g. you@example.com).';
-    if (code === 'auth/weak-password') return 'Password is too weak. Please use at least 6 characters.';
-    if (code === 'auth/email-already-in-use' || code === 'auth/email-already-exists') return 'This email address is already registered. Please log in instead.';
-    if (code === 'auth/wrong-password') return 'Incorrect password. Please double check and try again.';
-    if (code === 'auth/user-not-found') return 'No user account found with this email. Please sign up first.';
-    if (code === 'auth/invalid-credential') return 'Invalid email or password. Please verify your credentials.';
-    return err.message || 'An error occurred during authentication. Please try again.';
   }
 
   function showSuccess(message) {

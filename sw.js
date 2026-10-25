@@ -42,13 +42,8 @@ self.addEventListener('activate', (event) => {
 
 // Fetch Event - Stale-While-Revalidate Strategy
 self.addEventListener('fetch', (event) => {
-  // Pass-through for non-GET requests or Firebase/Google auth domains
-  if (
-    event.request.method !== 'GET' ||
-    event.request.url.includes('googleapis.com') ||
-    event.request.url.includes('identitytoolkit') ||
-    event.request.url.includes('firebase')
-  ) {
+  // Pass-through for non-GET requests
+  if (event.request.method !== 'GET') {
     return;
   }
 
