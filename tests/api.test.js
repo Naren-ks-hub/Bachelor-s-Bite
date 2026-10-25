@@ -121,7 +121,7 @@ async function runTests() {
 
     // 9. Database status check
     const dbStatusRes = await makeRequest('GET', '/api/database/status');
-    assert(dbStatusRes.status === 200 && dbStatusRes.body.database === 'bachelor_bite', 'GET /api/database/status reports database status');
+    assert(dbStatusRes.status === 200 && Boolean(dbStatusRes.body.database), 'GET /api/database/status reports database status');
 
     // 10. Native Auth Signup (Replaces Firebase)
     const authEmail = `user_${Date.now()}@example.com`;

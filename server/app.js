@@ -25,9 +25,20 @@ app.use(express.urlencoded({ extended: true }));
 // API Routes
 app.use('/api', apiRoutes);
 
+// Ensure HTML and service worker are never cached inappropriately by browsers
+app.use((req, res, next) => {
+  if (req.path === '/' || req.path === '/index.html' || req.path === '/sw.js') {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+  }
+  next();
+});
+
 // Serve static frontend assets (HTML, CSS, JS, Images)
 const publicDir = path.join(__dirname, '..');
 app.use(express.static(publicDir));
+
 
 // Fallback to index.html for single-page style navigation
 app.get('*', (req, res, next) => {

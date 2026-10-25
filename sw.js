@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bachelorbite-v1.0.0';
+const CACHE_NAME = 'bachelorbite-v2.1.0-tidb';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -10,11 +10,11 @@ const STATIC_ASSETS = [
   '/bachelors bite.jpg'
 ];
 
-// Install Event - Pre-cache critical static shell
+// Install Event - Pre-cache critical static shell & activate immediately
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('⚡ [Service Worker] Pre-caching offline app shell');
+      console.log('⚡ [Service Worker v2.1.0] Pre-caching offline app shell');
       return cache.addAll(STATIC_ASSETS).catch((err) => {
         console.warn('⚠️ [Service Worker] Non-critical cache item skipped:', err);
       });
@@ -23,14 +23,14 @@ self.addEventListener('install', (event) => {
   self.skipWaiting();
 });
 
-// Activate Event - Clean up stale old caches
+// Activate Event - Clean up stale old caches (including legacy v1.0.0 Firebase caches)
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((name) => {
           if (name !== CACHE_NAME) {
-            console.log('🧹 [Service Worker] Purging old cache:', name);
+            console.log('🧹 [Service Worker] Purging legacy cache:', name);
             return caches.delete(name);
           }
         })
@@ -40,15 +40,17 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Fetch Event - Stale-While-Revalidate Strategy
+// Fetch Event
 self.addEventListener('fetch', (event) => {
   // Pass-through for non-GET requests
   if (event.request.method !== 'GET') {
     return;
   }
 
-  // API Requests: Network First with Cache Fallback
-  if (event.request.url.includes('/api/')) {
+  const url = new URL(event.request.url);
+
+  // 1. API Requests: Network First with Cache Fallback
+  if (url.pathname.startsWith('/api/')) {
     event.respondWith(
       fetch(event.request)
         .then((networkResponse) => {
@@ -63,11 +65,29 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Static Assets: Cache First, falling back to Network & updating cache
+  // 2. Navigation / HTML Requests: NETWORK FIRST to prevent serving stale Firebase code
+  if (event.request.mode === 'navigate' || url.pathname === '/' || url.pathname.endsWith('.html')) {
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const resClone = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, resClone));
+          }
+          return networkResponse;
+        })
+        .catch(() => {
+          console.log('⚡ [Service Worker] Network unavailable, falling back to cached app shell');
+          return caches.match('/index.html') || caches.match('/');
+        })
+    );
+    return;
+  }
+
+  // 3. Static Media Assets (Images, Icons, Fonts): Cache First with background revalidation
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) {
-        // Fetch in background to update cache
         fetch(event.request).then((networkResponse) => {
           if (networkResponse && networkResponse.status === 200) {
             caches.open(CACHE_NAME).then((cache) => cache.put(event.request, networkResponse));
@@ -83,11 +103,6 @@ self.addEventListener('fetch', (event) => {
         const resClone = networkResponse.clone();
         caches.open(CACHE_NAME).then((cache) => cache.put(event.request, resClone));
         return networkResponse;
-      }).catch(() => {
-        // Offline fallback to index.html for navigation requests
-        if (event.request.mode === 'navigate') {
-          return caches.match('/index.html');
-        }
       });
     })
   );

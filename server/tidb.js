@@ -53,6 +53,35 @@ function getTiDBPool() {
   return pool;
 }
 
+async function ensureTiDBDatabase() {
+  if (process.env.DATABASE_URL && !process.env.DATABASE_URL.includes('<username>')) return;
+  const host = process.env.TIDB_HOST;
+  const port = Number(process.env.TIDB_PORT) || 4000;
+  const user = process.env.TIDB_USER;
+  const password = process.env.TIDB_PASSWORD;
+  const database = process.env.TIDB_DATABASE || 'bachelors-bite';
+  const enableSSL = process.env.TIDB_ENABLE_SSL !== 'false';
+
+  try {
+    const bootstrapConfig = {
+      host,
+      port,
+      user,
+      password,
+      database: 'test'
+    };
+    if (enableSSL) {
+      bootstrapConfig.ssl = { minVersion: 'TLSv1.2', rejectUnauthorized: true };
+    }
+    const bootstrapConn = await mysql.createConnection(bootstrapConfig);
+    const escapedDb = '`' + database.replace(/`/g, '``') + '`';
+    await bootstrapConn.query(`CREATE DATABASE IF NOT EXISTS ${escapedDb};`);
+    await bootstrapConn.end();
+  } catch (err) {
+    // Proceed if 'test' db does not exist or user lacks permission
+  }
+}
+
 async function initTiDBDatabase() {
   if (!isTiDBConfigured()) {
     console.log('ℹ️  TiDB Cloud credentials not fully set in .env.local; using local database engine.');
@@ -60,6 +89,7 @@ async function initTiDBDatabase() {
   }
 
   try {
+    await ensureTiDBDatabase();
     const currentPool = getTiDBPool();
     const conn = await currentPool.getConnection();
     console.log('⚡ Connected to TiDB Cloud successfully!');
@@ -128,7 +158,7 @@ async function initTiDBDatabase() {
 
     // Seed recipes if empty
     const [recipeRows] = await conn.query('SELECT COUNT(*) as count FROM recipes');
-    if (recipeRows[0].count === 0) {
+    if (recipeRows[0].count < 6) {
       console.log('🌱 Seeding initial recipes to TiDB Cloud...');
       const initialRecipes = [
         [
@@ -191,6 +221,66 @@ async function initTiDBDatabase() {
             { step: 3, instruction: 'Add 1.5 cups cooked rice, 2 tbsp water, mix thoroughly, cover pan and steam on low flame for 5 minutes.' }
           ]),
           JSON.stringify({ calories: 460, protein_g: 15, carbs_g: 72, fat_g: 12 })
+        ],
+        [
+          'high-protein-chicken-skillet',
+          'High Protein Garlic Herb Chicken Skillet',
+          '💪 Protein',
+          'protein',
+          'images/collection_protein.jpg',
+          14,
+          110,
+          'Easy',
+          4.9,
+          1,
+          'Juicy seared chicken breast cubes tossed with garlic, butter, and black pepper.',
+          JSON.stringify(['Chicken', 'Garlic', 'Butter', 'Vegetables', 'Black Pepper']),
+          JSON.stringify([
+            { step: 1, instruction: 'Cut chicken breast into bite-sized 1-inch cubes; season with salt and crushed black pepper.' },
+            { step: 2, instruction: 'Heat butter in a skillet over high heat; sear chicken cubes undisturbed for 4 mins to get a golden crust.' },
+            { step: 3, instruction: 'Flip chicken, add minced garlic and mixed vegetables; stir-fry for 4 mins until chicken is cooked through and succulent.' }
+          ]),
+          JSON.stringify({ calories: 490, protein_g: 44, carbs_g: 8, fat_g: 22 })
+        ],
+        [
+          'single-skillet-egg-fried-rice',
+          'Quick 10-Minute Egg Fried Rice',
+          '⚡ Quick',
+          'quick',
+          'images/collection_quick.jpg',
+          10,
+          55,
+          'Easy',
+          4.8,
+          1,
+          'Street-style fried rice with scrambled eggs, onions, and soy sauce in 10 minutes flat.',
+          JSON.stringify(['Rice', 'Eggs', 'Onions', 'Garlic', 'Butter', 'Vegetables']),
+          JSON.stringify([
+            { step: 1, instruction: 'Sauté chopped onions and minced garlic in melted butter over high flame for 2 minutes.' },
+            { step: 2, instruction: 'Push veggies to one side of the pan, crack in 2 eggs, and scramble quickly for 1 minute.' },
+            { step: 3, instruction: 'Toss in cold cooked rice, soy sauce, and black pepper; stir-fry continuously on high heat for 3 minutes.' }
+          ]),
+          JSON.stringify({ calories: 430, protein_g: 18, carbs_g: 58, fat_g: 14 })
+        ],
+        [
+          'midnight-garlic-cheese-melt',
+          'Midnight Garlic & Cheese Pan Melt',
+          '🌙 Midnight',
+          'quick',
+          'images/collection_midnight.jpg',
+          6,
+          40,
+          'Easy',
+          4.9,
+          1,
+          'Crispy crust with molten garlic-herb cheese center for late study or work nights.',
+          JSON.stringify(['Bread', 'Cheese', 'Garlic', 'Butter', 'Chili Flakes']),
+          JSON.stringify([
+            { step: 1, instruction: 'Spread butter mixed with minced garlic on outer sides of two bread slices.' },
+            { step: 2, instruction: 'Generously layer cheese slices and chili flakes between bread.' },
+            { step: 3, instruction: 'Toast on a warm pan for 3 mins per side until golden brown and cheese is fully melted.' }
+          ]),
+          JSON.stringify({ calories: 370, protein_g: 14, carbs_g: 32, fat_g: 21 })
         ]
       ];
 
