@@ -1258,7 +1258,7 @@
       display: block;
     }
 
-    /* ===== RECIPE DETAIL MODAL & TIMER ===== */
+    /* ===== RECIPE DETAIL MODAL & 1-TO-5 STAR RATINGS ===== */
     .recipe-modal-content {
       max-width: 680px;
       max-height: 90vh;
@@ -1402,40 +1402,169 @@
       line-height: 1.5;
     }
 
-    .step-timer-box {
-      margin-top: 12px;
+    /* ===== 1 TO 5 STAR RECIPE RATINGS ===== */
+    .star-rating-display {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.9rem;
+      flex-wrap: wrap;
+    }
+
+    .star-cluster {
+      display: inline-flex;
+      gap: 2px;
+      color: #f59e0b;
+      font-size: 1.05rem;
+      line-height: 1;
+      letter-spacing: 1px;
+    }
+
+    .star-icon {
+      display: inline-block;
+      user-select: none;
+    }
+
+    .star-icon.filled {
+      color: #f59e0b;
+    }
+
+    .star-icon.empty {
+      color: #cbd5e1;
+    }
+
+    .star-icon.half {
+      position: relative;
+      display: inline-block;
+      color: #cbd5e1;
+    }
+
+    .star-icon.half::before {
+      content: '★';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 52%;
+      overflow: hidden;
+      color: #f59e0b;
+    }
+
+    .rating-number {
+      font-weight: 700;
+      color: var(--text-dark);
+      font-size: 0.88rem;
+    }
+
+    .rating-count {
+      font-size: 0.8rem;
+      color: var(--text-light);
+    }
+
+    /* Recipe Modal Rating Section & 1-5 Interactive Star Picker */
+    .recipe-modal-rating-section {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      margin: 16px 0 20px;
+    }
+
+    .rating-summary-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: #f8fafc;
-      border: 1px dashed var(--primary);
-      border-radius: var(--radius-sm);
-      padding: 8px 12px;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
     }
 
-    .step-timer-btn {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 6px 14px;
-      border-radius: var(--radius-sm);
-      font-size: 0.85rem;
+    .rating-big-badge {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .rating-big-num {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      line-height: 1;
+    }
+
+    .rating-stars-col {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .rating-recommend-tag {
+      font-size: 0.8rem;
+      color: #10b981;
       font-weight: 600;
-      cursor: pointer;
+      background: #ecfdf5;
+      padding: 3px 8px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .user-interactive-rate {
+      margin-top: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .user-rate-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .rate-stars-picker {
       display: inline-flex;
       align-items: center;
       gap: 6px;
     }
 
-    .step-timer-btn:hover {
-      background: var(--primary-dark);
+    .rate-star-btn {
+      background: none;
+      border: none;
+      padding: 4px 6px;
+      font-size: 1.75rem;
+      line-height: 1;
+      color: #cbd5e1;
+      cursor: pointer;
+      transition: transform 0.15s ease, color 0.15s ease;
+      border-radius: 4px;
     }
 
-    .step-timer-display {
-      font-family: monospace;
-      font-size: 1.1rem;
+    .rate-star-btn:hover {
+      transform: scale(1.22);
+    }
+
+    .rate-star-btn.active,
+    .rate-star-btn.hover-active {
+      color: #f59e0b;
+      text-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
+    }
+
+    .user-rate-feedback {
+      font-size: 0.82rem;
+      color: var(--text-light);
+      min-height: 18px;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .user-rate-feedback.rated-success {
+      color: #10b981;
       font-weight: 700;
-      color: var(--primary);
     }
 
     .filter-btn.active {
@@ -2949,9 +3078,26 @@
       border-color: #334155;
     }
 
-    body.dark-mode .step-timer-box {
+    body.dark-mode .recipe-modal-rating-section {
       background: #0f172a;
-      border-color: #3b82f6;
+      border-color: #334155;
+    }
+
+    body.dark-mode .rating-summary-row {
+      border-bottom-color: #334155;
+    }
+
+    body.dark-mode .star-icon.empty {
+      color: #475569;
+    }
+
+    body.dark-mode .rate-star-btn {
+      color: #475569;
+    }
+
+    body.dark-mode .rating-recommend-tag {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
     }
 
     body.dark-mode .recipe-quick-stats {
@@ -4257,7 +4403,7 @@
     <div class="section-header">
       <div class="section-badge">⚡ TAP & COOK • 12-MIN SPECIALS</div>
       <h2>Fast & Easy Bachelor Recipes</h2>
-      <p>Zero complicated jargon, 1-pan cleanup, and ingredients you actually have. Tap any dish below to launch live step timers, ingredient checklist, and guided cook mode!</p>
+      <p>Zero complicated jargon, 1-pan cleanup, and ingredients you actually have. Tap any dish below to check 1–5 star ratings, ingredient checklist, and guided step-by-step cook mode!</p>
     </div>
 
     <div class="bachelor-recipe-grid">
@@ -4274,6 +4420,13 @@
             <div class="bachelor-recipe-header">
               <h3 class="bachelor-recipe-title">Garlic Butter Chili Noodles</h3>
               <span class="bachelor-recipe-cost">₹45 / Meal</span>
+            </div>
+            <div class="star-rating-display" style="margin: 4px 0 8px;" title="4.9 out of 5 stars">
+              <span class="star-cluster">
+                <span class="star-icon filled">★</span><span class="star-icon filled">★</span><span class="star-icon filled">★</span><span class="star-icon filled">★</span><span class="star-icon filled">★</span>
+              </span>
+              <span class="rating-number">4.9</span>
+              <span class="rating-count">(142)</span>
             </div>
             <p class="bachelor-recipe-desc">Silky noodles stir-fried in aromatic garlic butter with crushed chili flakes & savory soy glaze.</p>
             
@@ -4315,6 +4468,13 @@
               <h3 class="bachelor-recipe-title">Crispy Egg & Cheese Toast Fold</h3>
               <span class="bachelor-recipe-cost">₹35 / Meal</span>
             </div>
+            <div class="star-rating-display" style="margin: 4px 0 8px;" title="4.9 out of 5 stars">
+              <span class="star-cluster">
+                <span class="star-icon filled">★</span><span class="star-icon filled">★</span><span class="star-icon filled">★</span><span class="star-icon filled">★</span><span class="star-icon filled">★</span>
+              </span>
+              <span class="rating-number">4.9</span>
+              <span class="rating-count">(186)</span>
+            </div>
             <p class="bachelor-recipe-desc">Gooey melted cheese wrapped inside crispy butter-toasted bread and golden scrambled eggs.</p>
             
             <div class="bachelor-pantry-chips">
@@ -4355,6 +4515,13 @@
               <h3 class="bachelor-recipe-title">One-Pan Smokey Bean Rice</h3>
               <span class="bachelor-recipe-cost">₹55 / Meal</span>
             </div>
+            <div class="star-rating-display" style="margin: 4px 0 8px;" title="4.7 out of 5 stars">
+              <span class="star-cluster">
+                <span class="star-icon filled">★</span><span class="star-icon filled">★</span><span class="star-icon filled">★</span><span class="star-icon filled">★</span><span class="star-icon half">★</span>
+              </span>
+              <span class="rating-number">4.7</span>
+              <span class="rating-count">(94)</span>
+            </div>
             <p class="bachelor-recipe-desc">Revives leftover rice with seasoned black beans, sautéed veggies, garlic, and cumin aroma.</p>
             
             <div class="bachelor-pantry-chips">
@@ -4394,6 +4561,13 @@
             <div class="bachelor-recipe-header">
               <h3 class="bachelor-recipe-title">Single-Skillet Garlic Toss</h3>
               <span class="bachelor-recipe-cost">₹75 / Meal</span>
+            </div>
+            <div class="star-rating-display" style="margin: 4px 0 8px;" title="4.9 out of 5 stars">
+              <span class="star-cluster">
+                <span class="star-icon filled">★</span><span class="star-icon filled">★</span><span class="star-icon filled">★</span><span class="star-icon filled">★</span><span class="star-icon filled">★</span>
+              </span>
+              <span class="rating-number">4.9</span>
+              <span class="rating-count">(210)</span>
             </div>
             <p class="bachelor-recipe-desc">High-protein chicken breast or golden paneer cubes seared in garlic butter and herbs.</p>
             
@@ -4446,7 +4620,7 @@
       <div class="step">
         <div class="step-number">3</div>
         <h3>Cook with Zero Stress</h3>
-        <p>Follow minimal instructions with tap-to-start timers. Eat a hearty hot meal, wipe one pan, and continue your night.</p>
+        <p>Follow minimal step-by-step instructions. Eat a hearty hot meal, wipe one pan, and continue your night.</p>
       </div>
     </div>
   </div>
@@ -4675,8 +4849,8 @@
         <div class="about-feature-item">
           <div class="about-feature-icon">⏱️</div>
           <div>
-            <h4 style="font-weight: 750; color: var(--text-dark); font-size: 1.05rem;">Interactive Cook Mode & Audio Chimes</h4>
-            <p style="font-size: 0.88rem; color: var(--text-light);">Live step-by-step guidance with timers built right into your browser.</p>
+            <h4 style="font-weight: 750; color: var(--text-dark); font-size: 1.05rem;">Interactive Cook Mode & Star Ratings</h4>
+            <p style="font-size: 0.88rem; color: var(--text-light);">Live step-by-step guidance and 1–5 star community ratings built right into your browser.</p>
           </div>
         </div>
       </div>
@@ -5040,7 +5214,7 @@
       <div class="service-card-item" onclick="closeServicesModal(); navigateToSection('orderSection');">
         <div class="service-card-icon">🛒</div>
         <div class="service-card-title">12-Min Quick Bachelor Recipes</div>
-        <div class="service-card-desc">Instant solo cooking guides, step-by-step timers, and ingredient survival hacks.</div>
+        <div class="service-card-desc">Instant solo cooking guides, 1–5 star ratings, and ingredient survival hacks.</div>
       </div>
 
       <div class="service-card-item" onclick="closeServicesModal(); openAppointmentsModal();">
@@ -5191,6 +5365,7 @@
       budget_inr: 50,
       difficulty: 'Easy',
       rating: 4.9,
+      rating_count: 142,
       single_pan: true,
       description: 'Uses pasta, garlic, butter, and that leftover chili flake packet in your drawer.',
       ingredients: ['Pasta', 'Garlic', 'Butter', 'Chili Flakes', 'Soy Sauce'],
@@ -5211,6 +5386,7 @@
       budget_inr: 45,
       difficulty: 'Easy',
       rating: 4.9,
+      rating_count: 186,
       single_pan: true,
       description: 'One skillet, 2 slices of stale bread, 2 beaten eggs, and gooey melted cheese.',
       ingredients: ['Eggs', 'Cheese', 'Butter', 'Bread', 'Black Pepper'],
@@ -5232,6 +5408,7 @@
       budget_inr: 65,
       difficulty: 'Medium',
       rating: 4.7,
+      rating_count: 94,
       single_pan: true,
       description: 'Breathes fresh life into yesterday\'s cold takeout rice with onions, spices and beans.',
       ingredients: ['Rice', 'Garlic', 'Onions', 'Vegetables', 'Butter'],
@@ -5252,6 +5429,7 @@
       budget_inr: 40,
       difficulty: 'Easy',
       rating: 4.8,
+      rating_count: 115,
       single_pan: true,
       description: 'Velvety soft eggs with melty cheese and black pepper for high-speed breakfast or midnight study snack.',
       ingredients: ['Eggs', 'Cheese', 'Butter', 'Black Pepper'],
@@ -5272,6 +5450,7 @@
       budget_inr: 85,
       difficulty: 'Easy',
       rating: 4.9,
+      rating_count: 210,
       single_pan: true,
       description: 'Juicy seared chicken breast cubes with garlic butter glaze and 34g protein macros.',
       ingredients: ['Chicken', 'Garlic', 'Butter', 'Onions', 'Black Pepper'],
@@ -5292,6 +5471,7 @@
       budget_inr: 30,
       difficulty: 'Easy',
       rating: 4.6,
+      rating_count: 83,
       single_pan: true,
       description: 'Turn plain leftover rice and one humble onion into an aromatic savory bowl under ₹30.',
       ingredients: ['Rice', 'Onions', 'Butter', 'Chili Flakes', 'Soy Sauce'],
@@ -6167,6 +6347,117 @@
     renderRecipeCards(filtered);
   }
 
+  // ===== RECIPE RATING SYSTEM (1 TO 5 STARS) =====
+  function getRecipeRatingData(slug) {
+    const savedRatings = JSON.parse(localStorage.getItem('bachelorBite_ratings') || '{}');
+    const userRating = savedRatings[slug] ? Number(savedRatings[slug]) : null;
+
+    const recipe = (cachedRecipes && cachedRecipes.find(r => r.slug === slug)) ||
+                   fallbackRecipes.find(r => r.slug === slug) || {};
+    const baseRating = Number(recipe.rating) || 4.8;
+    const baseCount = Number(recipe.rating_count) || 120;
+
+    if (userRating) {
+      const totalScore = (baseRating * baseCount) + userRating;
+      const count = baseCount + 1;
+      const avg = Math.round((totalScore / count) * 10) / 10;
+      return { avg, count, userRating };
+    }
+    return { avg: baseRating, count: baseCount, userRating: null };
+  }
+
+  function getStarIconsOnly(rating) {
+    const score = Number(rating) || 4.8;
+    let starsHtml = '';
+    for (let i = 1; i <= 5; i++) {
+      if (score >= i) {
+        starsHtml += '<span class="star-icon filled" aria-hidden="true">★</span>';
+      } else if (score >= i - 0.5) {
+        starsHtml += '<span class="star-icon half" aria-hidden="true">★</span>';
+      } else {
+        starsHtml += '<span class="star-icon empty" aria-hidden="true">☆</span>';
+      }
+    }
+    return starsHtml;
+  }
+
+  function renderStarRatingBadge(rating, count, options = {}) {
+    const score = Number(rating) || 4.8;
+    const starsHtml = getStarIconsOnly(score);
+    const countText = count !== undefined && count !== null ? `<span class="rating-count">(${count})</span>` : '';
+    return `
+      <div class="star-rating-display ${options.size || ''}" title="${score.toFixed(1)} out of 5 stars">
+        <span class="star-cluster">${starsHtml}</span>
+        <span class="rating-number">${score.toFixed(1)}</span>
+        ${countText}
+      </div>
+    `;
+  }
+
+  function submitRecipeRating(slug, stars) {
+    stars = Math.max(1, Math.min(5, Number(stars)));
+    const savedRatings = JSON.parse(localStorage.getItem('bachelorBite_ratings') || '{}');
+    savedRatings[slug] = stars;
+    localStorage.setItem('bachelorBite_ratings', JSON.stringify(savedRatings));
+
+    // Update fallback and cached recipes
+    const rIdx = fallbackRecipes.findIndex(r => r.slug === slug);
+    if (rIdx !== -1) {
+      const data = getRecipeRatingData(slug);
+      fallbackRecipes[rIdx].rating = data.avg;
+      fallbackRecipes[rIdx].rating_count = data.count;
+    }
+    const cIdx = cachedRecipes.findIndex(r => r.slug === slug);
+    if (cIdx !== -1) {
+      const data = getRecipeRatingData(slug);
+      cachedRecipes[cIdx].rating = data.avg;
+      cachedRecipes[cIdx].rating_count = data.count;
+    }
+
+    // Refresh UI
+    renderRecipeCards(cachedRecipes);
+    openRecipeModal(slug);
+
+    const labels = {
+      1: 'Needs improvement',
+      2: 'Fair',
+      3: 'Good bachelor meal',
+      4: 'Very tasty!',
+      5: 'Chef-level masterpiece!'
+    };
+    showToast(`⭐ You rated this ${stars} out of 5 stars (${labels[stars]})! Thank you!`);
+  }
+
+  function previewStars(stars) {
+    const buttons = document.querySelectorAll('.rate-star-btn');
+    buttons.forEach((btn, idx) => {
+      if (idx < stars) {
+        btn.classList.add('hover-active');
+      } else {
+        btn.classList.remove('hover-active');
+      }
+    });
+    const feedback = document.getElementById('userRateDynamicText');
+    if (feedback) {
+      const starTexts = ['1 Star (Needs work)', '2 Stars (Fair)', '3 Stars (Good)', '4 Stars (Very Good)', '5 Stars (Outstanding!)'];
+      feedback.textContent = starTexts[stars - 1] || '';
+    }
+  }
+
+  function resetPreviewStars(slug) {
+    const buttons = document.querySelectorAll('.rate-star-btn');
+    buttons.forEach(btn => btn.classList.remove('hover-active'));
+    const feedback = document.getElementById('userRateDynamicText');
+    if (feedback) {
+      const ratingData = getRecipeRatingData(slug);
+      if (ratingData.userRating) {
+        feedback.textContent = `You gave this ${ratingData.userRating} / 5 stars ⭐`;
+      } else {
+        feedback.textContent = 'Tap 1 to 5 stars to rate';
+      }
+    }
+  }
+
   function renderRecipeCards(recipes) {
     const container = document.getElementById('pantryRecipeGrid');
     const matchCount = document.getElementById('matchResultsCount');
@@ -6191,6 +6482,7 @@
     container.innerHTML = recipes.map(recipe => {
       const isSaved = isRecipeSaved(recipe.slug);
       const nut = recipe.nutrition || { calories: 380, protein_g: 15 };
+      const ratingData = getRecipeRatingData(recipe.slug);
       return `
       <div class="recipe-card">
         <div class="recipe-image">
@@ -6204,7 +6496,7 @@
         <div class="recipe-content">
           <div class="recipe-meta">
             <span style="font-weight: 600; color: var(--primary);">₹${recipe.budget_inr} • ${recipe.difficulty || 'Easy'}</span>
-            <span style="font-weight: 700;">⭐ ${recipe.rating || '4.8'}</span>
+            ${renderStarRatingBadge(ratingData.avg, ratingData.count)}
           </div>
           <h3 class="recipe-title">${recipe.title}</h3>
           <p class="recipe-desc">${recipe.description}</p>
@@ -6277,6 +6569,7 @@
     const modalBody = document.getElementById('recipeModalBody');
     const nutrition = recipe.nutrition || {};
     const isSaved = isRecipeSaved(recipe.slug);
+    const ratingData = getRecipeRatingData(recipe.slug);
 
     modalBody.innerHTML = `
       <div class="modal-hero">
@@ -6289,13 +6582,66 @@
       </div>
 
       <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
-        <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--text-dark);">${recipe.title}</h2>
+        <div>
+          <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--text-dark); margin-bottom: 4px;">${recipe.title}</h2>
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            ${renderStarRatingBadge(ratingData.avg, ratingData.count)}
+            <span style="font-size: 0.8rem; color: #10b981; font-weight: 600; background: #ecfdf5; padding: 2px 8px; border-radius: 999px;">
+              ✓ 98% Recommended
+            </span>
+          </div>
+        </div>
         <button class="recipe-heart-btn ${isSaved ? 'active' : ''}" style="position: static;" onclick="toggleSaveRecipe('${recipe.slug}'); openRecipeModal('${recipe.slug}');">
           ${isSaved ? '❤️' : '🤍'}
         </button>
       </div>
 
-      <p style="color: var(--text-light); font-size: 0.95rem;">${recipe.description}</p>
+      <p style="color: var(--text-light); font-size: 0.95rem; margin-top: 8px;">${recipe.description}</p>
+
+      <!-- 1 to 5 Star Interactive Rating Section -->
+      <div class="recipe-modal-rating-section">
+        <div class="rating-summary-row">
+          <div class="rating-big-badge">
+            <span class="rating-big-num">${ratingData.avg.toFixed(1)}</span>
+            <div class="rating-stars-col">
+              <div class="star-cluster" style="font-size: 1.3rem;">
+                ${getStarIconsOnly(ratingData.avg)}
+              </div>
+              <div style="font-size: 0.82rem; color: var(--text-light);">
+                Based on <strong>${ratingData.count}</strong> community ratings
+              </div>
+            </div>
+          </div>
+          <div class="rating-recommend-tag">
+            ⭐ 1 to 5 Star Rating
+          </div>
+        </div>
+
+        <div class="user-interactive-rate">
+          <div class="user-rate-title">
+            <span>${ratingData.userRating ? 'Your Rating (1 to 5 Stars):' : 'Rate this recipe (1 to 5 stars):'}</span>
+            <span id="userRateDynamicText" style="font-size: 0.8rem; font-weight: 600; color: var(--primary);">
+              ${ratingData.userRating ? `You gave this ${ratingData.userRating} / 5 stars ⭐` : 'Tap a star to rate'}
+            </span>
+          </div>
+          <div class="rate-stars-picker" id="rateStarsPicker">
+            ${[1, 2, 3, 4, 5].map(star => `
+              <button type="button" 
+                      class="rate-star-btn ${ratingData.userRating && ratingData.userRating >= star ? 'active' : ''}" 
+                      onclick="submitRecipeRating('${recipe.slug}', ${star})" 
+                      onmouseenter="previewStars(${star})" 
+                      onmouseleave="resetPreviewStars('${recipe.slug}')" 
+                      title="Rate ${star} Star${star > 1 ? 's' : ''}"
+                      aria-label="Rate ${star} out of 5 stars">
+                ★
+              </button>
+            `).join('')}
+          </div>
+          <div class="user-rate-feedback ${ratingData.userRating ? 'rated-success' : ''}">
+            ${ratingData.userRating ? `✓ You rated this recipe ${ratingData.userRating} out of 5 stars! Tap any star above to adjust.` : 'Tried this dish? Rate it from 1 to 5 stars to help fellow solo cooks!'}
+          </div>
+        </div>
+      </div>
 
       <div class="recipe-quick-stats">
         <div>
@@ -6338,15 +6684,9 @@
           <div class="step-card">
             <div class="step-card-header">
               <span class="step-badge">Step ${step.step || idx + 1}</span>
-              ${step.timer_min ? `<span style="font-size: 0.8rem; color: var(--text-light);">⏳ ${step.timer_min} min step</span>` : ''}
+              ${step.timer_min ? `<span style="font-size: 0.82rem; color: var(--text-light); font-weight: 600;">⏱️ Approx ${step.timer_min} mins</span>` : ''}
             </div>
             <div class="step-instruction">${step.instruction}</div>
-            ${step.timer_min ? `
-              <div class="step-timer-box" id="timerBox-${idx}">
-                <button class="step-timer-btn" onclick="startStepTimer(${idx}, ${step.timer_min})">▶ Start ${step.timer_min}m Timer</button>
-                <div class="step-timer-display" id="timerDisplay-${idx}">${String(step.timer_min).padStart(2, '0')}:00</div>
-              </div>
-            ` : ''}
           </div>
         `).join('')}
       </div>
@@ -6389,17 +6729,9 @@
       <div class="cook-step-card" style="margin-top: 20px;">
         <div class="cook-step-num">STEP ${step.step || currentStepIdx + 1}</div>
         <div class="cook-step-text">${step.instruction}</div>
-
         ${step.timer_min ? `
-          <div class="step-timer-box" id="cookTimerBox" style="margin-top: 20px; padding: 14px;">
-            <div>
-              <div style="font-weight: 700; font-size: 0.9rem;">⏳ Step Timer (${step.timer_min} min)</div>
-              <div style="font-size: 0.75rem; color: var(--text-light);">Timer will chime when ready</div>
-            </div>
-            <div style="display: flex; align-items: center; gap: 12px;">
-              <div class="step-timer-display" id="cookTimerDisplay" style="font-size: 1.4rem;">${String(step.timer_min).padStart(2, '0')}:00</div>
-              <button class="step-timer-btn" onclick="startStepTimer('cook', ${step.timer_min})">▶ Start</button>
-            </div>
+          <div style="margin-top: 14px; padding: 10px 14px; background: var(--bg-light); border-radius: var(--radius-sm); font-size: 0.85rem; color: var(--text-light); display: inline-flex; align-items: center; gap: 8px;">
+            <span>⏱️ Estimated time: approx ${step.timer_min} minutes</span>
           </div>
         ` : ''}
       </div>
@@ -6482,6 +6814,13 @@
       showToast(`🏆 Total Saved: ₹${stats.moneySaved.toLocaleString()} across ${stats.mealsCooked} home meals!`);
     }, 1800);
 
+    setTimeout(() => {
+      if (recipe && recipe.slug) {
+        openRecipeModal(recipe.slug);
+        showToast(`⭐ How was your ${recipe.title}? Leave a 1 to 5 star rating!`);
+      }
+    }, 3200);
+
     closeRecipeModal();
     updateDashboardHeaderStats(stats);
   }
@@ -6491,43 +6830,8 @@
     document.getElementById('recipeModal').classList.remove('active');
   }
 
-  function startStepTimer(idx, minutes) {
-    if (timerInterval) clearInterval(timerInterval);
-
-    let remainingSeconds = minutes * 60;
-    const display = document.getElementById(idx === 'cook' ? 'cookTimerDisplay' : `timerDisplay-${idx}`);
-    const timerBox = document.getElementById(idx === 'cook' ? 'cookTimerBox' : `timerBox-${idx}`);
-
-    if (timerBox) {
-      timerBox.style.background = '#e0f2fe';
-      timerBox.style.borderColor = '#0284c7';
-    }
-
-    showToast(`⏱️ ${minutes}-minute cooking timer started!`);
-
-    function update() {
-      const mins = Math.floor(remainingSeconds / 60);
-      const secs = remainingSeconds % 60;
-      if (display) {
-        display.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-      }
-
-      if (remainingSeconds <= 0) {
-        clearInterval(timerInterval);
-        playTimerChime();
-        if (display) display.textContent = '00:00 - DONE! 🔔';
-        if (timerBox) {
-          timerBox.style.background = '#dcfce7';
-          timerBox.style.borderColor = '#10b981';
-        }
-        showToast('🔔 Cooking step timer finished! Check your skillet.');
-      } else {
-        remainingSeconds--;
-      }
-    }
-
-    update();
-    timerInterval = setInterval(update, 1000);
+  function startStepTimer() {
+    // Start timer removed per user preference; replaced by step-by-step guidance and 1-5 star ratings
   }
 
   function playTimerChime() {

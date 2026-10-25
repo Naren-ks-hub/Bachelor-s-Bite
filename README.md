@@ -60,7 +60,7 @@ The backend runs on **Node.js**, **Express**, and native **SQLite** (`node:sqlit
 |---|---|---|
 | `GET` | `/api/health` | Service status check |
 | `GET` | `/api/recipes` | List recipes (filters: `budget_max`, `time_max`, `cookware`, `category`, `search`) |
-| `GET` | `/api/recipes/:idOrSlug` | Detailed recipe with ingredients, cooking steps, and timer metadata |
+| `GET` | `/api/recipes/:idOrSlug` | Detailed recipe with ingredients, cooking steps, and ratings metadata |
 | `POST` | `/api/recipes/match` | Intelligent pantry matcher: matches ingredient array and computes % match scores |
 | `GET` | `/api/collections` | List curated situational collections |
 | `GET` | `/api/collections/:slug/recipes` | Recipes for a specific collection |
@@ -101,7 +101,7 @@ The backend runs on **Node.js**, **Express**, and native **SQLite** (`node:sqlit
 
 ## 🛠️ Built With
 
-- **Frontend**: HTML5, Vanilla CSS3, Vanilla JavaScript (Dynamic pantry matcher, recipe detail modal with interactive kitchen timer)
+- **Frontend**: HTML5, Vanilla CSS3, Vanilla JavaScript (Dynamic pantry matcher, 1-to-5 star recipe ratings & review system, interactive cook mode)
 - **Backend API**: Node.js v24, Express.js, CORS
 - **Database**: SQLite via Node native `node:sqlite` (`bachelor_bite.db`)
 - **Automated Tests**: Custom zero-dependency Node HTTP integration test runner (`tests/api.test.js`)
