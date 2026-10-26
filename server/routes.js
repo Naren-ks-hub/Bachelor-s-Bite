@@ -242,13 +242,14 @@ router.get('/recipes/:idOrSlug', async (req, res) => {
 // 6. Intelligent Pantry Matching Engine
 router.post('/recipes/match', async (req, res) => {
   try {
-    const { ingredients = [], max_budget, max_time } = req.body;
+    const { ingredients = [], expiring_ingredients = [], max_budget, max_time } = req.body;
 
     if (!Array.isArray(ingredients)) {
       return res.status(400).json({ error: 'ingredients must be an array of strings.' });
     }
 
     const userIngredients = ingredients.map(i => i.trim().toLowerCase());
+    const expiringList = Array.isArray(expiring_ingredients) ? expiring_ingredients.map(i => String(i).trim().toLowerCase()).filter(Boolean) : [];
     let recipes = await dbQueries.getAllRecipes();
 
     // Optional filters
@@ -259,11 +260,12 @@ router.post('/recipes/match', async (req, res) => {
       recipes = recipes.filter(r => r.cook_time_min <= Number(max_time));
     }
 
-    // Match Calculation
+    // Match Calculation with Active Expiry Prioritization
     const matchedRecipes = recipes.map(recipe => {
       const recipeIngredients = recipe.ingredients || [];
       const matched = [];
       const missing = [];
+      const matchedExpiring = [];
 
       for (const recipeIng of recipeIngredients) {
         const lower = String(recipeIng).toLowerCase();
@@ -276,6 +278,14 @@ router.post('/recipes/match', async (req, res) => {
         } else {
           missing.push(recipeIng);
         }
+
+        // Check if ingredient is among urgent expiring ingredients (<= 2 days)
+        const isExpiring = expiringList.some(exp =>
+          lower.includes(exp) || exp.includes(lower)
+        );
+        if (isExpiring && !matchedExpiring.includes(recipeIng)) {
+          matchedExpiring.push(recipeIng);
+        }
       }
 
       const totalCount = recipeIngredients.length;
@@ -286,19 +296,37 @@ router.post('/recipes/match', async (req, res) => {
         matchPercent = Math.round((matched.length / totalCount) * 100);
       }
 
+      // Priority boost for recipes utilizing expiring ingredients (<= 2 days)
+      const usesExpiring = matchedExpiring.length > 0;
+      let boostedScore = matchPercent;
+      if (usesExpiring) {
+        boostedScore = Math.min(100, matchPercent + 25);
+      }
+
       return {
         ...recipe,
-        match_score: matchPercent,
+        match_score: boostedScore,
+        raw_match_score: matchPercent,
         matched_ingredients: matched,
-        missing_ingredients: missing
+        missing_ingredients: missing,
+        expiring_matched: matchedExpiring,
+        uses_expiring_boost: usesExpiring
       };
     });
 
-    // Sort by match score descending, then rating descending
-    matchedRecipes.sort((a, b) => b.match_score - a.match_score || b.rating - a.rating);
+    // Sort by expiring boost first, then match score descending, then rating descending
+    matchedRecipes.sort((a, b) => {
+      const aBoost = a.uses_expiring_boost ? 1 : 0;
+      const bBoost = b.uses_expiring_boost ? 1 : 0;
+      if (bBoost !== aBoost) {
+        return bBoost - aBoost;
+      }
+      return b.match_score - a.match_score || b.rating - a.rating;
+    });
 
     res.json({
       selected_count: userIngredients.length,
+      expiring_count: expiringList.length,
       recipes: matchedRecipes
     });
   } catch (err) {

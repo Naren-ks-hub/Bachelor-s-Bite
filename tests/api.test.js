@@ -140,6 +140,19 @@ async function runTests() {
     });
     assert(loginRes.status === 200 && loginRes.body.success === true && loginRes.body.user.email === authEmail, 'POST /api/auth/login authenticates user successfully');
 
+    // 12. Active Expiry Waste Prevention & Priority Match Boost
+    const expiryMatchRes = await makeRequest('POST', '/api/recipes/match', {
+      ingredients: ['Eggs', 'Cheese', 'Butter', 'Bread'],
+      expiring_ingredients: ['Bread']
+    });
+    assert(
+      expiryMatchRes.status === 200 &&
+      expiryMatchRes.body.recipes.length > 0 &&
+      expiryMatchRes.body.recipes[0].uses_expiring_boost === true &&
+      expiryMatchRes.body.recipes[0].expiring_matched.some(i => i.toLowerCase().includes('bread')),
+      'POST /api/recipes/match prioritizes recipes utilizing expiring ingredients'
+    );
+
     console.log(`\n📊 Test Summary: ${passed} Passed, ${failed} Failed\n`);
   } catch (err) {
     console.error('Test execution error:', err);

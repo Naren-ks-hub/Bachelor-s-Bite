@@ -544,6 +544,424 @@
       background: var(--primary-dark);
     }
 
+    /* ===== ACTIVE EXPIRY TRACKING & WASTE ALERTS ===== */
+    .expiry-tracker-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-top: 24px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+      transition: all 0.3s ease;
+    }
+
+    .expiry-tracker-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .expiry-tracker-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .expiry-tracker-icon {
+      font-size: 1.8rem;
+      background: #fef3c7;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px rgba(245, 158, 11, 0.15);
+      flex-shrink: 0;
+    }
+
+    .expiry-tracker-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin: 0;
+    }
+
+    .expiry-tracker-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      margin-top: 2px;
+    }
+
+    .expiry-summary-badges {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .expiry-summary-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      border: 1px solid transparent;
+    }
+
+    .expiry-summary-badge.badge-expired {
+      background: #fee2e2;
+      color: #991b1b;
+      border-color: #fca5a5;
+    }
+
+    .expiry-summary-badge.badge-warning {
+      background: #fef3c7;
+      color: #92400e;
+      border-color: #fcd34d;
+    }
+
+    .expiry-summary-badge.badge-fresh {
+      background: #d1fae5;
+      color: #065f46;
+      border-color: #6ee7b7;
+    }
+
+    .badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .badge-expired .badge-dot { background: #ef4444; }
+    .badge-warning .badge-dot {
+      background: #f59e0b;
+      animation: pulse-dot 1.5s infinite;
+    }
+    .badge-fresh .badge-dot { background: #10b981; }
+
+    @keyframes pulse-dot {
+      0% { transform: scale(0.9); opacity: 0.8; }
+      50% { transform: scale(1.3); opacity: 1; }
+      100% { transform: scale(0.9); opacity: 0.8; }
+    }
+
+    .expiry-alert-banner {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+      border: 1px solid #fcd34d;
+      color: #92400e;
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      font-size: 0.875rem;
+      margin-bottom: 20px;
+    }
+
+    .alert-icon {
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+
+    /* Expiry Form Grid with Date Picker */
+    .expiry-add-form {
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      margin-bottom: 20px;
+    }
+
+    .expiry-add-form .form-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1.5fr auto;
+      gap: 12px;
+      align-items: end;
+    }
+
+    @media (max-width: 850px) {
+      .expiry-add-form .form-row {
+        grid-template-columns: 1fr 1fr;
+      }
+      .expiry-add-form .field-btn {
+        grid-column: span 2;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .expiry-add-form .form-row {
+        grid-template-columns: 1fr;
+      }
+      .expiry-add-form .field-btn {
+        grid-column: span 1;
+      }
+    }
+
+    .expiry-add-form .form-label {
+      display: block;
+      font-size: 0.775rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-dark);
+      margin-bottom: 6px;
+    }
+
+    .expiry-add-form .form-input {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--card-bg);
+      color: var(--text-dark);
+      font-size: 0.875rem;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .expiry-add-form .form-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    .btn-add-pantry {
+      height: 38px;
+      padding: 0 16px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Pantry Dashboard Items & Badges */
+    .dashboard-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .toolbar-label {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .items-count-tag {
+      font-size: 0.75rem;
+      color: var(--primary);
+      background: rgba(37, 99, 235, 0.08);
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-weight: 600;
+    }
+
+    .btn-text-action {
+      background: transparent;
+      border: none;
+      color: var(--text-light);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-text-action:hover {
+      color: var(--primary);
+      background: rgba(37, 99, 235, 0.06);
+    }
+
+    .pantry-items-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 12px;
+    }
+
+    .pantry-item-card {
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .pantry-item-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    }
+
+    .pantry-item-card.card-expired {
+      border-left: 4px solid #ef4444;
+      background: linear-gradient(135deg, rgba(254, 242, 242, 0.4) 0%, var(--bg-light) 100%);
+    }
+
+    .pantry-item-card.card-warning {
+      border-left: 4px solid #f59e0b;
+      background: linear-gradient(135deg, rgba(254, 243, 199, 0.4) 0%, var(--bg-light) 100%);
+    }
+
+    .pantry-item-card.card-fresh {
+      border-left: 4px solid #10b981;
+    }
+
+    .pantry-item-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .pantry-item-name {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text-dark);
+      margin-bottom: 2px;
+    }
+
+    .pantry-item-meta {
+      font-size: 0.775rem;
+      color: var(--text-light);
+    }
+
+    /* Dynamic Expiry Status Badges */
+    .expiry-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 0.725rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .expiry-badge-expired {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+    }
+
+    .expiry-badge-warning {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fcd34d;
+    }
+
+    .expiry-badge-fresh {
+      background: #d1fae5;
+      color: #065f46;
+      border: 1px solid #6ee7b7;
+    }
+
+    .pantry-item-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      padding-top: 8px;
+      border-top: 1px dashed var(--border);
+    }
+
+    .btn-item-match {
+      background: transparent;
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--text-dark);
+      transition: all 0.2s ease;
+    }
+
+    .btn-item-match.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .btn-item-delete {
+      background: transparent;
+      border: none;
+      color: var(--text-light);
+      font-size: 0.8rem;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 4px;
+      transition: color 0.2s ease;
+    }
+
+    .btn-item-delete:hover {
+      color: #ef4444;
+    }
+
+    /* Recommendation Engine Rescue Pill on Recipe Cards */
+    .expiry-rescue-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+      border: 1px solid #f59e0b;
+      color: #92400e;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.775rem;
+      font-weight: 600;
+      margin: 10px 0 6px 0;
+      box-shadow: 0 2px 6px rgba(245, 158, 11, 0.15);
+      animation: gentle-glow 2.5s infinite alternate;
+    }
+
+    .expiry-pill-icon {
+      font-size: 0.95rem;
+    }
+
+    @keyframes gentle-glow {
+      0% { box-shadow: 0 0 0 rgba(245, 158, 11, 0); }
+      100% { box-shadow: 0 0 10px rgba(245, 158, 11, 0.35); }
+    }
+
+    body.dark-mode .expiry-tracker-card {
+      background: #1e293b;
+      border-color: #334155;
+    }
+
+    body.dark-mode .expiry-add-form {
+      background: #0f172a;
+      border-color: #334155;
+    }
+
+    body.dark-mode .pantry-item-card {
+      background: #0f172a;
+      border-color: #334155;
+    }
+
+    body.dark-mode .expiry-rescue-pill {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(217, 119, 6, 0.25) 100%);
+      border-color: #d97706;
+      color: #fde68a;
+    }
+
     /* ===== COMPARISON SECTION ===== */
     .comparison {
       padding: 80px 0;
@@ -4492,6 +4910,104 @@
       </div>
     </div>
 
+    <!-- ===== ACTIVE EXPIRY TRACKING & ALERTS PANEL ===== -->
+    <div class="expiry-tracker-card" id="expiryTrackerCard">
+      <div class="expiry-tracker-header">
+        <div class="expiry-tracker-title-wrap">
+          <div class="expiry-tracker-icon" aria-hidden="true">⏰</div>
+          <div>
+            <h3 class="expiry-tracker-title">Active Expiry Tracking & Waste Alerts</h3>
+            <p class="expiry-tracker-subtitle">Log your perishables by expiry date to prevent waste & boost rescue recipe matches.</p>
+          </div>
+        </div>
+
+        <!-- Dynamic Status Tier Counters -->
+        <div class="expiry-summary-badges">
+          <div class="expiry-summary-badge badge-expired" title="Expired (<= 0 days)">
+            <span class="badge-dot"></span>
+            <span id="countExpired">0</span> Expired
+          </div>
+          <div class="expiry-summary-badge badge-warning" title="Expiring Soon (1-3 days)">
+            <span class="badge-dot"></span>
+            <span id="countExpiringSoon">0</span> Expiring Soon
+          </div>
+          <div class="expiry-summary-badge badge-fresh" title="Fresh (> 3 days)">
+            <span class="badge-dot"></span>
+            <span id="countFresh">0</span> Fresh
+          </div>
+        </div>
+      </div>
+
+      <!-- Zero-Waste Alert Banner -->
+      <div class="expiry-alert-banner" id="expiryAlertBanner" style="display: none;">
+        <span class="alert-icon">🚨</span>
+        <div class="alert-text">
+          <strong>Zero-Waste Alert:</strong> <span id="expiryAlertMessage">You have ingredients expiring in the next 48 hours!</span>
+        </div>
+      </div>
+
+      <!-- Requirement 1: Expiry Date Input Form with type="date" -->
+      <form class="expiry-add-form" id="expiryAddForm" onsubmit="handleAddPantryItem(event)">
+        <div class="form-row">
+          <div class="form-field field-name">
+            <label for="pantryItemName" class="form-label">Ingredient Name</label>
+            <input type="text" id="pantryItemName" class="form-input" placeholder="e.g. Bread, Eggs, Milk, Spinach" list="pantryQuickSuggestions" required autocomplete="off">
+            <datalist id="pantryQuickSuggestions">
+              <option value="Bread">
+              <option value="Eggs">
+              <option value="Milk">
+              <option value="Cheese">
+              <option value="Butter">
+              <option value="Tomatoes">
+              <option value="Onions">
+              <option value="Garlic">
+              <option value="Chicken">
+              <option value="Paneer">
+              <option value="Spinach">
+              <option value="Rice">
+              <option value="Pasta">
+              <option value="Yogurt / Curd">
+              <option value="Mushrooms">
+            </datalist>
+          </div>
+
+          <div class="form-field field-qty">
+            <label for="pantryItemQty" class="form-label">Quantity</label>
+            <input type="text" id="pantryItemQty" class="form-input" placeholder="e.g. 1 loaf, 4 pcs" value="1 pack">
+          </div>
+
+          <div class="form-field field-date">
+            <label for="pantryItemExpiry" class="form-label">Expiry Date</label>
+            <input type="date" id="pantryItemExpiry" class="form-input" required>
+          </div>
+
+          <div class="form-field field-btn">
+            <button type="submit" class="btn btn-primary btn-add-pantry">
+              <span>+ Add to Pantry</span>
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- Requirement 3: Pantry Dashboard Items Grid (Sorted: Closest to expiration at top) -->
+      <div class="pantry-items-dashboard">
+        <div class="dashboard-toolbar">
+          <div class="toolbar-label">
+            <span>📦 Your Tracked Pantry Items</span>
+            <span class="items-count-tag" id="trackedItemsCount">0 items</span>
+          </div>
+          <div class="toolbar-actions">
+            <button type="button" class="btn-text-action" onclick="resetSamplePantryItems()">↺ Reset Sample Pantry</button>
+            <button type="button" class="btn-text-action" onclick="clearAllPantryItems()">✕ Clear All</button>
+          </div>
+        </div>
+
+        <div class="pantry-items-grid" id="pantryItemsGrid">
+          <!-- Dynamically populated by JS with color-coded expiry badges -->
+        </div>
+      </div>
+    </div>
+
     <!-- Active Match Info Bar -->
     <div class="match-results-header">
       <h3 id="matchResultsCount">Showing 3 Matched Recipes</h3>
@@ -6505,6 +7021,327 @@
     showToast('Pantry selections cleared');
   }
 
+  // ===== ACTIVE EXPIRY TRACKING & ALERTS ENGINE =====
+  let trackedPantryItems = [];
+
+  function getFutureDateString(days) {
+    const d = new Date();
+    d.setDate(d.getDate() + days);
+    return d.toISOString().split('T')[0];
+  }
+
+  function getDefaultPantryItems() {
+    return [
+      { id: 'item_1', name: 'Milk', quantity: '500 ml', expiryDate: getFutureDateString(0), active: true },
+      { id: 'item_2', name: 'Bread', quantity: '1 loaf (4 slices left)', expiryDate: getFutureDateString(1), active: true },
+      { id: 'item_3', name: 'Eggs', quantity: '4 eggs', expiryDate: getFutureDateString(2), active: true },
+      { id: 'item_4', name: 'Cheese', quantity: '200g block', expiryDate: getFutureDateString(4), active: true },
+      { id: 'item_5', name: 'Pasta', quantity: '1 pack', expiryDate: getFutureDateString(14), active: false }
+    ];
+  }
+
+  /**
+   * Helper utility function:
+   * Calculates the exact number of days remaining until expiry by comparing
+   * each item's expiry date against the current date.
+   * Categorizes into three dynamic status tiers:
+   *   - Expired: <= 0 days (Red warning badge)
+   *   - Expiring Soon: 1 to 3 days (Yellow warning badge/alert)
+   *   - Fresh: > 3 days (Standard safe badge)
+   */
+  function calculateDaysUntilExpiry(expiryDateStr) {
+    if (!expiryDateStr) {
+      return { days: 999, status: 'fresh', label: 'Fresh', badgeClass: 'expiry-badge-fresh', isUrgent: false };
+    }
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const target = new Date(expiryDateStr);
+    target.setHours(0, 0, 0, 0);
+
+    const diffTime = target.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays <= 0) {
+      return {
+        days: diffDays,
+        status: 'expired',
+        label: diffDays === 0 ? 'Expires Today!' : `Expired (${Math.abs(diffDays)}d ago)`,
+        badgeClass: 'expiry-badge-expired',
+        isUrgent: true
+      };
+    } else if (diffDays <= 3) {
+      return {
+        days: diffDays,
+        status: 'expiring-soon',
+        label: diffDays === 1 ? 'Expires Tomorrow!' : `Expiring in ${diffDays} days`,
+        badgeClass: 'expiry-badge-warning',
+        isUrgent: diffDays <= 2 // <= 2 days receives priority score boost
+      };
+    } else {
+      return {
+        days: diffDays,
+        status: 'fresh',
+        label: `Fresh (${diffDays}d left)`,
+        badgeClass: 'expiry-badge-fresh',
+        isUrgent: false
+      };
+    }
+  }
+
+  function getUrgentExpiringPantryIngredients() {
+    return trackedPantryItems
+      .filter(item => {
+        const info = calculateDaysUntilExpiry(item.expiryDate);
+        return info.days <= 2;
+      })
+      .map(item => item.name.trim().toLowerCase());
+  }
+
+  function initActiveExpiryPantry() {
+    const saved = localStorage.getItem('bachelorBite_pantry_items');
+    if (saved) {
+      try {
+        trackedPantryItems = JSON.parse(saved);
+      } catch (e) {
+        trackedPantryItems = getDefaultPantryItems();
+      }
+    } else {
+      trackedPantryItems = getDefaultPantryItems();
+    }
+
+    const datePicker = document.getElementById('pantryItemExpiry');
+    if (datePicker) {
+      datePicker.min = getFutureDateString(0);
+      if (!datePicker.value) {
+        datePicker.value = getFutureDateString(3);
+      }
+    }
+
+    // Sync any active pantry items to selectedIngredients on first load if empty
+    if (selectedIngredients.size === 0) {
+      trackedPantryItems.filter(i => i.active).forEach(i => {
+        selectedIngredients.add(i.name);
+        document.querySelectorAll('#pantryIngredientChips .chip').forEach(chip => {
+          if (chip.textContent.trim().toLowerCase() === i.name.toLowerCase()) {
+            chip.classList.add('active');
+          }
+        });
+      });
+    }
+
+    renderPantryItemsDashboard();
+  }
+
+  function saveTrackedPantryItems() {
+    localStorage.setItem('bachelorBite_pantry_items', JSON.stringify(trackedPantryItems));
+  }
+
+  function renderPantryItemsDashboard() {
+    const grid = document.getElementById('pantryItemsGrid');
+    const countTag = document.getElementById('trackedItemsCount');
+    const alertBanner = document.getElementById('expiryAlertBanner');
+    const alertMsg = document.getElementById('expiryAlertMessage');
+
+    const cExpired = document.getElementById('countExpired');
+    const cWarning = document.getElementById('countExpiringSoon');
+    const cFresh = document.getElementById('countFresh');
+
+    if (!grid) return;
+
+    // Requirement 3: Automatically sort pantry list so items closest to expiration appear at the top
+    const sorted = [...trackedPantryItems].sort((a, b) => {
+      const aInfo = calculateDaysUntilExpiry(a.expiryDate);
+      const bInfo = calculateDaysUntilExpiry(b.expiryDate);
+      return aInfo.days - bInfo.days;
+    });
+
+    let expiredCount = 0;
+    let warningCount = 0;
+    let freshCount = 0;
+    const urgentItems = [];
+
+    sorted.forEach(item => {
+      const info = calculateDaysUntilExpiry(item.expiryDate);
+      if (info.status === 'expired') {
+        expiredCount++;
+      } else if (info.status === 'expiring-soon') {
+        warningCount++;
+      } else {
+        freshCount++;
+      }
+      if (info.days <= 2) {
+        urgentItems.push(item.name);
+      }
+    });
+
+    if (cExpired) cExpired.textContent = expiredCount;
+    if (cWarning) cWarning.textContent = warningCount;
+    if (cFresh) cFresh.textContent = freshCount;
+    if (countTag) countTag.textContent = `${sorted.length} item${sorted.length === 1 ? '' : 's'}`;
+
+    // Waste Prevention Alert Banner
+    if (alertBanner && alertMsg) {
+      if (urgentItems.length > 0) {
+        alertBanner.style.display = 'flex';
+        alertMsg.innerHTML = `You have <strong>${urgentItems.length} perishable ingredient(s)</strong> expiring within 48h (<em>${urgentItems.join(', ')}</em>)! Prioritizing zero-waste recipes below.`;
+      } else {
+        alertBanner.style.display = 'none';
+      }
+    }
+
+    if (sorted.length === 0) {
+      grid.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 24px; color: var(--text-light); background: var(--card-bg); border: 1px dashed var(--border); border-radius: 12px;">
+          <div style="font-size: 1.8rem; margin-bottom: 6px;">🧺</div>
+          <p>Your pantry tracker is currently empty.</p>
+          <button type="button" class="btn btn-secondary" style="margin-top: 10px; padding: 6px 14px; font-size: 0.8rem;" onclick="resetSamplePantryItems()">↺ Load Sample Items</button>
+        </div>
+      `;
+      return;
+    }
+
+    grid.innerHTML = sorted.map(item => {
+      const { days, status, label, badgeClass } = calculateDaysUntilExpiry(item.expiryDate);
+      const isCardExpired = status === 'expired';
+      const isCardWarning = status === 'expiring-soon';
+      const cardTierClass = isCardExpired ? 'card-expired' : isCardWarning ? 'card-warning' : 'card-fresh';
+
+      return `
+        <div class="pantry-item-card ${cardTierClass}">
+          <div class="pantry-item-top">
+            <div>
+              <div class="pantry-item-name">${item.name}</div>
+              <div class="pantry-item-meta">${item.quantity || '1 item'} • Exp: <strong>${item.expiryDate}</strong></div>
+            </div>
+            <span class="expiry-badge ${badgeClass}">
+              ${status === 'expired' ? '🚨 ' : status === 'expiring-soon' ? '⚠️ ' : '🍏 '}
+              ${label}
+            </span>
+          </div>
+
+          <div class="pantry-item-bottom">
+            <button type="button" class="btn-item-match ${item.active ? 'active' : ''}" onclick="handleTogglePantryItem('${item.id}')">
+              ${item.active ? '✓ In Recipe Match' : '+ Match in Recipes'}
+            </button>
+            <button type="button" class="btn-item-delete" onclick="handleDeletePantryItem('${item.id}')" title="Mark item consumed or remove">
+              ✕ Remove
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function handleAddPantryItem(event) {
+    if (event) event.preventDefault();
+    const nameInput = document.getElementById('pantryItemName');
+    const qtyInput = document.getElementById('pantryItemQty');
+    const dateInput = document.getElementById('pantryItemExpiry');
+
+    if (!nameInput || !dateInput) return;
+    const name = nameInput.value.trim();
+    const expiry = dateInput.value;
+    const qty = (qtyInput && qtyInput.value.trim()) || '1 pack';
+
+    if (!name || !expiry) {
+      showToast('⚠️ Please enter an ingredient name and valid expiry date.');
+      return;
+    }
+
+    const newItem = {
+      id: `pantry_${Date.now()}`,
+      name: name.charAt(0).toUpperCase() + name.slice(1),
+      quantity: qty,
+      expiryDate: expiry,
+      active: true
+    };
+
+    trackedPantryItems.push(newItem);
+    selectedIngredients.add(newItem.name);
+
+    document.querySelectorAll('#pantryIngredientChips .chip').forEach(chip => {
+      if (chip.textContent.trim().toLowerCase() === newItem.name.toLowerCase()) {
+        chip.classList.add('active');
+      }
+    });
+
+    saveTrackedPantryItems();
+    renderPantryItemsDashboard();
+    fetchMatchingRecipes();
+
+    nameInput.value = '';
+    if (qtyInput) qtyInput.value = '1 pack';
+    dateInput.value = getFutureDateString(3);
+
+    const calc = calculateDaysUntilExpiry(expiry);
+    showToast(`✅ Added ${newItem.name} (${calc.label}) to your fridge tracker!`);
+  }
+
+  function handleTogglePantryItem(id) {
+    const item = trackedPantryItems.find(i => i.id === id);
+    if (!item) return;
+
+    item.active = !item.active;
+    if (item.active) {
+      selectedIngredients.add(item.name);
+      document.querySelectorAll('#pantryIngredientChips .chip').forEach(chip => {
+        if (chip.textContent.trim().toLowerCase() === item.name.toLowerCase()) {
+          chip.classList.add('active');
+        }
+      });
+      showToast(`Added ${item.name} to active recipe matching`);
+    } else {
+      selectedIngredients.delete(item.name);
+      document.querySelectorAll('#pantryIngredientChips .chip').forEach(chip => {
+        if (chip.textContent.trim().toLowerCase() === item.name.toLowerCase()) {
+          chip.classList.remove('active');
+        }
+      });
+      showToast(`Removed ${item.name} from active recipe matching`);
+    }
+
+    saveTrackedPantryItems();
+    renderPantryItemsDashboard();
+    fetchMatchingRecipes();
+  }
+
+  function handleDeletePantryItem(id) {
+    const item = trackedPantryItems.find(i => i.id === id);
+    if (!item) return;
+
+    selectedIngredients.delete(item.name);
+    document.querySelectorAll('#pantryIngredientChips .chip').forEach(chip => {
+      if (chip.textContent.trim().toLowerCase() === item.name.toLowerCase()) {
+        chip.classList.remove('active');
+      }
+    });
+
+    trackedPantryItems = trackedPantryItems.filter(i => i.id !== id);
+    saveTrackedPantryItems();
+    renderPantryItemsDashboard();
+    fetchMatchingRecipes();
+    showToast(`🗑️ Marked ${item.name} as consumed/removed.`);
+  }
+
+  function resetSamplePantryItems() {
+    trackedPantryItems = getDefaultPantryItems();
+    trackedPantryItems.filter(i => i.active).forEach(i => selectedIngredients.add(i.name));
+    saveTrackedPantryItems();
+    renderPantryItemsDashboard();
+    fetchMatchingRecipes();
+    showToast('↺ Sample pantry reset with expiring items!');
+  }
+
+  function clearAllPantryItems() {
+    trackedPantryItems.forEach(i => selectedIngredients.delete(i.name));
+    trackedPantryItems = [];
+    saveTrackedPantryItems();
+    renderPantryItemsDashboard();
+    fetchMatchingRecipes();
+    showToast('Cleared all tracked pantry items.');
+  }
+
   function toggleFilter(btn, type, value) {
     const parentGroup = btn.parentElement;
     const isAlreadyActive = btn.classList.contains('active');
@@ -6521,6 +7358,7 @@
 
   async function fetchMatchingRecipes() {
     const ingredientsArray = Array.from(selectedIngredients);
+    const urgentExpiringNames = getUrgentExpiringPantryIngredients();
     let recipes = [...fallbackRecipes];
 
     try {
@@ -6529,6 +7367,7 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ingredients: ingredientsArray,
+          expiring_ingredients: urgentExpiringNames,
           max_budget: activeFilters.budget,
           max_time: activeFilters.time
         })
@@ -6546,8 +7385,40 @@
       const matched = recipe.ingredients.filter(i => 
         ingredientsArray.some(userI => i.toLowerCase().includes(userI.toLowerCase()) || userI.toLowerCase().includes(i.toLowerCase()))
       );
-      const matchScore = ingredientsArray.length === 0 ? 90 : Math.round((matched.length / recipe.ingredients.length) * 100);
-      return { ...recipe, match_score: matchScore };
+      const baseMatchScore = ingredientsArray.length === 0 ? 80 : Math.round((matched.length / recipe.ingredients.length) * 100);
+
+      // Check expiring ingredients matches (<= 2 days)
+      const matchedExpiring = [];
+      for (const expName of urgentExpiringNames) {
+        const found = recipe.ingredients.some(rIng => {
+          const rLower = rIng.toLowerCase();
+          return rLower.includes(expName) || expName.includes(rLower);
+        });
+        if (found && !matchedExpiring.includes(expName)) {
+          matchedExpiring.push(expName);
+        }
+      }
+
+      const usesExpiring = (recipe.uses_expiring_boost !== undefined)
+        ? recipe.uses_expiring_boost
+        : matchedExpiring.length > 0;
+      
+      const finalExpiringMatched = (recipe.expiring_matched && recipe.expiring_matched.length > 0)
+        ? recipe.expiring_matched
+        : matchedExpiring;
+
+      // Priority boost for recipes utilizing expiring ingredients (<= 2 days)
+      const boostedScore = usesExpiring
+        ? Math.min(100, (recipe.match_score || baseMatchScore) + 25)
+        : (recipe.match_score || baseMatchScore);
+
+      return {
+        ...recipe,
+        match_score: boostedScore,
+        raw_match_score: baseMatchScore,
+        expiring_matched: finalExpiringMatched,
+        uses_expiring_boost: usesExpiring
+      };
     });
 
     if (activeFilters.budget) {
@@ -6588,7 +7459,14 @@
       );
     }
 
-    filtered.sort((a, b) => b.match_score - a.match_score || b.rating - a.rating);
+    // Sort by expiring boost first, then match score descending, then rating descending
+    filtered.sort((a, b) => {
+      const aBoost = a.uses_expiring_boost ? 1 : 0;
+      const bBoost = b.uses_expiring_boost ? 1 : 0;
+      if (bBoost !== aBoost) return bBoost - aBoost;
+      return b.match_score - a.match_score || b.rating - a.rating;
+    });
+
     cachedRecipes = filtered;
     renderRecipeCards(filtered);
   }
@@ -6753,6 +7631,13 @@
             <span class="macro-chip">🌾 ${nut.fiber_g || 4}g Fiber</span>
             <span class="macro-chip">🍳 ${recipe.single_pan ? '1 Pan' : 'Standard'}</span>
           </div>
+
+          ${recipe.uses_expiring_boost && recipe.expiring_matched && recipe.expiring_matched.length > 0 ? `
+          <div class="expiry-rescue-pill" title="Prioritized recipe to prevent ingredient waste">
+            <span class="expiry-pill-icon">💡</span>
+            <span>Uses your expiring <strong>${recipe.expiring_matched.map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(', ')}</strong> first!</span>
+          </div>
+          ` : ''}
 
           <div class="match-bar">
             <div class="match-labels">
@@ -7657,6 +8542,7 @@
   document.addEventListener('DOMContentLoaded', () => {
     initTheme();
     initLocation();
+    initActiveExpiryPantry();
     fetchMatchingRecipes();
     updateSavedCount();
     updateDashboardHeaderStats();
