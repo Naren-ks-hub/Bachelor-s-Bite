@@ -187,7 +187,7 @@ router.get('/leads', async (req, res) => {
 router.get('/recipes', async (req, res) => {
   try {
     let recipes = await dbQueries.getAllRecipes();
-    const { budget_max, time_max, cookware, category, search } = req.query;
+    const { budget_max, time_max, cookware, category, search, veg_only, high_protein } = req.query;
 
     if (budget_max) {
       const maxBudget = Number(budget_max);
@@ -209,6 +209,10 @@ router.get('/recipes', async (req, res) => {
       recipes = recipes.filter(r => r.category.toLowerCase() === category.toLowerCase());
     }
 
+    if (veg_only === 'true' || veg_only === '1') {
+      recipes = recipes.filter(r => r.isVeg === true);
+    }
+
     if (search) {
       const query = search.toLowerCase();
       recipes = recipes.filter(r =>
@@ -216,6 +220,14 @@ router.get('/recipes', async (req, res) => {
         r.description.toLowerCase().includes(query) ||
         (Array.isArray(r.ingredients) && r.ingredients.some(ing => ing.toLowerCase().includes(query)))
       );
+    }
+
+    if (high_protein === 'true' || high_protein === '1') {
+      recipes.sort((a, b) => {
+        const aProt = ((a.nutrition && a.nutrition.protein_g) || a.protein || 0) >= 20 ? 1 : 0;
+        const bProt = ((b.nutrition && b.nutrition.protein_g) || b.protein || 0) >= 20 ? 1 : 0;
+        return bProt - aProt;
+      });
     }
 
     res.json({ count: recipes.length, recipes });
@@ -242,7 +254,16 @@ router.get('/recipes/:idOrSlug', async (req, res) => {
 // 6. Intelligent Pantry Matching Engine
 router.post('/recipes/match', async (req, res) => {
   try {
-    const { ingredients = [], expiring_ingredients = [], max_budget, max_time } = req.body;
+    const {
+      ingredients = [],
+      expiring_ingredients = [],
+      max_budget,
+      max_time,
+      veg_only = false,
+      isVegOnly = false,
+      high_protein = false,
+      isHighProtein = false
+    } = req.body;
 
     if (!Array.isArray(ingredients)) {
       return res.status(400).json({ error: 'ingredients must be an array of strings.' });
@@ -250,7 +271,15 @@ router.post('/recipes/match', async (req, res) => {
 
     const userIngredients = ingredients.map(i => i.trim().toLowerCase());
     const expiringList = Array.isArray(expiring_ingredients) ? expiring_ingredients.map(i => String(i).trim().toLowerCase()).filter(Boolean) : [];
+    const filterVeg = Boolean(veg_only || isVegOnly);
+    const filterHighProtein = Boolean(high_protein || isHighProtein);
+
     let recipes = await dbQueries.getAllRecipes();
+
+    // 1. Hard Filter: If isVegOnly is TRUE, filter out all non-vegetarian recipes immediately
+    if (filterVeg) {
+      recipes = recipes.filter(r => r.isVeg === true);
+    }
 
     // Optional filters
     if (max_budget) {
@@ -260,7 +289,7 @@ router.post('/recipes/match', async (req, res) => {
       recipes = recipes.filter(r => r.cook_time_min <= Number(max_time));
     }
 
-    // Match Calculation with Active Expiry Prioritization
+    // Match Calculation with Active Expiry Prioritization & High Protein Boost
     const matchedRecipes = recipes.map(recipe => {
       const recipeIngredients = recipe.ingredients || [];
       const matched = [];
@@ -303,6 +332,13 @@ router.post('/recipes/match', async (req, res) => {
         boostedScore = Math.min(100, matchPercent + 25);
       }
 
+      // Soft Boost: If isHighProtein is TRUE, boost recipes with 20g+ protein
+      const proteinG = (recipe.nutrition && recipe.nutrition.protein_g) || recipe.protein || 0;
+      const isProteinRich = proteinG >= 20;
+      if (filterHighProtein && isProteinRich) {
+        boostedScore = Math.min(100, boostedScore + 20);
+      }
+
       return {
         ...recipe,
         match_score: boostedScore,
@@ -310,17 +346,27 @@ router.post('/recipes/match', async (req, res) => {
         matched_ingredients: matched,
         missing_ingredients: missing,
         expiring_matched: matchedExpiring,
-        uses_expiring_boost: usesExpiring
+        uses_expiring_boost: usesExpiring,
+        is_high_protein: isProteinRich
       };
     });
 
-    // Sort by expiring boost first, then match score descending, then rating descending
+    // Sort by expiring boost first, high protein priority, match score descending, rating descending
     matchedRecipes.sort((a, b) => {
       const aBoost = a.uses_expiring_boost ? 1 : 0;
       const bBoost = b.uses_expiring_boost ? 1 : 0;
       if (bBoost !== aBoost) {
         return bBoost - aBoost;
       }
+
+      if (filterHighProtein) {
+        const aProt = a.is_high_protein ? 1 : 0;
+        const bProt = b.is_high_protein ? 1 : 0;
+        if (bProt !== aProt) {
+          return bProt - aProt;
+        }
+      }
+
       return b.match_score - a.match_score || b.rating - a.rating;
     });
 

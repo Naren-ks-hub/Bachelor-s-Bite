@@ -468,12 +468,32 @@ const dbQueries = {
 };
 
 function formatRecipe(row) {
+  const ingredients = JSON.parse(row.ingredients || '[]');
+  const nutrition = JSON.parse(row.nutrition || '{}');
+  const isNonVeg = ingredients.some(i => {
+    const lower = String(i).toLowerCase();
+    return lower.includes('chicken') || lower.includes('egg');
+  });
+  const isVeg = !isNonVeg;
+  const protein = nutrition.protein_g || 14;
+  const calories = nutrition.calories || 380;
+
   return {
     ...row,
     single_pan: Boolean(row.single_pan),
-    ingredients: JSON.parse(row.ingredients || '[]'),
+    ingredients,
     steps: JSON.parse(row.steps || '[]'),
-    nutrition: JSON.parse(row.nutrition || '{}')
+    nutrition: {
+      ...nutrition,
+      isVeg,
+      is_veg: isVeg,
+      protein,
+      calories
+    },
+    is_veg: isVeg,
+    isVeg,
+    protein,
+    calories
   };
 }
 

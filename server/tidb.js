@@ -461,12 +461,30 @@ function formatTiDBRecipe(row) {
     try { nutrition = JSON.parse(nutrition); } catch (e) { nutrition = {}; }
   }
 
+  const isNonVeg = (ingredients || []).some(i => {
+    const lower = String(i).toLowerCase();
+    return lower.includes('chicken') || lower.includes('egg');
+  });
+  const isVeg = !isNonVeg;
+  const protein = nutrition.protein_g || 14;
+  const calories = nutrition.calories || 380;
+
   return {
     ...row,
     single_pan: Boolean(row.single_pan),
     ingredients: ingredients || [],
     steps: steps || [],
-    nutrition: nutrition || {}
+    nutrition: {
+      ...nutrition,
+      isVeg,
+      is_veg: isVeg,
+      protein,
+      calories
+    },
+    is_veg: isVeg,
+    isVeg,
+    protein,
+    calories
   };
 }
 

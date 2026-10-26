@@ -343,12 +343,18 @@
 
     .filters-section {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
       margin-top: 24px;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
+      .filters-section {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
       .filters-section {
         grid-template-columns: 1fr;
       }
@@ -960,6 +966,190 @@
       background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(217, 119, 6, 0.25) 100%);
       border-color: #d97706;
       color: #fde68a;
+    }
+
+    /* ===== HEALTH & DIETARY FILTER TOGGLES ===== */
+    .health-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+      font-size: 0.875rem; /* 14px */
+      padding: 7px 14px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--border);
+      background: var(--bg-light);
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      user-select: none;
+    }
+
+    .health-toggle-btn:hover {
+      border-color: #94a3b8;
+      transform: translateY(-1px);
+    }
+
+    /* Active Veg Only Toggle (Vibrant Emerald) */
+    .health-toggle-btn.veg-pill.active {
+      background: #ecfdf5;
+      border-color: #10b981;
+      color: #065f46;
+      font-weight: 700;
+      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25);
+    }
+
+    /* Active High Protein Toggle (Vibrant Royal Blue) */
+    .health-toggle-btn.protein-pill.active {
+      background: #eff6ff;
+      border-color: #2563eb;
+      color: #1d4ed8;
+      font-weight: 700;
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.25);
+    }
+
+    /* ===== COMPACT NUTRITIONAL BADGES (RECIPE CARDS) ===== */
+    .recipe-meta-left {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    /* Food Type (Veg / Non-Veg) Square & Dot Symbol */
+    .food-type-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.875rem; /* 14px */
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .food-symbol-square {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      flex-shrink: 0;
+    }
+
+    .food-symbol-circle {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    /* Veg Indicator */
+    .veg-type {
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+    }
+
+    .veg-type .food-symbol-square {
+      border: 1.5px solid #059669;
+    }
+
+    .veg-type .food-symbol-circle {
+      background: #059669;
+    }
+
+    /* Non-Veg Indicator */
+    .non-veg-type {
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+
+    .non-veg-type .food-symbol-square {
+      border: 1.5px solid #dc2626;
+    }
+
+    .non-veg-type .food-symbol-circle {
+      background: #dc2626;
+    }
+
+    /* Compact Nutritional Badges */
+    .meta-compact-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 9px;
+      border-radius: 6px;
+      font-size: 0.875rem; /* >= 14px */
+      font-weight: 700;
+      white-space: nowrap;
+      line-height: 1.2;
+    }
+
+    .price-badge {
+      background: rgba(37, 99, 235, 0.08);
+      color: var(--primary);
+    }
+
+    .time-badge {
+      background: #f1f5f9;
+      color: var(--text-dark);
+    }
+
+    .calorie-badge {
+      background: #fff7ed;
+      color: #c2410c;
+      border: 1px solid #ffedd5;
+    }
+
+    .protein-badge {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #dbeafe;
+    }
+
+    .protein-badge.high-protein {
+      background: #dbeafe;
+      color: #1e40af;
+      border-color: #bfdbfe;
+      font-weight: 800;
+    }
+
+    /* Dark Mode Overrides for Health & Nutrition Badges */
+    body.dark-mode .health-toggle-btn {
+      background: #0f172a;
+      border-color: #334155;
+      color: #f8fafc;
+    }
+
+    body.dark-mode .health-toggle-btn.veg-pill.active {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: #10b981;
+      color: #86efac;
+    }
+
+    body.dark-mode .health-toggle-btn.protein-pill.active {
+      background: rgba(37, 99, 235, 0.15);
+      border-color: #3b82f6;
+      color: #93c5fd;
+    }
+
+    body.dark-mode .time-badge {
+      background: #0f172a;
+      color: #f8fafc;
+    }
+
+    body.dark-mode .calorie-badge {
+      background: rgba(194, 65, 12, 0.15);
+      border-color: rgba(194, 65, 12, 0.3);
+      color: #fed7aa;
+    }
+
+    body.dark-mode .protein-badge {
+      background: rgba(37, 99, 235, 0.15);
+      border-color: rgba(37, 99, 235, 0.3);
+      color: #93c5fd;
     }
 
     /* ===== COMPARISON SECTION ===== */
@@ -4907,6 +5097,17 @@
             <button class="filter-btn" onclick="toggleFilter(this, 'cookware', 'no-cook')">No Stove</button>
           </div>
         </div>
+        <div class="filter-group">
+          <div class="filter-label">🥗 Dietary & Health</div>
+          <div class="filter-buttons health-filter-buttons">
+            <button type="button" class="filter-btn health-toggle-btn veg-pill" id="filterVegOnlyBtn" onclick="toggleHealthFilter('isVegOnly')" aria-pressed="false" title="Filter to show 100% vegetarian recipes only">
+              🥗 Veg Only
+            </button>
+            <button type="button" class="filter-btn health-toggle-btn protein-pill" id="filterHighProteinBtn" onclick="toggleHealthFilter('isHighProtein')" aria-pressed="false" title="Prioritize recipes with 20g+ protein">
+              💪 High Protein (20g+)
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -6045,7 +6246,7 @@
   // State & Filters
   let authMode = 'signup'; // 'signup' | 'login'
   let selectedIngredients = new Set();
-  let activeFilters = { budget: null, time: null, cookware: null };
+  let activeFilters = { budget: null, time: null, cookware: null, isVegOnly: false, isHighProtein: false };
   let activeCategory = 'all';
   let searchQuery = '';
   let cachedRecipes = [];
@@ -6267,6 +6468,22 @@
       nutrition: { calories: 340, protein_g: 11, carbs_g: 38, fat_g: 16, fiber_g: 3 }
     }
   ];
+
+  // Enrich fallback recipes with isVeg, protein, and calories per serving
+  fallbackRecipes.forEach(r => {
+    const isNonVeg = (r.ingredients || []).some(i => {
+      const lower = String(i).toLowerCase();
+      return lower.includes('chicken') || lower.includes('egg');
+    });
+    r.isVeg = !isNonVeg;
+    r.is_veg = !isNonVeg;
+    r.protein = (r.nutrition && r.nutrition.protein_g) || 14;
+    r.calories = (r.nutrition && r.nutrition.calories) || 380;
+    if (r.nutrition) {
+      r.nutrition.isVeg = !isNonVeg;
+      r.nutrition.is_veg = !isNonVeg;
+    }
+  });
 
   // ===== THEME MANAGEMENT =====
   function initTheme() {
@@ -7342,6 +7559,29 @@
     showToast('Cleared all tracked pantry items.');
   }
 
+  function toggleHealthFilter(filterType) {
+    activeFilters[filterType] = !activeFilters[filterType];
+    const btnId = filterType === 'isVegOnly' ? 'filterVegOnlyBtn' : 'filterHighProteinBtn';
+    const btn = document.getElementById(btnId);
+    if (btn) {
+      if (activeFilters[filterType]) {
+        btn.classList.add('active');
+        btn.setAttribute('aria-pressed', 'true');
+      } else {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-pressed', 'false');
+      }
+    }
+
+    if (filterType === 'isVegOnly') {
+      showToast(activeFilters.isVegOnly ? '🥗 Hard Filter: Showing 100% Vegetarian dishes only' : 'Showing all recipes');
+    } else if (filterType === 'isHighProtein') {
+      showToast(activeFilters.isHighProtein ? '💪 Soft Boost: Prioritizing High Protein (20g+) meals!' : 'High protein boost disabled');
+    }
+
+    fetchMatchingRecipes();
+  }
+
   function toggleFilter(btn, type, value) {
     const parentGroup = btn.parentElement;
     const isAlreadyActive = btn.classList.contains('active');
@@ -7369,7 +7609,9 @@
           ingredients: ingredientsArray,
           expiring_ingredients: urgentExpiringNames,
           max_budget: activeFilters.budget,
-          max_time: activeFilters.time
+          max_time: activeFilters.time,
+          isVegOnly: activeFilters.isVegOnly,
+          isHighProtein: activeFilters.isHighProtein
         })
       });
 
@@ -7408,18 +7650,33 @@
         : matchedExpiring;
 
       // Priority boost for recipes utilizing expiring ingredients (<= 2 days)
-      const boostedScore = usesExpiring
+      let boostedScore = usesExpiring
         ? Math.min(100, (recipe.match_score || baseMatchScore) + 25)
         : (recipe.match_score || baseMatchScore);
+
+      // Check high protein metric
+      const proteinG = (recipe.nutrition && recipe.nutrition.protein_g) || recipe.protein || 0;
+      const isProteinRich = proteinG >= 20;
+
+      // Soft Boost: If isHighProtein is TRUE, boost recipes with 20g+ protein
+      if (activeFilters.isHighProtein && isProteinRich) {
+        boostedScore = Math.min(100, boostedScore + 20);
+      }
 
       return {
         ...recipe,
         match_score: boostedScore,
         raw_match_score: baseMatchScore,
         expiring_matched: finalExpiringMatched,
-        uses_expiring_boost: usesExpiring
+        uses_expiring_boost: usesExpiring,
+        is_high_protein: isProteinRich
       };
     });
+
+    // Hard Filter: If isVegOnly is TRUE, filter out all non-vegetarian recipes immediately before rendering
+    if (activeFilters.isVegOnly) {
+      filtered = filtered.filter(r => r.isVeg === true);
+    }
 
     if (activeFilters.budget) {
       filtered = filtered.filter(r => r.budget_inr <= Number(activeFilters.budget));
@@ -7459,11 +7716,18 @@
       );
     }
 
-    // Sort by expiring boost first, then match score descending, then rating descending
+    // Sort by expiring boost first, high protein priority if toggled, then match score descending, then rating descending
     filtered.sort((a, b) => {
       const aBoost = a.uses_expiring_boost ? 1 : 0;
       const bBoost = b.uses_expiring_boost ? 1 : 0;
       if (bBoost !== aBoost) return bBoost - aBoost;
+
+      if (activeFilters.isHighProtein) {
+        const aProt = a.is_high_protein ? 1 : 0;
+        const bProt = b.is_high_protein ? 1 : 0;
+        if (bProt !== aProt) return bProt - aProt;
+      }
+
       return b.match_score - a.match_score || b.rating - a.rating;
     });
 
@@ -7606,7 +7870,15 @@
     container.innerHTML = recipes.map(recipe => {
       const isSaved = isRecipeSaved(recipe.slug);
       const nut = recipe.nutrition || { calories: 380, protein_g: 15 };
+      const calories = recipe.calories || nut.calories || 380;
+      const protein = recipe.protein || nut.protein_g || 15;
       const ratingData = getRecipeRatingData(recipe.slug);
+      const isVeg = recipe.isVeg !== undefined
+        ? recipe.isVeg
+        : (recipe.is_veg !== undefined
+          ? recipe.is_veg
+          : !(recipe.ingredients && recipe.ingredients.some(i => i.toLowerCase().includes('chicken') || i.toLowerCase().includes('egg'))));
+
       return `
       <div class="recipe-card">
         <div class="recipe-image">
@@ -7619,15 +7891,33 @@
         </div>
         <div class="recipe-content">
           <div class="recipe-meta">
-            <span style="font-weight: 600; color: var(--primary);">₹${recipe.budget_inr} • ${recipe.difficulty || 'Easy'}</span>
+            <div class="recipe-meta-left">
+              <!-- Veg / Non-Veg Indicator Tag -->
+              <span class="food-type-tag ${isVeg ? 'veg-type' : 'non-veg-type'}" title="${isVeg ? '100% Pure Vegetarian' : 'Contains Non-Vegetarian Ingredients (Chicken/Egg)'}">
+                <span class="food-symbol-square"><span class="food-symbol-circle"></span></span>
+                <span class="food-type-text">${isVeg ? 'Veg' : 'Non-Veg'}</span>
+              </span>
+
+              <!-- Price Tag -->
+              <span class="meta-compact-badge price-badge">₹${recipe.budget_inr}</span>
+
+              <!-- Time Tag -->
+              <span class="meta-compact-badge time-badge">⏱️ ${recipe.cook_time_min}m</span>
+
+              <!-- Calorie Tag -->
+              <span class="meta-compact-badge calorie-badge">🔥 ${calories} kcal</span>
+
+              <!-- Protein Tag -->
+              <span class="meta-compact-badge protein-badge ${protein >= 20 ? 'high-protein' : ''}">💪 ${protein}g Protein</span>
+            </div>
             ${renderStarRatingBadge(ratingData.avg, ratingData.count)}
           </div>
           <h3 class="recipe-title">${recipe.title}</h3>
           <p class="recipe-desc">${recipe.description}</p>
           
           <div class="macro-chips">
-            <span class="macro-chip">🔥 ${nut.calories || 380} kcal</span>
-            <span class="macro-chip">💪 ${nut.protein_g || 15}g Protein</span>
+            <span class="macro-chip">🔥 ${calories} kcal</span>
+            <span class="macro-chip">💪 ${protein}g Protein</span>
             <span class="macro-chip">🌾 ${nut.fiber_g || 4}g Fiber</span>
             <span class="macro-chip">🍳 ${recipe.single_pan ? '1 Pan' : 'Standard'}</span>
           </div>
@@ -7642,7 +7932,10 @@
           <div class="match-bar">
             <div class="match-labels">
               <span>Ingredient Match</span>
-              <span style="font-weight: 700; color: ${recipe.match_score >= 80 ? '#10b981' : '#f59e0b'};">${recipe.match_score || 85}% Match</span>
+              <span style="font-weight: 700; color: ${recipe.match_score >= 80 ? '#10b981' : '#f59e0b'};">
+                ${recipe.match_score || 85}% Match
+                ${recipe.is_high_protein ? '<span style="color: var(--primary); font-size: 0.775rem; margin-left: 4px;">(High Protein)</span>' : ''}
+              </span>
             </div>
             <div class="progress-bar">
               <div class="progress-fill" style="width: ${recipe.match_score || 85}%; background: ${recipe.match_score >= 80 ? '#10b981' : 'var(--primary)'};"></div>

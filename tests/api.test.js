@@ -153,6 +153,31 @@ async function runTests() {
       'POST /api/recipes/match prioritizes recipes utilizing expiring ingredients'
     );
 
+    // 13. Health & Nutrition Filters: Veg Only Hard Filter & High Protein Soft Boost
+    const vegMatchRes = await makeRequest('POST', '/api/recipes/match', {
+      ingredients: ['Eggs', 'Cheese', 'Butter', 'Bread'],
+      isVegOnly: true
+    });
+    const allVeg = vegMatchRes.body.recipes.every(r => r.isVeg === true);
+    assert(
+      vegMatchRes.status === 200 &&
+      allVeg &&
+      vegMatchRes.body.recipes.length > 0 &&
+      !vegMatchRes.body.recipes.some(r => r.slug === 'crispy-egg-cheese-toast-fold'),
+      'POST /api/recipes/match filters out non-vegetarian recipes when isVegOnly is true'
+    );
+
+    const proteinMatchRes = await makeRequest('POST', '/api/recipes/match', {
+      ingredients: [],
+      isHighProtein: true
+    });
+    assert(
+      proteinMatchRes.status === 200 &&
+      proteinMatchRes.body.recipes.length > 0 &&
+      (proteinMatchRes.body.recipes[0].nutrition.protein_g >= 20 || proteinMatchRes.body.recipes[0].protein >= 20),
+      'POST /api/recipes/match prioritizes high protein (20g+) recipes when isHighProtein is true'
+    );
+
     console.log(`\n📊 Test Summary: ${passed} Passed, ${failed} Failed\n`);
   } catch (err) {
     console.error('Test execution error:', err);
