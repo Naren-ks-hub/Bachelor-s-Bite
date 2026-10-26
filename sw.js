@@ -14,6 +14,8 @@ const STATIC_ASSETS = [
   '/images/collection_vegan.jpg',
   '/images/collection_fiber.jpg',
   '/images/collection_global.jpg',
+  '/images/logo.png',
+  '/images/logo_badge.jpg',
   '/bachelors bite.jpg'
 ];
 
