@@ -4840,8 +4840,396 @@
       font-size: 0.9rem;
     }
 
-    footer p {
-      opacity: 0.8;
+    /* ===== AUTOMATED GROCERY LIST & BUDGET PLANNER ===== */
+    .btn-nav-grocery {
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      color: var(--primary);
+      border: 1px solid #bfdbfe;
+      border-radius: 999px;
+      padding: 7px 14px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-nav-grocery:hover {
+      background: #bfdbfe;
+      transform: translateY(-1px);
+    }
+
+    .grocery-badge-nav {
+      background: var(--primary);
+      color: white;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 999px;
+      line-height: 1.2;
+    }
+
+    .grocery-modal-content {
+      max-width: 680px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 28px;
+      border-radius: var(--radius-lg);
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .grocery-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .grocery-header-info {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .grocery-header-badge {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      background: #eff6ff;
+      color: #2563eb;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .grocery-modal-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin: 0;
+    }
+
+    .grocery-modal-subtitle {
+      font-size: 0.82rem;
+      color: var(--text-light);
+      margin-top: 2px;
+    }
+
+    .grocery-budget-card {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #ffffff;
+      padding: 8px 16px;
+      border-radius: 12px;
+      text-align: right;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    }
+
+    .grocery-budget-label {
+      display: block;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      opacity: 0.85;
+      font-weight: 600;
+    }
+
+    .grocery-budget-val {
+      font-size: 1.35rem;
+      font-weight: 800;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .grocery-quick-add-form {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .grocery-input-text {
+      flex: 1 1 200px;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.9rem;
+      background: var(--bg-light);
+      color: var(--text-dark);
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .grocery-input-text:focus {
+      border-color: var(--primary);
+      background: var(--card-bg);
+    }
+
+    .grocery-select-category {
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.85rem;
+      background: var(--bg-light);
+      color: var(--text-dark);
+      outline: none;
+      cursor: pointer;
+    }
+
+    .grocery-input-cost {
+      width: 90px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.9rem;
+      background: var(--bg-light);
+      color: var(--text-dark);
+      outline: none;
+    }
+
+    .btn-grocery-add {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-grocery-add:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .grocery-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding: 8px 12px;
+      background: var(--bg-light);
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-light);
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .grocery-action-btns {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-grocery-transfer {
+      background: #10b981;
+      color: white;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 6px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-grocery-transfer:hover {
+      background: #059669;
+      transform: translateY(-1px);
+    }
+
+    .btn-grocery-clear {
+      background: transparent;
+      color: var(--text-light);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+
+    .btn-grocery-clear:hover {
+      color: #ef4444;
+      border-color: #ef4444;
+    }
+
+    .grocery-category-block {
+      margin-bottom: 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--card-bg);
+    }
+
+    .grocery-cat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-light);
+      padding: 10px 14px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--text-dark);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .grocery-cat-chip {
+      background: #e2e8f0;
+      color: #475569;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .grocery-item-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      transition: background-color 0.15s ease;
+    }
+
+    .grocery-item-row:last-child {
+      border-bottom: none;
+    }
+
+    .grocery-item-row:hover {
+      background: var(--bg-light);
+    }
+
+    .grocery-item-row.bought {
+      opacity: 0.55;
+      background: #f8fafc;
+    }
+
+    .grocery-item-row.bought .grocery-item-name {
+      text-decoration: line-through;
+      color: var(--text-light);
+    }
+
+    .grocery-item-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      flex: 1;
+    }
+
+    .grocery-checkbox {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    .grocery-item-name {
+      font-weight: 600;
+      font-size: 0.92rem;
+      color: var(--text-dark);
+    }
+
+    .grocery-item-source {
+      font-size: 0.72rem;
+      color: #2563eb;
+      background: #eff6ff;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: 6px;
+      font-weight: 500;
+    }
+
+    .grocery-item-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .grocery-item-cost {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #059669;
+      background: #ecfdf5;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    .btn-grocery-remove {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .btn-grocery-remove:hover {
+      color: #ef4444;
+      background: #fee2e2;
+    }
+
+    .grocery-empty-view {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-light);
+    }
+
+    .grocery-empty-icon {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+    }
+
+    html.dark-mode .grocery-modal-header,
+    html.dark-mode .grocery-category-block,
+    html.dark-mode .grocery-cat-header,
+    html.dark-mode .grocery-item-row {
+      border-color: #334155;
+    }
+    html.dark-mode .grocery-header-badge {
+      background: #1e293b;
+      color: #60a5fa;
+    }
+    html.dark-mode .grocery-toolbar,
+    html.dark-mode .grocery-cat-header {
+      background: #0f172a;
+    }
+    html.dark-mode .grocery-item-row.bought {
+      background: #0f172a;
+    }
+    html.dark-mode .grocery-cat-chip {
+      background: #334155;
+      color: #cbd5e1;
+    }
+    html.dark-mode .grocery-item-source {
+      background: #1e293b;
+      color: #93c5fd;
+    }
+    html.dark-mode .grocery-item-cost {
+      background: #064e3b;
+      color: #6ee7b7;
+    }
+    html.dark-mode .btn-nav-grocery {
+      background: #1e293b;
+      border-color: #334155;
+      color: #60a5fa;
     }
   </style>
   <script>
@@ -4890,6 +5278,7 @@
       <li><a href="#heroSection" class="nav-link-item active" id="navLinkHome" onclick="navigateToSection('heroSection'); return false;">Home</a></li>
       <li><a href="#pantrySection" class="nav-link-item" id="navLinkRecipes" onclick="navigateToSection('pantrySection'); return false;">Recipes</a></li>
       <li><a href="#collectionsSection" class="nav-link-item" id="navLinkCollections" onclick="navigateToSection('collectionsSection'); return false;">Collections</a></li>
+      <li><a href="#groceryModal" class="nav-link-item" id="navLinkGrocery" onclick="openGroceryModal(); return false;">🛒 Grocery (<span id="navGroceryBadgeCount">0</span>)</a></li>
       <li><a href="#howItWorksSection" class="nav-link-item" id="navLinkHow" onclick="navigateToSection('howItWorksSection'); return false;">How It Works</a></li>
       <li><a href="#calculatorSection" class="nav-link-item" id="navLinkCalc" onclick="navigateToSection('calculatorSection'); return false;">Savings</a></li>
       <li><a href="#aboutSection" class="nav-link-item" id="navLinkAbout" onclick="navigateToSection('aboutSection'); return false;">About</a></li>
@@ -4897,6 +5286,12 @@
 
     <!-- Right Controls: PWA Install, Theme, User Profile & Auth -->
     <div class="nav-auth-box">
+      <!-- Automated Grocery Quick Button -->
+      <button class="btn-nav-grocery" id="navGroceryBtn" onclick="openGroceryModal()" title="View Automated Grocery List">
+        <span>🛒 Grocery</span>
+        <span class="grocery-badge-nav" id="navGroceryBadgeCount2">0</span>
+      </button>
+
       <!-- PWA Install Button & Installed Status Pill -->
       <button class="btn-nav-install-pwa" id="navInstallPwaBtn" onclick="triggerPwaInstall()" style="display: none;" title="Install BachelorBite app to your device">
         <span class="pwa-btn-icon">📥</span>
@@ -5867,6 +6262,61 @@
 
     <div class="auth-switch-link" id="authSwitchLink">
       Already have an account? <a onclick="setAuthMode('login')">Log In</a>
+    </div>
+  </div>
+</div>
+
+<!-- ===== AUTOMATED GROCERY LIST & BUDGET PLANNER MODAL ===== -->
+<div class="form-modal" id="groceryModal">
+  <div class="form-content grocery-modal-content">
+    <button class="form-close" onclick="closeGroceryModal()">×</button>
+
+    <!-- Header with Icon & Live Total Budget -->
+    <div class="grocery-modal-header">
+      <div class="grocery-header-info">
+        <div class="grocery-header-badge">🛒</div>
+        <div>
+          <h2 class="grocery-modal-title">Automated Grocery List & Budget Planner</h2>
+          <p class="grocery-modal-subtitle">Missing ingredients isolated from recipes against your fridge pantry.</p>
+        </div>
+      </div>
+      <div class="grocery-budget-card">
+        <span class="grocery-budget-label">Est. Missing Cost</span>
+        <span class="grocery-budget-val" id="groceryModalTotalBudget">₹0</span>
+      </div>
+    </div>
+
+    <!-- Quick Manual Add Custom Item Form -->
+    <form class="grocery-quick-add-form" onsubmit="handleManualAddGrocery(event)">
+      <input type="text" id="groceryCustomName" class="grocery-input-text" placeholder="Add custom item (e.g., Milk, Bread, Chai)..." required>
+      <select id="groceryCustomCategory" class="grocery-select-category">
+        <option value="Dairy & Protein">Dairy & Protein</option>
+        <option value="Fresh Produce">Fresh Produce</option>
+        <option value="Pantry Staples" selected>Pantry Staples</option>
+        <option value="Spices & Sauces">Spices & Sauces</option>
+      </select>
+      <input type="number" id="groceryCustomCost" class="grocery-input-cost" placeholder="₹ Cost" value="20" min="5" max="1000">
+      <button type="submit" class="btn-grocery-add">+ Add</button>
+    </form>
+
+    <!-- Action Toolbar (Batch Transfer & Clear) -->
+    <div class="grocery-toolbar">
+      <div class="grocery-stats-summary" id="groceryStatsSummary">
+        0 to buy • 0 bought
+      </div>
+      <div class="grocery-action-btns">
+        <button type="button" class="btn-grocery-transfer" id="btnTransferToPantry" onclick="transferBoughtToPantry()" style="display: none;">
+          📦 Transfer Bought to Pantry
+        </button>
+        <button type="button" class="btn-grocery-clear" id="btnClearBought" onclick="clearBoughtGroceryItems()" style="display: none;">
+          Clear Bought
+        </button>
+      </div>
+    </div>
+
+    <!-- Dynamic Categorized Grocery Aisle Sections -->
+    <div class="grocery-content-scroll" id="groceryCategoriesContainer">
+      <!-- Injected by renderGroceryModalContent() -->
     </div>
   </div>
 </div>
@@ -7948,6 +8398,9 @@
               👨‍🍳 Cook Mode
             </button>
           </div>
+          <button type="button" class="btn-card-grocery-add" onclick="event.stopPropagation(); addRecipeMissingToGrocery('${recipe.slug}')" style="margin-top: 8px; width: 100%; padding: 8px 12px; font-size: 0.82rem; font-weight: 700; color: var(--primary); background: #eff6ff; border: 1px dashed #bfdbfe; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.2s ease;">
+            🛒 + Auto-Add Missing to Grocery List
+          </button>
         </div>
       </div>
     `;
@@ -8091,13 +8544,21 @@
         </div>
       </div>
 
-      <div style="margin: 18px 0; text-align: center;">
+      <div style="margin: 18px 0; text-align: center; display: flex; flex-direction: column; gap: 8px;">
         <button class="btn btn-primary" onclick="startCookingMode('${recipe.slug}')" style="width: 100%; font-size: 1.05rem; padding: 14px;">
           👨‍🍳 Start Interactive Step-by-Step Cook Mode →
         </button>
+        <button type="button" class="btn btn-secondary" onclick="addRecipeMissingToGrocery('${recipe.slug}')" style="width: 100%; font-size: 0.92rem; padding: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700;">
+          🛒 Auto-Add Missing Ingredients to Grocery List
+        </button>
       </div>
 
-      <div class="modal-section-title">📦 Ingredients Checklist</div>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0 12px;">
+        <div class="modal-section-title" style="margin: 0;">📦 Ingredients Checklist</div>
+        <button type="button" onclick="openGroceryModal()" style="font-size: 0.82rem; color: var(--primary); background: transparent; border: none; font-weight: 700; cursor: pointer;">
+          View Grocery List →
+        </button>
+      </div>
       <div class="ingredient-checklist">
         ${(recipe.ingredients || []).map(ing => `
           <label class="ingredient-check-item">
@@ -8831,11 +9292,351 @@
     showToast('🎉 BachelorBite installed! Launch it anytime from your home screen.');
   });
 
+  // ===== AUTOMATED GROCERY LIST & BUDGET PLANNER LOGIC =====
+  const INGREDIENT_COST_CATALOG = {
+    'bread': { cost: 20, category: 'Pantry Staples' },
+    'eggs': { cost: 15, category: 'Dairy & Protein' },
+    'milk': { cost: 30, category: 'Dairy & Protein' },
+    'cheese': { cost: 25, category: 'Dairy & Protein' },
+    'butter': { cost: 15, category: 'Dairy & Protein' },
+    'paneer': { cost: 45, category: 'Dairy & Protein' },
+    'chicken': { cost: 65, category: 'Dairy & Protein' },
+    'pasta': { cost: 25, category: 'Pantry Staples' },
+    'noodles': { cost: 20, category: 'Pantry Staples' },
+    'rice': { cost: 20, category: 'Pantry Staples' },
+    'oats': { cost: 25, category: 'Pantry Staples' },
+    'chickpeas / beans': { cost: 25, category: 'Pantry Staples' },
+    'beans': { cost: 25, category: 'Pantry Staples' },
+    'garlic': { cost: 10, category: 'Fresh Produce' },
+    'onions': { cost: 15, category: 'Fresh Produce' },
+    'vegetables': { cost: 25, category: 'Fresh Produce' },
+    'tomatoes': { cost: 15, category: 'Fresh Produce' },
+    'spinach': { cost: 15, category: 'Fresh Produce' },
+    'soy sauce': { cost: 15, category: 'Spices & Sauces' },
+    'chili flakes': { cost: 10, category: 'Spices & Sauces' },
+    'black pepper': { cost: 10, category: 'Spices & Sauces' },
+    'peanut butter': { cost: 35, category: 'Spices & Sauces' }
+  };
+
+  let groceryItems = [];
+
+  function initGroceryList() {
+    const saved = localStorage.getItem('bachelorBite_grocery_items');
+    if (saved) {
+      try {
+        groceryItems = JSON.parse(saved);
+      } catch (e) {
+        groceryItems = getDefaultGroceryItems();
+      }
+    } else {
+      groceryItems = getDefaultGroceryItems();
+    }
+    updateGroceryNavBadge();
+  }
+
+  function getDefaultGroceryItems() {
+    return [
+      { id: 'g_1', name: 'Eggs', category: 'Dairy & Protein', estimatedCost: 15, checked: false, recipeSource: 'Quick Breakfast' },
+      { id: 'g_2', name: 'Garlic', category: 'Fresh Produce', estimatedCost: 10, checked: false, recipeSource: 'Chili Noodles' },
+      { id: 'g_3', name: 'Cheese Slices', category: 'Dairy & Protein', estimatedCost: 25, checked: false, recipeSource: 'Midnight Melt' },
+      { id: 'g_4', name: 'Soy Sauce', category: 'Spices & Sauces', estimatedCost: 15, checked: false, recipeSource: 'Noodle Glaze' }
+    ];
+  }
+
+  function saveGroceryItems() {
+    localStorage.setItem('bachelorBite_grocery_items', JSON.stringify(groceryItems));
+    updateGroceryNavBadge();
+  }
+
+  function updateGroceryNavBadge() {
+    const pendingCount = groceryItems.filter(i => !i.checked).length;
+    const badge1 = document.getElementById('navGroceryBadgeCount');
+    const badge2 = document.getElementById('navGroceryBadgeCount2');
+    if (badge1) badge1.textContent = pendingCount;
+    if (badge2) badge2.textContent = pendingCount;
+  }
+
+  function categorizeIngredient(name) {
+    const lower = String(name).toLowerCase().trim();
+    for (const [key, data] of Object.entries(INGREDIENT_COST_CATALOG)) {
+      if (lower.includes(key) || key.includes(lower)) return data.category;
+    }
+    if (lower.includes('sauce') || lower.includes('spice') || lower.includes('pepper') || lower.includes('oil')) return 'Spices & Sauces';
+    if (lower.includes('egg') || lower.includes('milk') || lower.includes('curd') || lower.includes('cheese') || lower.includes('paneer')) return 'Dairy & Protein';
+    if (lower.includes('onion') || lower.includes('garlic') || lower.includes('veg') || lower.includes('tomato')) return 'Fresh Produce';
+    return 'Pantry Staples';
+  }
+
+  function getEstimatedCost(name) {
+    const lower = String(name).toLowerCase().trim();
+    for (const [key, data] of Object.entries(INGREDIENT_COST_CATALOG)) {
+      if (lower.includes(key) || key.includes(lower)) return data.cost;
+    }
+    return 20;
+  }
+
+  // Requirement 1: Recipe-to-Pantry Comparison Logic
+  function generateMissingItemsForRecipe(recipe) {
+    const ingredients = recipe.ingredients || [];
+    const pantryNames = new Set();
+    if (Array.isArray(trackedPantryItems)) {
+      trackedPantryItems.filter(i => i.active !== false).forEach(i => pantryNames.add(i.name.toLowerCase().trim()));
+    }
+    if (selectedIngredients) {
+      selectedIngredients.forEach(i => pantryNames.add(String(i).toLowerCase().trim()));
+    }
+
+    const missing = [];
+    for (const ing of ingredients) {
+      const ingClean = String(ing).trim();
+      const ingLower = ingClean.toLowerCase();
+      let found = false;
+      for (const p of pantryNames) {
+        if (p.includes(ingLower) || ingLower.includes(p)) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        missing.push({
+          id: 'grocery_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+          name: ingClean,
+          category: categorizeIngredient(ingClean),
+          estimatedCost: getEstimatedCost(ingClean),
+          checked: false,
+          recipeSource: recipe.title || 'Selected Recipe'
+        });
+      }
+    }
+    return missing;
+  }
+
+  function addRecipeMissingToGrocery(slug) {
+    let recipe = cachedRecipes.find(r => r.slug === slug);
+    if (!recipe) {
+      recipe = fallbackRecipes.find(r => r.slug === slug);
+    }
+    if (!recipe) return;
+
+    const missing = generateMissingItemsForRecipe(recipe);
+    if (missing.length === 0) {
+      showToast(`🎉 Great news! You already have all ingredients for "${recipe.title}" in your pantry!`);
+      return;
+    }
+
+    let addedCount = 0;
+    for (const item of missing) {
+      const exists = groceryItems.some(existing => existing.name.toLowerCase().trim() === item.name.toLowerCase().trim());
+      if (!exists) {
+        groceryItems.push(item);
+        addedCount++;
+      }
+    }
+
+    saveGroceryItems();
+    if (addedCount > 0) {
+      const totalCost = missing.reduce((sum, i) => sum + i.estimatedCost, 0);
+      showToast(`🛒 Added ${addedCount} missing ingredient(s) from "${recipe.title}" to Grocery List (Est. ₹${totalCost})!`);
+    } else {
+      showToast(`🛒 Missing ingredients from "${recipe.title}" are already in your grocery list!`);
+    }
+
+    const modal = document.getElementById('groceryModal');
+    if (modal && modal.classList.contains('active')) {
+      renderGroceryModalContent();
+    }
+  }
+
+  function openGroceryModal() {
+    renderGroceryModalContent();
+    const modal = document.getElementById('groceryModal');
+    if (modal) {
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  function closeGroceryModal() {
+    const modal = document.getElementById('groceryModal');
+    if (modal) {
+      modal.classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+  }
+
+  function toggleGroceryItemBought(id) {
+    const item = groceryItems.find(i => i.id === id);
+    if (item) {
+      item.checked = !item.checked;
+      saveGroceryItems();
+      renderGroceryModalContent();
+    }
+  }
+
+  function removeGroceryItem(id) {
+    groceryItems = groceryItems.filter(i => i.id !== id);
+    saveGroceryItems();
+    renderGroceryModalContent();
+  }
+
+  function clearBoughtGroceryItems() {
+    const count = groceryItems.filter(i => i.checked).length;
+    groceryItems = groceryItems.filter(i => !i.checked);
+    saveGroceryItems();
+    renderGroceryModalContent();
+    showToast(`Cleared ${count} bought item(s).`);
+  }
+
+  // Requirement 3: Transfer to Pantry
+  function transferBoughtToPantry() {
+    const bought = groceryItems.filter(i => i.checked);
+    if (bought.length === 0) return;
+
+    bought.forEach(b => {
+      const existing = trackedPantryItems.find(p => p.name.toLowerCase().trim() === b.name.toLowerCase().trim());
+      if (existing) {
+        existing.active = true;
+        existing.expiryDate = getFutureDateString(7);
+      } else {
+        trackedPantryItems.push({
+          id: 'pantry_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+          name: b.name,
+          quantity: '1 pack',
+          expiryDate: getFutureDateString(7),
+          active: true,
+          category: b.category || 'Pantry Staples'
+        });
+      }
+      selectedIngredients.add(b.name);
+      document.querySelectorAll('#pantryIngredientChips .chip').forEach(chip => {
+        if (chip.textContent.trim().toLowerCase() === b.name.toLowerCase()) {
+          chip.classList.add('active');
+        }
+      });
+    });
+
+    groceryItems = groceryItems.filter(i => !i.checked);
+    saveGroceryItems();
+    saveTrackedPantryItems();
+    renderPantryItemsDashboard();
+    fetchMatchingRecipes();
+    renderGroceryModalContent();
+
+    showToast(`📦 Transferred ${bought.length} bought item(s) to your active fridge pantry!`);
+  }
+
+  function handleManualAddGrocery(e) {
+    e.preventDefault();
+    const nameInput = document.getElementById('groceryCustomName');
+    const catInput = document.getElementById('groceryCustomCategory');
+    const costInput = document.getElementById('groceryCustomCost');
+    if (!nameInput || !nameInput.value.trim()) return;
+
+    const name = nameInput.value.trim();
+    const cat = catInput ? catInput.value : categorizeIngredient(name);
+    const cost = costInput && Number(costInput.value) > 0 ? Number(costInput.value) : getEstimatedCost(name);
+
+    groceryItems.push({
+      id: 'custom_' + Date.now(),
+      name: name,
+      category: cat,
+      estimatedCost: cost,
+      checked: false,
+      recipeSource: 'Custom Added'
+    });
+
+    nameInput.value = '';
+    saveGroceryItems();
+    renderGroceryModalContent();
+    showToast(`Added ${name} (₹${cost}) to grocery list!`);
+  }
+
+  function renderGroceryModalContent() {
+    const container = document.getElementById('groceryCategoriesContainer');
+    const budgetVal = document.getElementById('groceryModalTotalBudget');
+    const statsSummary = document.getElementById('groceryStatsSummary');
+    const btnTransfer = document.getElementById('btnTransferToPantry');
+    const btnClear = document.getElementById('btnClearBought');
+
+    if (!container) return;
+
+    const boughtCount = groceryItems.filter(i => i.checked).length;
+    const toBuyCount = groceryItems.length - boughtCount;
+    const totalMissingCost = groceryItems.filter(i => !i.checked).reduce((sum, i) => sum + (Number(i.estimatedCost) || 0), 0);
+
+    if (budgetVal) budgetVal.textContent = `₹${totalMissingCost}`;
+    if (statsSummary) {
+      statsSummary.textContent = `${toBuyCount} to buy${boughtCount > 0 ? ` • ${boughtCount} bought` : ''}`;
+    }
+
+    if (btnTransfer) {
+      btnTransfer.style.display = boughtCount > 0 ? 'inline-flex' : 'none';
+      btnTransfer.textContent = `📦 Transfer ${boughtCount} Bought to Pantry`;
+    }
+    if (btnClear) {
+      btnClear.style.display = boughtCount > 0 ? 'inline-block' : 'none';
+    }
+
+    if (groceryItems.length === 0) {
+      container.innerHTML = `
+        <div class="grocery-empty-view">
+          <div class="grocery-empty-icon">🎉</div>
+          <h4 style="font-size: 1.15rem; font-weight: 700; color: var(--text-dark); margin-bottom: 6px;">Your Grocery List is Empty!</h4>
+          <p style="font-size: 0.9rem; color: var(--text-light); max-width: 420px; margin: 0 auto;">Select any recipe to automatically isolate missing ingredients, or use the quick form above to add custom items.</p>
+        </div>
+      `;
+      return;
+    }
+
+    const categories = ['Dairy & Protein', 'Fresh Produce', 'Pantry Staples', 'Spices & Sauces'];
+    const grouped = {};
+    categories.forEach(c => grouped[c] = []);
+
+    groceryItems.forEach(item => {
+      const cat = item.category || 'Pantry Staples';
+      if (!grouped[cat]) grouped[cat] = [];
+      grouped[cat].push(item);
+    });
+
+    let html = '';
+    categories.forEach(cat => {
+      const items = grouped[cat] || [];
+      if (items.length === 0) return;
+
+      html += `
+        <div class="grocery-category-block">
+          <div class="grocery-cat-header">
+            <span>${cat}</span>
+            <span class="grocery-cat-chip">${items.length} item${items.length > 1 ? 's' : ''}</span>
+          </div>
+          <div class="grocery-items-list">
+            ${items.map(item => `
+              <div class="grocery-item-row ${item.checked ? 'bought' : ''}">
+                <label class="grocery-item-left" for="chk_${item.id}">
+                  <input type="checkbox" id="chk_${item.id}" class="grocery-checkbox" ${item.checked ? 'checked' : ''} onchange="toggleGroceryItemBought('${item.id}')">
+                  <span class="grocery-item-name">${item.name}</span>
+                  ${item.recipeSource ? `<span class="grocery-item-source">${item.recipeSource}</span>` : ''}
+                </label>
+                <div class="grocery-item-right">
+                  <span class="grocery-item-cost">₹${item.estimatedCost}</span>
+                  <button type="button" class="btn-grocery-remove" onclick="removeGroceryItem('${item.id}')" title="Delete item">✕</button>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    });
+
+    container.innerHTML = html;
+  }
+
   // ===== SINGLE CONSOLIDATED INITIALIZATION =====
   document.addEventListener('DOMContentLoaded', () => {
     initTheme();
     initLocation();
     initActiveExpiryPantry();
+    initGroceryList();
     fetchMatchingRecipes();
     updateSavedCount();
     updateDashboardHeaderStats();
@@ -8891,12 +9692,13 @@
     });
 
     // Modal backdrop click dismissers
-    ['shopModal', 'appointmentsModal', 'servicesModal', 'formModal', 'recipeModal', 'profileModal'].forEach(id => {
+    ['shopModal', 'appointmentsModal', 'servicesModal', 'formModal', 'recipeModal', 'profileModal', 'groceryModal'].forEach(id => {
       const el = document.getElementById(id);
       if (el) {
         el.addEventListener('click', function(e) {
           if (e.target === this) {
             this.classList.remove('active');
+            document.body.style.overflow = 'auto';
           }
         });
       }

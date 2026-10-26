@@ -408,4 +408,129 @@ router.get('/collections/:slug/recipes', async (req, res) => {
   }
 });
 
+// 8. Automated Grocery List & Budget Planner Engine
+
+const INGREDIENT_COST_CATALOG = {
+  'bread': { cost: 20, category: 'Pantry Staples' },
+  'eggs': { cost: 15, category: 'Dairy & Protein' },
+  'milk': { cost: 30, category: 'Dairy & Protein' },
+  'cheese': { cost: 25, category: 'Dairy & Protein' },
+  'butter': { cost: 15, category: 'Dairy & Protein' },
+  'paneer': { cost: 45, category: 'Dairy & Protein' },
+  'chicken': { cost: 65, category: 'Dairy & Protein' },
+  'pasta': { cost: 25, category: 'Pantry Staples' },
+  'noodles': { cost: 20, category: 'Pantry Staples' },
+  'rice': { cost: 20, category: 'Pantry Staples' },
+  'oats': { cost: 25, category: 'Pantry Staples' },
+  'chickpeas / beans': { cost: 25, category: 'Pantry Staples' },
+  'beans': { cost: 25, category: 'Pantry Staples' },
+  'garlic': { cost: 10, category: 'Fresh Produce' },
+  'onions': { cost: 15, category: 'Fresh Produce' },
+  'vegetables': { cost: 25, category: 'Fresh Produce' },
+  'tomatoes': { cost: 15, category: 'Fresh Produce' },
+  'spinach': { cost: 15, category: 'Fresh Produce' },
+  'soy sauce': { cost: 15, category: 'Spices & Sauces' },
+  'chili flakes': { cost: 10, category: 'Spices & Sauces' },
+  'black pepper': { cost: 10, category: 'Spices & Sauces' },
+  'peanut butter': { cost: 35, category: 'Spices & Sauces' }
+};
+
+function getIngredientDetails(name) {
+  const lower = String(name).toLowerCase().trim();
+  for (const [key, data] of Object.entries(INGREDIENT_COST_CATALOG)) {
+    if (lower.includes(key) || key.includes(lower)) {
+      return { cost: data.cost, category: data.category };
+    }
+  }
+  let cat = 'Pantry Staples';
+  if (lower.includes('sauce') || lower.includes('spice') || lower.includes('pepper') || lower.includes('oil')) {
+    cat = 'Spices & Sauces';
+  } else if (lower.includes('egg') || lower.includes('milk') || lower.includes('curd') || lower.includes('cheese') || lower.includes('paneer')) {
+    cat = 'Dairy & Protein';
+  } else if (lower.includes('onion') || lower.includes('garlic') || lower.includes('veg') || lower.includes('tomato')) {
+    cat = 'Fresh Produce';
+  }
+  return { cost: 20, category: cat };
+}
+
+router.post('/grocery/missing', async (req, res) => {
+  try {
+    const { recipe_slug, recipe_title, recipe_ingredients, pantry_ingredients = [] } = req.body;
+
+    let targetIngredients = [];
+    let title = recipe_title || 'Recipe Ingredients';
+
+    if (recipe_slug) {
+      const recipe = await dbQueries.getRecipeByIdOrSlug(recipe_slug);
+      if (recipe) {
+        targetIngredients = recipe.ingredients || [];
+        title = recipe.title || title;
+      }
+    }
+
+    if (targetIngredients.length === 0 && Array.isArray(recipe_ingredients)) {
+      targetIngredients = recipe_ingredients;
+    }
+
+    if (!Array.isArray(targetIngredients) || targetIngredients.length === 0) {
+      return res.status(400).json({ error: 'Please provide valid recipe_slug or recipe_ingredients array.' });
+    }
+
+    const userPantry = (Array.isArray(pantry_ingredients) ? pantry_ingredients : [])
+      .map(i => String(i).toLowerCase().trim())
+      .filter(Boolean);
+
+    const missingItems = [];
+    const matchedItems = [];
+    const groupedMissing = {
+      'Dairy & Protein': [],
+      'Fresh Produce': [],
+      'Pantry Staples': [],
+      'Spices & Sauces': []
+    };
+
+    let totalEstimatedCost = 0;
+
+    for (const ing of targetIngredients) {
+      const ingName = String(ing).trim();
+      const ingLower = ingName.toLowerCase();
+
+      const isPresent = userPantry.some(p => p.includes(ingLower) || ingLower.includes(p));
+
+      if (isPresent) {
+        matchedItems.push(ingName);
+      } else {
+        const details = getIngredientDetails(ingName);
+        const itemObj = {
+          name: ingName,
+          category: details.category,
+          estimatedCost: details.cost
+        };
+        missingItems.push(itemObj);
+        totalEstimatedCost += details.cost;
+
+        if (!groupedMissing[details.category]) {
+          groupedMissing[details.category] = [];
+        }
+        groupedMissing[details.category].push(itemObj);
+      }
+    }
+
+    res.json({
+      success: true,
+      recipe_title: title,
+      total_ingredients: targetIngredients.length,
+      matched_ingredients: matchedItems,
+      missing_count: missingItems.length,
+      total_estimated_cost: totalEstimatedCost,
+      missing_items: missingItems,
+      grouped_missing: groupedMissing
+    });
+  } catch (err) {
+    console.error('Error generating grocery missing list:', err);
+    res.status(500).json({ error: 'Failed to generate missing grocery list.' });
+  }
+});
+
 module.exports = router;
+

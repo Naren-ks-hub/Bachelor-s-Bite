@@ -178,6 +178,21 @@ async function runTests() {
       'POST /api/recipes/match prioritizes high protein (20g+) recipes when isHighProtein is true'
     );
 
+    // 14. Automated Grocery List & Budget Planner Engine
+    const groceryMissingRes = await makeRequest('POST', '/api/grocery/missing', {
+      recipe_slug: 'garlic-butter-chili-noodles',
+      pantry_ingredients: ['Butter', 'Soy Sauce']
+    });
+    assert(
+      groceryMissingRes.status === 200 &&
+      groceryMissingRes.body.success === true &&
+      groceryMissingRes.body.missing_count >= 2 &&
+      groceryMissingRes.body.total_estimated_cost > 0 &&
+      Array.isArray(groceryMissingRes.body.missing_items) &&
+      groceryMissingRes.body.missing_items.some(i => i.name.toLowerCase().includes('pasta') || i.name.toLowerCase().includes('garlic')),
+      'POST /api/grocery/missing isolates missing ingredients and calculates budget estimate'
+    );
+
     console.log(`\n📊 Test Summary: ${passed} Passed, ${failed} Failed\n`);
   } catch (err) {
     console.error('Test execution error:', err);

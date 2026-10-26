@@ -2,13 +2,15 @@ import React, { useState, useMemo } from 'react';
 import ActiveExpiryPantry from './components/ActiveExpiryPantry';
 import DietaryFilterBar from './components/DietaryFilterBar';
 import RecipeCard from './components/RecipeCard';
+import AutomatedGroceryList from './components/AutomatedGroceryList';
+import { generateMissingGroceryList, mergeGroceryItems } from './utils/groceryEngine';
 
-// Sample Dataset with NUTRITION attributes (calories, protein, isVeg)
+// Sample Dataset with NUTRITION attributes
 const INITIAL_RECIPES = [
   {
     slug: 'garlic-butter-chili-noodles',
     title: 'Garlic Butter Chili Noodles',
-    badge: '🍜 Noodles',
+    badge: '🍝 Pasta',
     cook_time_min: 10,
     budget_inr: 45,
     difficulty: 'Easy',
@@ -93,34 +95,51 @@ const INITIAL_RECIPES = [
 ];
 
 export default function App() {
-  // 1. Dietary & Health Filter State Management
+  // 1. Dietary & Health Filter State
   const [isVegOnly, setIsVegOnly] = useState(false);
   const [isHighProtein, setIsHighProtein] = useState(false);
 
-  // Expiry tracking state
+  // 2. Active Expiry & Pantry State
   const [expiringIngredients, setExpiringIngredients] = useState([]);
-  const [selectedIngredients, setSelectedIngredients] = useState([]);
+  const [selectedIngredients, setSelectedIngredients] = useState(['Bread', 'Butter']);
   const [favorites, setFavorites] = useState([]);
+
+  // 3. Automated Grocery List State
+  const [activeRecipeForGrocery, setActiveRecipeForGrocery] = useState(null);
+  const [groceryCount, setGroceryCount] = useState(0);
 
   const toggleFavorite = (slug) => {
     setFavorites(prev => prev.includes(slug) ? prev.filter(s => s !== slug) : [...prev, slug]);
   };
 
-  // 2. Recipe Filtering & Scoring Logic
+  // Add missing recipe ingredients to grocery list
+  const handleAddRecipeToGrocery = (recipe) => {
+    setActiveRecipeForGrocery(recipe);
+    const { missingItems, totalEstimatedCost } = generateMissingGroceryList(recipe, selectedIngredients);
+    alert(`🛒 Added ${missingItems.length} missing ingredients from "${recipe.title}" to your grocery list (Est. ₹${totalEstimatedCost})!`);
+  };
+
+  // Transfer bought items to active pantry
+  const handleTransferToPantry = (boughtItems) => {
+    const newIngredientNames = boughtItems.map(item => item.name);
+    setSelectedIngredients(prev => [...new Set([...prev, ...newIngredientNames])]);
+    alert(`📦 Transferred ${boughtItems.length} bought item(s) (${newIngredientNames.join(', ')}) back to your active pantry!`);
+  };
+
+  // Recipe Filtering & Scoring Logic
   const filteredAndRankedRecipes = useMemo(() => {
     let list = [...INITIAL_RECIPES];
 
-    // HARD FILTER: If isVegOnly is TRUE, exclude all non-veg recipes immediately
+    // HARD FILTER: If isVegOnly is TRUE, exclude non-veg immediately
     if (isVegOnly) {
       list = list.filter(recipe => recipe.isVeg === true);
     }
 
-    // SOFT BOOST: If isHighProtein is TRUE, boost display score for recipes with 20g+ protein
+    // SOFT BOOST: If isHighProtein is TRUE, boost recipes with 20g+ protein
     list = list.map(recipe => {
       const isProteinRich = recipe.protein >= 20;
       let score = 85;
 
-      // Active Expiry rescue boost
       const hasExpiringMatch = expiringIngredients.some(exp =>
         recipe.ingredients.some(ing => ing.toLowerCase().includes(exp.toLowerCase()))
       );
@@ -137,7 +156,6 @@ export default function App() {
       };
     });
 
-    // Sorting: Expiring boost first, then High Protein priority if toggled, then match score
     return list.sort((a, b) => {
       const aExp = a.uses_expiring_boost ? 1 : 0;
       const bExp = b.uses_expiring_boost ? 1 : 0;
@@ -155,18 +173,40 @@ export default function App() {
 
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '24px', fontFamily: 'Inter, sans-serif' }}>
-      <header style={{ marginBottom: '24px' }}>
-        <h1 style={{ fontSize: '2rem', fontWeight: 800, color: '#0f172a' }}>🍳 BachelorBite</h1>
-        <p style={{ color: '#64748b' }}>Solo Cooking Made Simple - Active Expiry, Health Filters & Nutrition</p>
+      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '12px' }}>
+        <div>
+          <h1 style={{ fontSize: '2rem', fontWeight: 800, color: '#0f172a', margin: 0 }}>🍳 BachelorBite</h1>
+          <p style={{ color: '#64748b', margin: '4px 0 0 0' }}>Solo Cooking Made Simple - Active Expiry, Nutrition & Automated Grocery</p>
+        </div>
+        <a
+          href="#automatedGroceryListSection"
+          style={{
+            background: '#2563eb',
+            color: 'white',
+            padding: '10px 18px',
+            borderRadius: '999px',
+            fontWeight: 700,
+            fontSize: '0.875rem',
+            textDecoration: 'none',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px'
+          }}
+        >
+          <span>🛒 Grocery List</span>
+          <span style={{ background: 'white', color: '#2563eb', padding: '2px 8px', borderRadius: '999px', fontSize: '0.75rem' }}>
+            {groceryCount}
+          </span>
+        </a>
       </header>
 
-      {/* Active Expiry Tracker */}
+      {/* 1. Active Expiry Tracker */}
       <ActiveExpiryPantry
         onExpiringChange={setExpiringIngredients}
         onSelectedIngredientsChange={setSelectedIngredients}
       />
 
-      {/* Health & Nutrition Filter Bar Controls */}
+      {/* 2. Health & Nutrition Filter Bar Controls */}
       <DietaryFilterBar
         isVegOnly={isVegOnly}
         isHighProtein={isHighProtein}
@@ -174,7 +214,7 @@ export default function App() {
         onToggleHighProtein={() => setIsHighProtein(prev => !prev)}
       />
 
-      {/* Recipe Cards Grid */}
+      {/* 3. Recipe Cards Grid with "Add Missing to Grocery" button */}
       <section style={{ marginTop: '28px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
           <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#0f172a' }}>
@@ -188,17 +228,43 @@ export default function App() {
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
           {filteredAndRankedRecipes.map(recipe => (
-            <RecipeCard
-              key={recipe.slug}
-              recipe={recipe}
-              isFavorite={favorites.includes(recipe.slug)}
-              onToggleFavorite={toggleFavorite}
-              onOpenModal={(slug) => alert(`Opening modal for ${slug}`)}
-              onStartCook={(slug) => alert(`Starting cook mode for ${slug}`)}
-            />
+            <div key={recipe.slug} style={{ display: 'flex', flexDirection: 'column' }}>
+              <RecipeCard
+                recipe={recipe}
+                isFavorite={favorites.includes(recipe.slug)}
+                onToggleFavorite={toggleFavorite}
+                onOpenModal={() => handleAddRecipeToGrocery(recipe)}
+                onStartCook={() => alert(`Starting cook mode for ${recipe.title}`)}
+              />
+              <button
+                type="button"
+                onClick={() => handleAddRecipeToGrocery(recipe)}
+                style={{
+                  marginTop: '8px',
+                  padding: '8px',
+                  background: '#f8fafc',
+                  border: '1px dashed #cbd5e1',
+                  borderRadius: '8px',
+                  color: '#2563eb',
+                  fontWeight: 600,
+                  fontSize: '0.8rem',
+                  cursor: 'pointer'
+                }}
+              >
+                + Auto-Add Missing Items to Grocery List
+              </button>
+            </div>
           ))}
         </div>
       </section>
+
+      {/* 4. Dedicated Automated Grocery List Component */}
+      <AutomatedGroceryList
+        pantryItems={selectedIngredients}
+        selectedRecipe={activeRecipeForGrocery}
+        onTransferToPantry={handleTransferToPantry}
+        onItemCountChange={setGroceryCount}
+      />
     </div>
   );
 }
