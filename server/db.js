@@ -99,7 +99,7 @@ function seedData() {
           { step: 2, instruction: 'In the same pan, melt 2 tbsp butter over medium heat. Sauté 4 cloves of finely chopped garlic until aromatic and golden.', timer_min: 2 },
           { step: 3, instruction: 'Toss the boiled pasta into the fragrant garlic butter. Add 1 tsp chili flakes, 1 tbsp soy sauce, and stir-fry for 2 mins until well coated.', timer_min: 2 }
         ]),
-        nutrition: JSON.stringify({ calories: 380, protein_g: 11, carbs_g: 54, fat_g: 14 })
+        nutrition: JSON.stringify({ calories: 380, protein_g: 11, carbs_g: 54, fat_g: 14, fiber_g: 4 })
       },
       {
         slug: 'crispy-egg-cheese-toast-fold',
@@ -120,7 +120,7 @@ function seedData() {
           { step: 3, instruction: 'Once the egg base is set, flip the entire egg and bread layer over in one swift move.', timer_min: 2 },
           { step: 4, instruction: 'Place a cheese slice in the center, fold excess egg edges inward, and fold bread into a crispy golden toasted sandwich.', timer_min: 2 }
         ]),
-        nutrition: JSON.stringify({ calories: 410, protein_g: 22, carbs_g: 28, fat_g: 23 })
+        nutrition: JSON.stringify({ calories: 410, protein_g: 22, carbs_g: 28, fat_g: 23, fiber_g: 3 })
       },
       {
         slug: 'one-pan-smokey-black-bean-rice',
@@ -140,7 +140,7 @@ function seedData() {
           { step: 2, instruction: 'Add chopped vegetables, cooked beans, 1/2 tsp cumin, and pinch of chili powder; sauté for 3 minutes.', timer_min: 3 },
           { step: 3, instruction: 'Add 1.5 cups cooked rice, 2 tbsp water, mix thoroughly, cover pan and steam on low flame for 5 minutes.', timer_min: 5 }
         ]),
-        nutrition: JSON.stringify({ calories: 460, protein_g: 15, carbs_g: 72, fat_g: 12 })
+        nutrition: JSON.stringify({ calories: 460, protein_g: 15, carbs_g: 72, fat_g: 12, fiber_g: 8 })
       },
       {
         slug: 'high-protein-chicken-skillet',
@@ -160,7 +160,7 @@ function seedData() {
           { step: 2, instruction: 'Heat butter in a skillet over high heat; sear chicken cubes undisturbed for 4 mins to get a golden crust.', timer_min: 4 },
           { step: 3, instruction: 'Flip chicken, add minced garlic and mixed vegetables; stir-fry for 4 mins until chicken is cooked through and succulent.', timer_min: 4 }
         ]),
-        nutrition: JSON.stringify({ calories: 490, protein_g: 44, carbs_g: 8, fat_g: 22 })
+        nutrition: JSON.stringify({ calories: 490, protein_g: 44, carbs_g: 8, fat_g: 22, fiber_g: 3 })
       },
       {
         slug: 'single-skillet-egg-fried-rice',
@@ -180,7 +180,7 @@ function seedData() {
           { step: 2, instruction: 'Push veggies to one side of the pan, crack in 2 eggs, and scramble quickly for 1 minute.', timer_min: 1 },
           { step: 3, instruction: 'Toss in cold cooked rice, soy sauce, and black pepper; stir-fry continuously on high heat for 3 minutes.', timer_min: 3 }
         ]),
-        nutrition: JSON.stringify({ calories: 430, protein_g: 18, carbs_g: 58, fat_g: 14 })
+        nutrition: JSON.stringify({ calories: 430, protein_g: 18, carbs_g: 58, fat_g: 14, fiber_g: 4 })
       },
       {
         slug: 'midnight-garlic-cheese-melt',
@@ -200,7 +200,7 @@ function seedData() {
           { step: 2, instruction: 'Spread garlic butter onto outer sides of bread, layer thick cheese inside.', timer_min: 1 },
           { step: 3, instruction: 'Toast on low-medium flame in a covered pan for 2.5 mins per side until bread is crunch-crisp and cheese is molten.', timer_min: 5 }
         ]),
-        nutrition: JSON.stringify({ calories: 350, protein_g: 13, carbs_g: 26, fat_g: 22 })
+        nutrition: JSON.stringify({ calories: 350, protein_g: 13, carbs_g: 26, fat_g: 22, fiber_g: 4 })
       },
       {
         slug: 'peanut-sesame-chili-noodles',
@@ -220,7 +220,7 @@ function seedData() {
           { step: 2, instruction: 'In the warm pan, whisk 1.5 tbsp peanut butter, 1 tbsp soy sauce, minced garlic, chili flakes, and the 2 tbsp reserved water into a creamy sauce.', timer_min: 2 },
           { step: 3, instruction: 'Toss warm noodles vigorously into the peanut sauce over low flame for 2 mins until glossy and fully coated.', timer_min: 2 }
         ]),
-        nutrition: JSON.stringify({ calories: 410, protein_g: 14, carbs_g: 58, fat_g: 15 })
+        nutrition: JSON.stringify({ calories: 410, protein_g: 14, carbs_g: 58, fat_g: 15, fiber_g: 6 })
       },
       {
         slug: 'crispy-chickpea-veggie-skillet',
@@ -240,7 +240,7 @@ function seedData() {
           { step: 2, instruction: 'Melt 1 tbsp butter in a pan over medium-high heat. Add minced garlic, chopped onions, and chickpeas with a pinch of salt and chili flakes.', timer_min: 5 },
           { step: 3, instruction: 'Toss in chopped vegetables and sauté for 5 mins until chickpeas are crunchy-crisp on the edges and veggies are tender-crisp.', timer_min: 5 }
         ]),
-        nutrition: JSON.stringify({ calories: 370, protein_g: 16, carbs_g: 48, fat_g: 12 })
+        nutrition: JSON.stringify({ calories: 370, protein_g: 16, carbs_g: 48, fat_g: 12, fiber_g: 10 })
       },
       {
         slug: 'korean-honey-garlic-toast',
@@ -260,16 +260,18 @@ function seedData() {
           { step: 2, instruction: 'Slather the garlic mixture generously on both sides of bread slices and place cheese in between.', timer_min: 2 },
           { step: 3, instruction: 'Pan fry in a covered skillet on low heat for 2 mins per side until deeply golden, caramelized, and cheese stretches.', timer_min: 4 }
         ]),
-        nutrition: JSON.stringify({ calories: 340, protein_g: 11, carbs_g: 38, fat_g: 16 })
+        nutrition: JSON.stringify({ calories: 340, protein_g: 11, carbs_g: 38, fat_g: 16, fiber_g: 3 })
       }
     ];
 
+    const updateNutrition = db.prepare('UPDATE recipes SET nutrition = ? WHERE slug = ?');
     for (const r of initialRecipes) {
       insertRecipe.run(
         r.slug, r.title, r.badge, r.category, r.image,
         r.cook_time_min, r.budget_inr, r.difficulty, r.rating, r.single_pan,
         r.description, r.ingredients, r.steps, r.nutrition
       );
+      updateNutrition.run(r.nutrition, r.slug);
     }
 
     const insertCollection = db.prepare(`

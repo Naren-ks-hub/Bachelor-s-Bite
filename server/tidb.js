@@ -179,7 +179,7 @@ async function initTiDBDatabase() {
             { step: 2, instruction: 'In the same pan, melt 2 tbsp butter over medium heat. Sauté 4 cloves of finely chopped garlic until aromatic and golden.' },
             { step: 3, instruction: 'Toss the boiled pasta into the fragrant garlic butter. Add 1 tsp chili flakes, 1 tbsp soy sauce, and stir-fry for 2 mins until well coated.' }
           ]),
-          JSON.stringify({ calories: 380, protein_g: 11, carbs_g: 54, fat_g: 14 })
+          JSON.stringify({ calories: 380, protein_g: 11, carbs_g: 54, fat_g: 14, fiber_g: 4 })
         ],
         [
           'crispy-egg-cheese-toast-fold',
@@ -200,7 +200,7 @@ async function initTiDBDatabase() {
             { step: 3, instruction: 'Once the egg base is set, flip the entire egg and bread layer over in one swift move.' },
             { step: 4, instruction: 'Place a cheese slice in the center, fold excess egg edges inward, and fold bread into a crispy golden toasted sandwich.' }
           ]),
-          JSON.stringify({ calories: 410, protein_g: 22, carbs_g: 28, fat_g: 23 })
+          JSON.stringify({ calories: 410, protein_g: 22, carbs_g: 28, fat_g: 23, fiber_g: 3 })
         ],
         [
           'one-pan-smokey-black-bean-rice',
@@ -220,7 +220,7 @@ async function initTiDBDatabase() {
             { step: 2, instruction: 'Add chopped vegetables, cooked beans, 1/2 tsp cumin, and pinch of chili powder; sauté for 3 minutes.' },
             { step: 3, instruction: 'Add 1.5 cups cooked rice, 2 tbsp water, mix thoroughly, cover pan and steam on low flame for 5 minutes.' }
           ]),
-          JSON.stringify({ calories: 460, protein_g: 15, carbs_g: 72, fat_g: 12 })
+          JSON.stringify({ calories: 460, protein_g: 15, carbs_g: 72, fat_g: 12, fiber_g: 8 })
         ],
         [
           'high-protein-chicken-skillet',
@@ -240,7 +240,7 @@ async function initTiDBDatabase() {
             { step: 2, instruction: 'Heat butter in a skillet over high heat; sear chicken cubes undisturbed for 4 mins to get a golden crust.' },
             { step: 3, instruction: 'Flip chicken, add minced garlic and mixed vegetables; stir-fry for 4 mins until chicken is cooked through and succulent.' }
           ]),
-          JSON.stringify({ calories: 490, protein_g: 44, carbs_g: 8, fat_g: 22 })
+          JSON.stringify({ calories: 490, protein_g: 44, carbs_g: 8, fat_g: 22, fiber_g: 3 })
         ],
         [
           'single-skillet-egg-fried-rice',
@@ -260,7 +260,7 @@ async function initTiDBDatabase() {
             { step: 2, instruction: 'Push veggies to one side of the pan, crack in 2 eggs, and scramble quickly for 1 minute.' },
             { step: 3, instruction: 'Toss in cold cooked rice, soy sauce, and black pepper; stir-fry continuously on high heat for 3 minutes.' }
           ]),
-          JSON.stringify({ calories: 430, protein_g: 18, carbs_g: 58, fat_g: 14 })
+          JSON.stringify({ calories: 430, protein_g: 18, carbs_g: 58, fat_g: 14, fiber_g: 4 })
         ],
         [
           'midnight-garlic-cheese-melt',
@@ -280,7 +280,7 @@ async function initTiDBDatabase() {
             { step: 2, instruction: 'Generously layer cheese slices and chili flakes between bread.' },
             { step: 3, instruction: 'Toast on a warm pan for 3 mins per side until golden brown and cheese is fully melted.' }
           ]),
-          JSON.stringify({ calories: 370, protein_g: 14, carbs_g: 32, fat_g: 21 })
+          JSON.stringify({ calories: 370, protein_g: 14, carbs_g: 32, fat_g: 21, fiber_g: 4 })
         ],
         [
           'peanut-sesame-chili-noodles',
@@ -300,7 +300,7 @@ async function initTiDBDatabase() {
             { step: 2, instruction: 'In the warm pan, whisk 1.5 tbsp peanut butter, 1 tbsp soy sauce, minced garlic, chili flakes, and the 2 tbsp reserved water into a creamy sauce.' },
             { step: 3, instruction: 'Toss warm noodles vigorously into the peanut sauce over low flame for 2 mins until glossy and fully coated.' }
           ]),
-          JSON.stringify({ calories: 410, protein_g: 14, carbs_g: 58, fat_g: 15 })
+          JSON.stringify({ calories: 410, protein_g: 14, carbs_g: 58, fat_g: 15, fiber_g: 6 })
         ],
         [
           'crispy-chickpea-veggie-skillet',
@@ -320,7 +320,7 @@ async function initTiDBDatabase() {
             { step: 2, instruction: 'Melt 1 tbsp butter in a pan over medium-high heat. Add minced garlic, chopped onions, and chickpeas with a pinch of salt and chili flakes.' },
             { step: 3, instruction: 'Toss in chopped vegetables and sauté for 5 mins until chickpeas are crunchy-crisp on the edges and veggies are tender-crisp.' }
           ]),
-          JSON.stringify({ calories: 370, protein_g: 16, carbs_g: 48, fat_g: 12 })
+          JSON.stringify({ calories: 370, protein_g: 16, carbs_g: 48, fat_g: 12, fiber_g: 10 })
         ],
         [
           'korean-honey-garlic-toast',
@@ -340,7 +340,7 @@ async function initTiDBDatabase() {
             { step: 2, instruction: 'Slather the garlic mixture generously on both sides of bread slices and place cheese in between.' },
             { step: 3, instruction: 'Pan fry in a covered skillet on low heat for 2 mins per side until deeply golden, caramelized, and cheese stretches.' }
           ]),
-          JSON.stringify({ calories: 340, protein_g: 11, carbs_g: 38, fat_g: 16 })
+          JSON.stringify({ calories: 340, protein_g: 11, carbs_g: 38, fat_g: 16, fiber_g: 3 })
         ]
       ];
 
@@ -349,6 +349,7 @@ async function initTiDBDatabase() {
           INSERT IGNORE INTO recipes (slug, title, badge, category, image, cook_time_min, budget_inr, difficulty, rating, single_pan, description, ingredients, steps, nutrition)
           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `, r);
+        await conn.query('UPDATE recipes SET nutrition = ? WHERE slug = ?', [r[13], r[0]]);
       }
     }
 
