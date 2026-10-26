@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bachelorbite-v2.1.0-tidb';
+const CACHE_NAME = 'bachelorbite-v2.2.0-voice';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -7,6 +7,13 @@ const STATIC_ASSETS = [
   '/images/recipe_noodles.jpg',
   '/images/recipe_egg_toast.jpg',
   '/images/recipe_smokey_rice.jpg',
+  '/images/collection_budget.jpg',
+  '/images/collection_quick.jpg',
+  '/images/collection_protein.jpg',
+  '/images/collection_midnight.jpg',
+  '/images/collection_vegan.jpg',
+  '/images/collection_fiber.jpg',
+  '/images/collection_global.jpg',
   '/bachelors bite.jpg'
 ];
 

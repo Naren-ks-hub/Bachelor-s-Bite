@@ -75,14 +75,12 @@ function initDatabase() {
 }
 
 function seedData() {
-  const recipeCount = db.prepare('SELECT COUNT(*) as count FROM recipes').get().count;
-  if (recipeCount === 0) {
-    const insertRecipe = db.prepare(`
-      INSERT INTO recipes (slug, title, badge, category, image, cook_time_min, budget_inr, difficulty, rating, single_pan, description, ingredients, steps, nutrition)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `);
+  const insertRecipe = db.prepare(`
+    INSERT OR IGNORE INTO recipes (slug, title, badge, category, image, cook_time_min, budget_inr, difficulty, rating, single_pan, description, ingredients, steps, nutrition)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `);
 
-    const initialRecipes = [
+  const initialRecipes = [
       {
         slug: 'garlic-butter-chili-noodles',
         title: 'Garlic Butter Chili Noodles',
@@ -203,6 +201,66 @@ function seedData() {
           { step: 3, instruction: 'Toast on low-medium flame in a covered pan for 2.5 mins per side until bread is crunch-crisp and cheese is molten.', timer_min: 5 }
         ]),
         nutrition: JSON.stringify({ calories: 350, protein_g: 13, carbs_g: 26, fat_g: 22 })
+      },
+      {
+        slug: 'peanut-sesame-chili-noodles',
+        title: '10-Min Peanut Sesame Chili Noodles',
+        badge: '🌱 Vegan',
+        category: 'vegan',
+        image: 'images/collection_vegan.jpg',
+        cook_time_min: 10,
+        budget_inr: 45,
+        difficulty: 'Easy',
+        rating: 4.8,
+        single_pan: 1,
+        description: 'Rich nutty sesame-peanut glaze tossed with noodles, soy sauce, and garlic for an instant vegan dinner.',
+        ingredients: JSON.stringify(['Pasta', 'Peanut Butter', 'Garlic', 'Soy Sauce', 'Chili Flakes']),
+        steps: JSON.stringify([
+          { step: 1, instruction: 'Boil noodles or pasta in a single pan for 6 mins until tender; reserve 2 tbsp cooking water, then drain.', timer_min: 6 },
+          { step: 2, instruction: 'In the warm pan, whisk 1.5 tbsp peanut butter, 1 tbsp soy sauce, minced garlic, chili flakes, and the 2 tbsp reserved water into a creamy sauce.', timer_min: 2 },
+          { step: 3, instruction: 'Toss warm noodles vigorously into the peanut sauce over low flame for 2 mins until glossy and fully coated.', timer_min: 2 }
+        ]),
+        nutrition: JSON.stringify({ calories: 410, protein_g: 14, carbs_g: 58, fat_g: 15 })
+      },
+      {
+        slug: 'crispy-chickpea-veggie-skillet',
+        title: 'Crispy Spiced Chickpea & Veggie Bowl',
+        badge: '🌾 Fiber',
+        category: 'fiber',
+        image: 'images/collection_fiber.jpg',
+        cook_time_min: 12,
+        budget_inr: 50,
+        difficulty: 'Easy',
+        rating: 4.9,
+        single_pan: 1,
+        description: 'High-fiber powerhouse packed with sautéed chickpeas, onions, crisp veggies, and aromatic cumin paprika seasoning.',
+        ingredients: JSON.stringify(['Chickpeas / Beans', 'Vegetables', 'Garlic', 'Onions', 'Butter', 'Chili Flakes']),
+        steps: JSON.stringify([
+          { step: 1, instruction: 'Rinse and drain cooked chickpeas; pat lightly dry with a towel or paper napkin.', timer_min: 2 },
+          { step: 2, instruction: 'Melt 1 tbsp butter in a pan over medium-high heat. Add minced garlic, chopped onions, and chickpeas with a pinch of salt and chili flakes.', timer_min: 5 },
+          { step: 3, instruction: 'Toss in chopped vegetables and sauté for 5 mins until chickpeas are crunchy-crisp on the edges and veggies are tender-crisp.', timer_min: 5 }
+        ]),
+        nutrition: JSON.stringify({ calories: 370, protein_g: 16, carbs_g: 48, fat_g: 12 })
+      },
+      {
+        slug: 'korean-honey-garlic-toast',
+        title: 'Korean Street Honey Garlic Cheese Toast',
+        badge: '🌍 Street Bites',
+        category: 'street',
+        image: 'images/collection_global.jpg',
+        cook_time_min: 8,
+        budget_inr: 40,
+        difficulty: 'Easy',
+        rating: 4.9,
+        single_pan: 1,
+        description: 'Seoul street-food favorite with crusty pan-toasted bread slathered in sweet savory garlic butter and melted cheese.',
+        ingredients: JSON.stringify(['Bread', 'Butter', 'Garlic', 'Cheese', 'Soy Sauce']),
+        steps: JSON.stringify([
+          { step: 1, instruction: 'Mix 1.5 tbsp softened butter with 2 minced garlic cloves, 1/2 tsp sugar/honey, and 3 drops of soy sauce.', timer_min: 2 },
+          { step: 2, instruction: 'Slather the garlic mixture generously on both sides of bread slices and place cheese in between.', timer_min: 2 },
+          { step: 3, instruction: 'Pan fry in a covered skillet on low heat for 2 mins per side until deeply golden, caramelized, and cheese stretches.', timer_min: 4 }
+        ]),
+        nutrition: JSON.stringify({ calories: 340, protein_g: 11, carbs_g: 38, fat_g: 16 })
       }
     ];
 
@@ -213,12 +271,9 @@ function seedData() {
         r.description, r.ingredients, r.steps, r.nutrition
       );
     }
-  }
 
-  const collectionCount = db.prepare('SELECT COUNT(*) as count FROM collections').get().count;
-  if (collectionCount === 0) {
     const insertCollection = db.prepare(`
-      INSERT INTO collections (slug, title, badge, description, recipe_count, image)
+      INSERT OR IGNORE INTO collections (slug, title, badge, description, recipe_count, image)
       VALUES (?, ?, ?, ?, ?, ?)
     `);
 
@@ -254,6 +309,30 @@ function seedData() {
         description: 'Silent, low-smell midnight snacks you can whip up without waking your roommate.',
         recipe_count: 16,
         image: 'images/collection_midnight.jpg'
+      },
+      {
+        slug: 'vegan-express',
+        title: 'Plant-Powered Vegan Express',
+        badge: '🌱 Vegan',
+        description: 'Zero animal products, 100% quick and budget-friendly single-pot meals.',
+        recipe_count: 16,
+        image: 'images/collection_vegan.jpg'
+      },
+      {
+        slug: 'gut-reset-fiber',
+        title: 'High-Fiber & Gut Reset',
+        badge: '🌾 Fiber',
+        description: 'Oats, lentils, beans, and greens to keep digestion sharp and energy consistent.',
+        recipe_count: 14,
+        image: 'images/collection_fiber.jpg'
+      },
+      {
+        slug: 'global-street-bites',
+        title: 'Global Street Bites',
+        badge: '🌍 Street Bites',
+        description: 'Bold international street foods adapted for single-skillet bachelor setups.',
+        recipe_count: 20,
+        image: 'images/collection_global.jpg'
       }
     ];
 
@@ -261,7 +340,6 @@ function seedData() {
       insertCollection.run(c.slug, c.title, c.badge, c.description, c.recipe_count, c.image);
     }
   }
-}
 
 const { isTiDBConfigured, tidbQueries } = require('./tidb');
 

@@ -158,7 +158,7 @@ async function initTiDBDatabase() {
 
     // Seed recipes if empty
     const [recipeRows] = await conn.query('SELECT COUNT(*) as count FROM recipes');
-    if (recipeRows[0].count < 6) {
+    if (recipeRows[0].count < 9) {
       console.log('🌱 Seeding initial recipes to TiDB Cloud...');
       const initialRecipes = [
         [
@@ -281,6 +281,66 @@ async function initTiDBDatabase() {
             { step: 3, instruction: 'Toast on a warm pan for 3 mins per side until golden brown and cheese is fully melted.' }
           ]),
           JSON.stringify({ calories: 370, protein_g: 14, carbs_g: 32, fat_g: 21 })
+        ],
+        [
+          'peanut-sesame-chili-noodles',
+          '10-Min Peanut Sesame Chili Noodles',
+          '🌱 Vegan',
+          'vegan',
+          'images/collection_vegan.jpg',
+          10,
+          45,
+          'Easy',
+          4.8,
+          1,
+          'Rich nutty sesame-peanut glaze tossed with noodles, soy sauce, and garlic for an instant vegan dinner.',
+          JSON.stringify(['Pasta', 'Peanut Butter', 'Garlic', 'Soy Sauce', 'Chili Flakes']),
+          JSON.stringify([
+            { step: 1, instruction: 'Boil noodles or pasta in a single pan for 6 mins until tender; reserve 2 tbsp cooking water, then drain.' },
+            { step: 2, instruction: 'In the warm pan, whisk 1.5 tbsp peanut butter, 1 tbsp soy sauce, minced garlic, chili flakes, and the 2 tbsp reserved water into a creamy sauce.' },
+            { step: 3, instruction: 'Toss warm noodles vigorously into the peanut sauce over low flame for 2 mins until glossy and fully coated.' }
+          ]),
+          JSON.stringify({ calories: 410, protein_g: 14, carbs_g: 58, fat_g: 15 })
+        ],
+        [
+          'crispy-chickpea-veggie-skillet',
+          'Crispy Spiced Chickpea & Veggie Bowl',
+          '🌾 Fiber',
+          'fiber',
+          'images/collection_fiber.jpg',
+          12,
+          50,
+          'Easy',
+          4.9,
+          1,
+          'High-fiber powerhouse packed with sautéed chickpeas, onions, crisp veggies, and aromatic cumin paprika seasoning.',
+          JSON.stringify(['Chickpeas / Beans', 'Vegetables', 'Garlic', 'Onions', 'Butter', 'Chili Flakes']),
+          JSON.stringify([
+            { step: 1, instruction: 'Rinse and drain cooked chickpeas; pat lightly dry with a towel or paper napkin.' },
+            { step: 2, instruction: 'Melt 1 tbsp butter in a pan over medium-high heat. Add minced garlic, chopped onions, and chickpeas with a pinch of salt and chili flakes.' },
+            { step: 3, instruction: 'Toss in chopped vegetables and sauté for 5 mins until chickpeas are crunchy-crisp on the edges and veggies are tender-crisp.' }
+          ]),
+          JSON.stringify({ calories: 370, protein_g: 16, carbs_g: 48, fat_g: 12 })
+        ],
+        [
+          'korean-honey-garlic-toast',
+          'Korean Street Honey Garlic Cheese Toast',
+          '🌍 Street Bites',
+          'street',
+          'images/collection_global.jpg',
+          8,
+          40,
+          'Easy',
+          4.9,
+          1,
+          'Seoul street-food favorite with crusty pan-toasted bread slathered in sweet savory garlic butter and melted cheese.',
+          JSON.stringify(['Bread', 'Butter', 'Garlic', 'Cheese', 'Soy Sauce']),
+          JSON.stringify([
+            { step: 1, instruction: 'Mix 1.5 tbsp softened butter with 2 minced garlic cloves, 1/2 tsp sugar/honey, and 3 drops of soy sauce.' },
+            { step: 2, instruction: 'Slather the garlic mixture generously on both sides of bread slices and place cheese in between.' },
+            { step: 3, instruction: 'Pan fry in a covered skillet on low heat for 2 mins per side until deeply golden, caramelized, and cheese stretches.' }
+          ]),
+          JSON.stringify({ calories: 340, protein_g: 11, carbs_g: 38, fat_g: 16 })
         ]
       ];
 
@@ -289,6 +349,28 @@ async function initTiDBDatabase() {
           INSERT IGNORE INTO recipes (slug, title, badge, category, image, cook_time_min, budget_inr, difficulty, rating, single_pan, description, ingredients, steps, nutrition)
           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `, r);
+      }
+    }
+
+    // Seed collections if empty
+    const [collRows] = await conn.query('SELECT COUNT(*) as count FROM collections');
+    if (collRows[0].count < 7) {
+      console.log('🌱 Seeding situational collections to TiDB Cloud...');
+      const initialCollections = [
+        ['broke-edition', 'End-of-Month Broke Edition', '💰 Budget', 'Meals when your bank account is low but you refuse to eat plain tap water ramen.', 24, 'images/collection_budget.jpg'],
+        ['hangry-meals', '10-Minute Hangry Meals', '⚡ Quick', 'Faster than putting your shoes on to walk to the deli or waiting 50 mins on delivery.', 18, 'images/collection_quick.jpg'],
+        ['single-skillet-gains', 'Single Skillet Gains', '💪 Protein', 'High protein macros for gym rats who despise Sunday batch-prepping 14 tubs.', 22, 'images/collection_protein.jpg'],
+        ['midnight-study', 'Late Night Study Cravings', '🌙 Study', 'Silent, low-smell midnight snacks you can whip up without waking your roommate.', 16, 'images/collection_midnight.jpg'],
+        ['vegan-express', 'Plant-Powered Vegan Express', '🌱 Vegan', 'Zero animal products, 100% quick and budget-friendly single-pot meals.', 16, 'images/collection_vegan.jpg'],
+        ['gut-reset-fiber', 'High-Fiber & Gut Reset', '🌾 Fiber', 'Oats, lentils, beans, and greens to keep digestion sharp and energy consistent.', 14, 'images/collection_fiber.jpg'],
+        ['global-street-bites', 'Global Street Bites', '🌍 Street Bites', 'Bold international street foods adapted for single-skillet bachelor setups.', 20, 'images/collection_global.jpg']
+      ];
+
+      for (const c of initialCollections) {
+        await conn.query(`
+          INSERT IGNORE INTO collections (slug, title, badge, description, recipe_count, image)
+          VALUES (?, ?, ?, ?, ?, ?)
+        `, c);
       }
     }
 

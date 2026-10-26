@@ -3370,6 +3370,187 @@
       flex: 1;
     }
 
+    /* ===== HANDS-FREE VOICE ASSISTANT IN COOK MODE ===== */
+    .cook-voice-bar {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 14px;
+      margin-bottom: 16px;
+      padding: 14px 16px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, rgba(16, 185, 129, 0.08) 100%);
+      border: 1px solid rgba(37, 99, 235, 0.2);
+      transition: all 0.3s ease;
+    }
+    .cook-voice-bar.listening {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.12) 100%);
+      border-color: #10b981;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.25);
+    }
+    .cook-voice-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .voice-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 16px;
+      border-radius: 999px;
+      border: 1px solid #10b981;
+      background: #10b981;
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+    .voice-toggle-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+    }
+    .voice-toggle-btn.active {
+      background: #ef4444;
+      border-color: #ef4444;
+      box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.2);
+      animation: pulseMic 1.8s infinite;
+    }
+    @keyframes pulseMic {
+      0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5); }
+      70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
+    .voice-speak-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 13px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      color: var(--text-dark);
+      font-weight: 600;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .voice-speak-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    .voice-status-line {
+      font-size: 0.82rem;
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .voice-status-line strong {
+      color: var(--text-dark);
+    }
+    .voice-heard-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      background: rgba(16, 185, 129, 0.15);
+      color: #065f46;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.78rem;
+    }
+    body.dark-mode .voice-heard-pill {
+      background: rgba(16, 185, 129, 0.25);
+      color: #34d399;
+    }
+    .voice-command-hints {
+      font-size: 0.78rem;
+      color: var(--text-light);
+      line-height: 1.4;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+    .voice-cmd-chip {
+      background: rgba(0, 0, 0, 0.05);
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.75rem;
+    }
+    body.dark-mode .voice-cmd-chip {
+      background: rgba(255, 255, 255, 0.1);
+      color: #93c5fd;
+    }
+
+    /* ===== STEP COUNTDOWN TIMER ===== */
+    .cook-step-timer-box {
+      margin-top: 14px;
+      padding: 12px 16px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .timer-display {
+      font-family: 'Outfit', monospace, sans-serif;
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: 1px;
+    }
+    .timer-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .timer-btn {
+      padding: 7px 13px;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 0.82rem;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--bg-light);
+      color: var(--text-dark);
+      transition: all 0.2s;
+    }
+    .timer-btn.primary {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .timer-btn:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+    body.dark-mode .cook-voice-bar {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.9) 100%);
+      border-color: #334155;
+    }
+    body.dark-mode .cook-voice-bar.listening {
+      border-color: #10b981;
+      background: linear-gradient(135deg, rgba(6, 78, 59, 0.4) 0%, rgba(15, 23, 42, 0.9) 100%);
+    }
+    body.dark-mode .voice-status-line strong {
+      color: #f8fafc;
+    }
+    body.dark-mode .cook-step-timer-box {
+      background: #1e293b;
+      border-color: #334155;
+    }
+
     /* Toast System */
     .toast-container {
       position: fixed;
@@ -4243,6 +4424,9 @@
     <div class="pantry-category-tabs">
       <button class="pantry-cat-pill active" onclick="setQuickCategory('all', this)">🌟 All Recipes</button>
       <button class="pantry-cat-pill" onclick="setQuickCategory('veg', this)">🥦 Pure Veg</button>
+      <button class="pantry-cat-pill" onclick="setQuickCategory('vegan', this)">🌱 Vegan</button>
+      <button class="pantry-cat-pill" onclick="setQuickCategory('fiber', this)">🌾 High-Fiber</button>
+      <button class="pantry-cat-pill" onclick="setQuickCategory('street', this)">🌍 Street Bites</button>
       <button class="pantry-cat-pill" onclick="setQuickCategory('protein', this)">🍗 High Protein</button>
       <button class="pantry-cat-pill" onclick="setQuickCategory('budget', this)">💰 Under ₹60</button>
       <button class="pantry-cat-pill" onclick="setQuickCategory('quick', this)">⚡ Under 12m</button>
@@ -4274,6 +4458,10 @@
         <div class="chip" onclick="toggleChip(this)">Bread</div>
         <div class="chip" onclick="toggleChip(this)">Soy Sauce</div>
         <div class="chip" onclick="toggleChip(this)">Chili Flakes</div>
+        <div class="chip" onclick="toggleChip(this)">Peanut Butter</div>
+        <div class="chip" onclick="toggleChip(this)">Chickpeas / Beans</div>
+        <div class="chip" onclick="toggleChip(this)">Oats</div>
+        <div class="chip" onclick="toggleChip(this)">Paneer / Tofu</div>
       </div>
 
       <div class="filters-section">
@@ -4753,6 +4941,51 @@
           <p class="collection-desc">Silent, low-smell midnight snacks you can whip up without waking your roommate.</p>
           <div class="collection-footer">
             <span class="collection-count">🌙 Midnight Craving Matches</span>
+            <span class="collection-arrow">Explore Recipes →</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="collection-card" onclick="filterByCollection('vegan')">
+        <div class="collection-image">
+          <img src="images/collection_vegan.jpg" alt="Plant-Powered Vegan Express">
+          <span class="collection-badge">🌱 Vegan</span>
+        </div>
+        <div class="collection-content">
+          <h3 class="collection-title">Plant-Powered Vegan Express</h3>
+          <p class="collection-desc">Zero animal products, 100% quick and budget-friendly single-pot meals.</p>
+          <div class="collection-footer">
+            <span class="collection-count">🌱 16+ Fast Vegan Bites</span>
+            <span class="collection-arrow">Explore Recipes →</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="collection-card" onclick="filterByCollection('fiber')">
+        <div class="collection-image">
+          <img src="images/collection_fiber.jpg" alt="High-Fiber & Gut Reset">
+          <span class="collection-badge">🌾 Fiber</span>
+        </div>
+        <div class="collection-content">
+          <h3 class="collection-title">High-Fiber & Gut Reset</h3>
+          <p class="collection-desc">Oats, lentils, beans, and greens to keep digestion sharp and energy consistent.</p>
+          <div class="collection-footer">
+            <span class="collection-count">🌾 14+ Fiber Power Meals</span>
+            <span class="collection-arrow">Explore Recipes →</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="collection-card" onclick="filterByCollection('street')">
+        <div class="collection-image">
+          <img src="images/collection_global.jpg" alt="Global Street Bites">
+          <span class="collection-badge">🌍 Street Bites</span>
+        </div>
+        <div class="collection-content">
+          <h3 class="collection-title">Global Street Bites</h3>
+          <p class="collection-desc">Bold international street foods adapted for single-skillet bachelor setups.</p>
+          <div class="collection-footer">
+            <span class="collection-count">🌍 20+ Street Food Classics</span>
             <span class="collection-arrow">Explore Recipes →</span>
           </div>
         </div>
@@ -5432,6 +5665,69 @@
         { step: 2, instruction: 'Add leftover rice, splash of soy sauce, and chili flakes. Stir fry over high heat for 3 mins.', timer_min: 3 }
       ],
       nutrition: { calories: 360, protein_g: 7, carbs_g: 68, fat_g: 9 }
+    },
+    {
+      slug: 'peanut-sesame-chili-noodles',
+      title: '10-Min Peanut Sesame Chili Noodles',
+      badge: '🌱 Vegan',
+      category: 'vegan',
+      image: 'images/collection_vegan.jpg',
+      cook_time_min: 10,
+      budget_inr: 45,
+      difficulty: 'Easy',
+      rating: 4.8,
+      rating_count: 98,
+      single_pan: true,
+      description: 'Rich nutty sesame-peanut glaze tossed with noodles, soy sauce, and garlic for an instant vegan dinner.',
+      ingredients: ['Pasta', 'Peanut Butter', 'Garlic', 'Soy Sauce', 'Chili Flakes'],
+      steps: [
+        { step: 1, instruction: 'Boil noodles or pasta in a single pan for 6 mins until tender; reserve 2 tbsp cooking water, then drain.', timer_min: 6 },
+        { step: 2, instruction: 'In the warm pan, whisk 1.5 tbsp peanut butter, 1 tbsp soy sauce, minced garlic, chili flakes, and the 2 tbsp reserved water into a creamy sauce.', timer_min: 2 },
+        { step: 3, instruction: 'Toss warm noodles vigorously into the peanut sauce over low flame for 2 mins until glossy and fully coated.', timer_min: 2 }
+      ],
+      nutrition: { calories: 410, protein_g: 14, carbs_g: 58, fat_g: 15 }
+    },
+    {
+      slug: 'crispy-chickpea-veggie-skillet',
+      title: 'Crispy Spiced Chickpea & Veggie Bowl',
+      badge: '🌾 Fiber',
+      category: 'fiber',
+      image: 'images/collection_fiber.jpg',
+      cook_time_min: 12,
+      budget_inr: 50,
+      difficulty: 'Easy',
+      rating: 4.9,
+      rating_count: 112,
+      single_pan: true,
+      description: 'High-fiber powerhouse packed with sautéed chickpeas, onions, crisp veggies, and aromatic cumin paprika seasoning.',
+      ingredients: ['Chickpeas / Beans', 'Vegetables', 'Garlic', 'Onions', 'Butter', 'Chili Flakes'],
+      steps: [
+        { step: 1, instruction: 'Rinse and drain cooked chickpeas; pat lightly dry with a towel or paper napkin.', timer_min: 2 },
+        { step: 2, instruction: 'Melt 1 tbsp butter in a pan over medium-high heat. Add minced garlic, chopped onions, and chickpeas with a pinch of salt and chili flakes.', timer_min: 5 },
+        { step: 3, instruction: 'Toss in chopped vegetables and sauté for 5 mins until chickpeas are crunchy-crisp on the edges and veggies are tender-crisp.', timer_min: 5 }
+      ],
+      nutrition: { calories: 370, protein_g: 16, carbs_g: 48, fat_g: 12 }
+    },
+    {
+      slug: 'korean-honey-garlic-toast',
+      title: 'Korean Street Honey Garlic Cheese Toast',
+      badge: '🌍 Street Bites',
+      category: 'street',
+      image: 'images/collection_global.jpg',
+      cook_time_min: 8,
+      budget_inr: 40,
+      difficulty: 'Easy',
+      rating: 4.9,
+      rating_count: 147,
+      single_pan: true,
+      description: 'Seoul street-food favorite with crusty pan-toasted bread slathered in sweet savory garlic butter and melted cheese.',
+      ingredients: ['Bread', 'Butter', 'Garlic', 'Cheese', 'Soy Sauce'],
+      steps: [
+        { step: 1, instruction: 'Mix 1.5 tbsp softened butter with 2 minced garlic cloves, 1/2 tsp sugar/honey, and 3 drops of soy sauce.', timer_min: 2 },
+        { step: 2, instruction: 'Slather the garlic mixture generously on both sides of bread slices and place cheese in between.', timer_min: 2 },
+        { step: 3, instruction: 'Pan fry in a covered skillet on low heat for 2 mins per side until deeply golden, caramelized, and cheese stretches.', timer_min: 4 }
+      ],
+      nutrition: { calories: 340, protein_g: 11, carbs_g: 38, fat_g: 16 }
     }
   ];
 
@@ -6142,6 +6438,18 @@
       activeFilters.time = '12';
       fetchMatchingRecipes();
       showToast('🌙 Filtered: Late-Night Study Cravings');
+    } else if (collectionType === 'vegan') {
+      const pill = Array.from(document.querySelectorAll('.pantry-cat-pill')).find(p => p.textContent.includes('Vegan'));
+      setQuickCategory('vegan', pill);
+      showToast('🌱 Filtered: Plant-Powered Vegan Express');
+    } else if (collectionType === 'fiber') {
+      const pill = Array.from(document.querySelectorAll('.pantry-cat-pill')).find(p => p.textContent.includes('Fiber'));
+      setQuickCategory('fiber', pill);
+      showToast('🌾 Filtered: High-Fiber & Gut Reset');
+    } else if (collectionType === 'street') {
+      const pill = Array.from(document.querySelectorAll('.pantry-cat-pill')).find(p => p.textContent.includes('Street'));
+      setQuickCategory('street', pill);
+      showToast('🌍 Filtered: Global Street Bites');
     }
   }
 
@@ -6234,9 +6542,15 @@
     }
 
     if (activeCategory === 'veg') {
-      filtered = filtered.filter(r => r.badge.includes('Rice') || r.badge.includes('Pasta') || r.category === 'veg');
+      filtered = filtered.filter(r => r.badge.includes('Rice') || r.badge.includes('Pasta') || r.badge.includes('Vegan') || r.category === 'veg' || r.category === 'vegan' || r.category === 'fiber');
+    } else if (activeCategory === 'vegan') {
+      filtered = filtered.filter(r => r.badge.includes('Vegan') || r.category === 'vegan');
+    } else if (activeCategory === 'fiber') {
+      filtered = filtered.filter(r => r.badge.includes('Fiber') || r.category === 'fiber');
+    } else if (activeCategory === 'street') {
+      filtered = filtered.filter(r => r.badge.includes('Street') || r.category === 'street');
     } else if (activeCategory === 'protein') {
-      filtered = filtered.filter(r => (r.nutrition && r.nutrition.protein_g >= 20) || r.category === 'protein');
+      filtered = filtered.filter(r => (r.nutrition && r.nutrition.protein_g >= 18) || r.category === 'protein');
     } else if (activeCategory === 'budget') {
       filtered = filtered.filter(r => r.budget_inr <= 55 || r.category === 'budget');
     } else if (activeCategory === 'quick') {
@@ -6606,6 +6920,245 @@
     document.getElementById('recipeModal').classList.add('active');
   }
 
+  // ===== VOICE-GUIDED COOKING ASSISTANT & COUNTDOWN TIMER =====
+  let voiceAssistantActive = false;
+  let speechRecognition = null;
+  let voiceAutoSpeakEnabled = true;
+  let currentStepTimerSeconds = 0;
+  let currentStepTimerInterval = null;
+  let isStepTimerRunning = false;
+
+  function initSpeechRecognition() {
+    const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRec) return null;
+    try {
+      const rec = new SpeechRec();
+      rec.continuous = true;
+      rec.interimResults = false;
+      rec.lang = 'en-US';
+
+      rec.onstart = () => {
+        voiceAssistantActive = true;
+        updateVoiceUI();
+      };
+
+      rec.onresult = (event) => {
+        const last = event.results[event.results.length - 1];
+        if (last && last[0]) {
+          const transcript = last[0].transcript.trim().toLowerCase();
+          handleVoiceCommand(transcript);
+        }
+      };
+
+      rec.onerror = (e) => {
+        console.log('Speech recognition event:', e.error);
+        if (e.error === 'not-allowed') {
+          showToast('⚠️ Microphone access blocked. Please allow mic permissions in browser.');
+          voiceAssistantActive = false;
+          updateVoiceUI();
+        }
+      };
+
+      rec.onend = () => {
+        const modal = document.getElementById('recipeModal');
+        if (voiceAssistantActive && modal && modal.classList.contains('active') && currentCookingRecipe) {
+          try { rec.start(); } catch(e) {}
+        } else {
+          voiceAssistantActive = false;
+          updateVoiceUI();
+        }
+      };
+
+      return rec;
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  }
+
+  function handleVoiceCommand(cmd) {
+    const heardEl = document.getElementById('voiceHeardCommand');
+    if (heardEl) {
+      heardEl.innerHTML = `<span class="voice-heard-pill">💬 Heard: "${cmd}"</span>`;
+    }
+
+    if (cmd.includes('next') || cmd.includes('continue') || cmd.includes('forward')) {
+      showToast('🎙️ Voice Command: Next Step');
+      nextCookingStep();
+    } else if (cmd.includes('back') || cmd.includes('previous') || cmd.includes('prev')) {
+      showToast('🎙️ Voice Command: Previous Step');
+      prevCookingStep();
+    } else if (cmd.includes('repeat') || cmd.includes('again') || cmd.includes('read') || cmd.includes('say')) {
+      showToast('🎙️ Voice Command: Repeating Step');
+      speakCurrentStep();
+    } else if (cmd.includes('start timer') || cmd.includes('set timer') || (cmd.includes('timer') && !cmd.includes('stop') && !cmd.includes('pause'))) {
+      showToast('🎙️ Voice Command: Starting Step Timer');
+      startStepCountdownTimer();
+    } else if (cmd.includes('stop timer') || cmd.includes('pause timer') || cmd.includes('reset timer')) {
+      showToast('🎙️ Voice Command: Paused Timer');
+      pauseStepCountdownTimer();
+    } else if (cmd.includes('ingredient') || cmd.includes('ingredients')) {
+      showToast('🎙️ Voice Command: Reading Ingredients');
+      speakIngredients();
+    } else if (cmd.includes('finish') || cmd.includes('done') || cmd.includes('complete')) {
+      showToast('🎙️ Voice Command: Finishing Cooking!');
+      finishCooking();
+    } else if (cmd.includes('mute') || cmd.includes('quiet') || cmd.includes('stop talking')) {
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      voiceAutoSpeakEnabled = false;
+      showToast('🔇 Voice audio muted');
+    } else if (cmd.includes('unmute')) {
+      voiceAutoSpeakEnabled = true;
+      showToast('🔊 Voice audio unmuted');
+      speakCurrentStep();
+    }
+  }
+
+  function speakText(text) {
+    if (!('speechSynthesis' in window)) return;
+    try {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
+      utterance.lang = 'en-US';
+      window.speechSynthesis.speak(utterance);
+    } catch (e) {}
+  }
+
+  function speakCurrentStep() {
+    if (!currentCookingRecipe) return;
+    const steps = currentCookingRecipe.steps || [];
+    const step = steps[currentStepIdx];
+    if (!step) return;
+    const msg = `Step ${currentStepIdx + 1}. ${step.instruction}`;
+    speakText(msg);
+  }
+
+  function speakIngredients() {
+    if (!currentCookingRecipe) return;
+    const ingredients = (currentCookingRecipe.ingredients || []).join(', ');
+    speakText(`Ingredients needed for ${currentCookingRecipe.title}: ${ingredients}`);
+  }
+
+  function toggleVoiceAssistant() {
+    const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRec) {
+      showToast('🎙️ Speech Recognition is not supported by this browser. Use Chrome/Edge/Safari.');
+      return;
+    }
+
+    if (!speechRecognition) {
+      speechRecognition = initSpeechRecognition();
+    }
+
+    if (!speechRecognition) {
+      showToast('🎙️ Speech recognition initialization failed.');
+      return;
+    }
+
+    if (voiceAssistantActive) {
+      voiceAssistantActive = false;
+      try { speechRecognition.stop(); } catch(e) {}
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      showToast('🎙️ Voice Assistant paused');
+      updateVoiceUI();
+    } else {
+      try {
+        speechRecognition.start();
+        voiceAssistantActive = true;
+        showToast('🎙️ Voice Assistant listening! Say "Next Step" or "Start Timer"');
+        updateVoiceUI();
+        speakCurrentStep();
+      } catch (e) {
+        console.error(e);
+        updateVoiceUI();
+      }
+    }
+  }
+
+  function updateVoiceUI() {
+    const bar = document.getElementById('cookVoiceBar');
+    const btn = document.getElementById('voiceToggleBtn');
+    const status = document.getElementById('voiceStatusText');
+
+    if (bar && btn && status) {
+      if (voiceAssistantActive) {
+        bar.classList.add('listening');
+        btn.classList.add('active');
+        btn.innerHTML = '🛑 Stop Listening';
+        status.innerHTML = '<strong>Listening...</strong> Say <em>"Next Step"</em>, <em>"Back"</em>, <em>"Repeat"</em>, or <em>"Start Timer"</em>';
+      } else {
+        bar.classList.remove('listening');
+        btn.classList.remove('active');
+        btn.innerHTML = '🎙️ Turn On Hands-Free Mode';
+        status.innerHTML = 'Tap to enable microphone for hands-free voice commands while cooking';
+      }
+    }
+  }
+
+  function initStepTimerForCurrentStep() {
+    if (currentStepTimerInterval) clearInterval(currentStepTimerInterval);
+    isStepTimerRunning = false;
+    const step = (currentCookingRecipe && currentCookingRecipe.steps) ? currentCookingRecipe.steps[currentStepIdx] : null;
+    const mins = (step && step.timer_min) ? Number(step.timer_min) : 2;
+    currentStepTimerSeconds = mins * 60;
+    updateTimerDisplay();
+  }
+
+  function startStepCountdownTimer() {
+    if (isStepTimerRunning) return;
+    if (currentStepTimerSeconds <= 0) {
+      initStepTimerForCurrentStep();
+    }
+    isStepTimerRunning = true;
+    const playBtn = document.getElementById('timerPlayPauseBtn');
+    if (playBtn) playBtn.textContent = '⏸️ Pause';
+
+    currentStepTimerInterval = setInterval(() => {
+      if (currentStepTimerSeconds > 0) {
+        currentStepTimerSeconds--;
+        updateTimerDisplay();
+      } else {
+        clearInterval(currentStepTimerInterval);
+        isStepTimerRunning = false;
+        if (playBtn) playBtn.textContent = '▶️ Start';
+        playTimerChime();
+        showToast('⏰ Time is up for Step ' + (currentStepIdx + 1) + '!');
+        speakText('Time is up for Step ' + (currentStepIdx + 1));
+      }
+    }, 1000);
+  }
+
+  function pauseStepCountdownTimer() {
+    if (currentStepTimerInterval) clearInterval(currentStepTimerInterval);
+    isStepTimerRunning = false;
+    const playBtn = document.getElementById('timerPlayPauseBtn');
+    if (playBtn) playBtn.textContent = '▶️ Resume';
+  }
+
+  function toggleStepTimerPlay() {
+    if (isStepTimerRunning) {
+      pauseStepCountdownTimer();
+    } else {
+      startStepCountdownTimer();
+    }
+  }
+
+  function resetStepTimer() {
+    pauseStepCountdownTimer();
+    initStepTimerForCurrentStep();
+  }
+
+  function updateTimerDisplay() {
+    const disp = document.getElementById('stepTimerDisplay');
+    if (disp) {
+      const m = Math.floor(currentStepTimerSeconds / 60);
+      const s = currentStepTimerSeconds % 60;
+      disp.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+  }
+
   function startCookingMode(slug) {
     let recipe = cachedRecipes.find(r => r.slug === slug) || fallbackRecipes.find(r => r.slug === slug) || fallbackRecipes[0];
     currentCookingRecipe = recipe;
@@ -6637,14 +7190,60 @@
         <div class="cook-progress-fill" style="width: ${progressPercent}%;"></div>
       </div>
 
-      <div class="cook-step-card" style="margin-top: 20px;">
+      <!-- Hands-Free Voice Assistant Bar -->
+      <div class="cook-voice-bar ${voiceAssistantActive ? 'listening' : ''}" id="cookVoiceBar">
+        <div class="cook-voice-row">
+          <button type="button" class="voice-toggle-btn ${voiceAssistantActive ? 'active' : ''}" id="voiceToggleBtn" onclick="toggleVoiceAssistant()">
+            ${voiceAssistantActive ? '🛑 Stop Listening' : '🎙️ Turn On Hands-Free Mode'}
+          </button>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <button type="button" class="voice-speak-btn" onclick="speakCurrentStep()" title="Read Step Aloud">
+              🔊 Read Step
+            </button>
+            <button type="button" class="voice-speak-btn" onclick="speakIngredients()" title="Read Ingredients">
+              📦 Ingredients
+            </button>
+          </div>
+        </div>
+
+        <div class="voice-status-line">
+          <span id="voiceStatusText">
+            ${voiceAssistantActive 
+              ? '<strong>Listening...</strong> Say <em>"Next Step"</em>, <em>"Back"</em>, <em>"Repeat"</em>, or <em>"Start Timer"</em>' 
+              : 'Tap to enable microphone for hands-free voice commands while cooking'}
+          </span>
+          <span id="voiceHeardCommand"></span>
+        </div>
+
+        <div class="voice-command-hints">
+          <span>Voice shortcuts:</span>
+          <span class="voice-cmd-chip">"next"</span>
+          <span class="voice-cmd-chip">"back"</span>
+          <span class="voice-cmd-chip">"repeat"</span>
+          <span class="voice-cmd-chip">"start timer"</span>
+          <span class="voice-cmd-chip">"ingredients"</span>
+          <span class="voice-cmd-chip">"finish"</span>
+        </div>
+      </div>
+
+      <div class="cook-step-card">
         <div class="cook-step-num">STEP ${step.step || currentStepIdx + 1}</div>
         <div class="cook-step-text">${step.instruction}</div>
-        ${step.timer_min ? `
-          <div style="margin-top: 14px; padding: 10px 14px; background: var(--bg-light); border-radius: var(--radius-sm); font-size: 0.85rem; color: var(--text-light); display: inline-flex; align-items: center; gap: 8px;">
-            <span>⏱️ Estimated time: approx ${step.timer_min} minutes</span>
+
+        <!-- Step Countdown Timer Box -->
+        <div class="cook-step-timer-box">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 1.2rem;">⏱️</span>
+            <div>
+              <div style="font-size: 0.78rem; color: var(--text-light); font-weight: 600; text-transform: uppercase;">Step Timer</div>
+              <div class="timer-display" id="stepTimerDisplay">00:00</div>
+            </div>
           </div>
-        ` : ''}
+          <div class="timer-controls">
+            <button type="button" class="timer-btn primary" id="timerPlayPauseBtn" onclick="toggleStepTimerPlay()">▶️ Start</button>
+            <button type="button" class="timer-btn" onclick="resetStepTimer()">🔄 Reset</button>
+          </div>
+        </div>
       </div>
 
       <div class="cook-nav-btns">
@@ -6662,10 +7261,15 @@
         `}
       </div>
     `;
+
+    initStepTimerForCurrentStep();
+    if (voiceAssistantActive && voiceAutoSpeakEnabled) {
+      speakCurrentStep();
+    }
   }
 
   function nextCookingStep() {
-    if (timerInterval) clearInterval(timerInterval);
+    if (currentStepTimerInterval) clearInterval(currentStepTimerInterval);
     if (currentCookingRecipe && currentStepIdx < currentCookingRecipe.steps.length - 1) {
       currentStepIdx++;
       renderCookingStep();
@@ -6673,7 +7277,7 @@
   }
 
   function prevCookingStep() {
-    if (timerInterval) clearInterval(timerInterval);
+    if (currentStepTimerInterval) clearInterval(currentStepTimerInterval);
     if (currentStepIdx > 0) {
       currentStepIdx--;
       renderCookingStep();
@@ -6681,6 +7285,11 @@
   }
 
   function finishCooking() {
+    if (currentStepTimerInterval) clearInterval(currentStepTimerInterval);
+    if (speechRecognition) try { speechRecognition.stop(); } catch(e) {}
+    if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+    voiceAssistantActive = false;
+
     const recipe = currentCookingRecipe || fallbackRecipes[0];
     const stats = getUserStats();
     const history = getCookingHistory();
@@ -6718,6 +7327,7 @@
     saveCookingHistory(history);
 
     playTimerChime();
+    speakText('Congratulations! Meal complete. Enjoy your food!');
 
     showToast(`🎉 Meal Complete! Saved ₹${takeoutDiff} & earned +35 Chef XP! 🍳`);
 
@@ -6737,12 +7347,11 @@
   }
 
   function closeRecipeModal() {
-    if (timerInterval) clearInterval(timerInterval);
+    if (currentStepTimerInterval) clearInterval(currentStepTimerInterval);
+    if (speechRecognition) try { speechRecognition.stop(); } catch(e) {}
+    if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+    voiceAssistantActive = false;
     document.getElementById('recipeModal').classList.remove('active');
-  }
-
-  function startStepTimer() {
-    // Start timer removed per user preference; replaced by step-by-step guidance and 1-5 star ratings
   }
 
   function playTimerChime() {
